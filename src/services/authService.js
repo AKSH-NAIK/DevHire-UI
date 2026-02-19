@@ -1,10 +1,18 @@
-// Mock auth service with localStorage
+// Mock auth service with sessionStorage
+
+// Remove old user data from localStorage if present
+try {
+  localStorage.removeItem(USERS_KEY);
+  localStorage.removeItem(CURRENT_USER_KEY);
+} catch (e) {
+  // Ignore errors (e.g., if localStorage is unavailable)
+}
 const USERS_KEY = 'devhire_users'
 const CURRENT_USER_KEY = 'devhire_current_user'
 
 // Initialize with some demo users
 const initializeDemoUsers = () => {
-  const existing = localStorage.getItem(USERS_KEY)
+  const existing = sessionStorage.getItem(USERS_KEY)
   if (!existing) {
     const demoUsers = [
       {
@@ -24,14 +32,14 @@ const initializeDemoUsers = () => {
         verified: true,
       },
     ]
-    localStorage.setItem(USERS_KEY, JSON.stringify(demoUsers))
+    sessionStorage.setItem(USERS_KEY, JSON.stringify(demoUsers))
   }
 }
 
 export const authService = {
   register: (userData) => {
     initializeDemoUsers()
-    const users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]')
+    const users = JSON.parse(sessionStorage.getItem(USERS_KEY) || '[]')
     
     if (users.find(u => u.email === userData.email)) {
       throw new Error('User already exists')
@@ -55,50 +63,50 @@ export const authService = {
     }
 
     users.push(newUser)
-    localStorage.setItem(USERS_KEY, JSON.stringify(users))
+    sessionStorage.setItem(USERS_KEY, JSON.stringify(users))
 
     return newUser
   },
 
   login: (email, password) => {
     initializeDemoUsers()
-    const users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]')
+    const users = JSON.parse(sessionStorage.getItem(USERS_KEY) || '[]')
     const user = users.find(u => u.email === email && u.password === password)
 
     if (!user) {
       throw new Error('Invalid email or password')
     }
 
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user))
+    sessionStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user))
     return user
   },
 
   logout: () => {
-    localStorage.removeItem(CURRENT_USER_KEY)
+    sessionStorage.removeItem(CURRENT_USER_KEY)
   },
 
   getCurrentUser: () => {
-    const user = localStorage.getItem(CURRENT_USER_KEY)
+    const user = sessionStorage.getItem(CURRENT_USER_KEY)
     return user ? JSON.parse(user) : null
   },
 
   isAuthenticated: () => {
-    return localStorage.getItem(CURRENT_USER_KEY) !== null
+    return sessionStorage.getItem(CURRENT_USER_KEY) !== null
   },
 
   updateUser: (userId, updates) => {
-    const users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]')
+    const users = JSON.parse(sessionStorage.getItem(USERS_KEY) || '[]')
     const index = users.findIndex(u => u.id === userId)
     
     if (index === -1) throw new Error('User not found')
 
     users[index] = { ...users[index], ...updates }
-    localStorage.setItem(USERS_KEY, JSON.stringify(users))
+    sessionStorage.setItem(USERS_KEY, JSON.stringify(users))
 
     // Update current user if it's the logged-in user
     const currentUser = authService.getCurrentUser()
     if (currentUser && currentUser.id === userId) {
-      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(users[index]))
+      sessionStorage.setItem(CURRENT_USER_KEY, JSON.stringify(users[index]))
     }
 
     return users[index]

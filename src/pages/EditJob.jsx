@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react'
 import { authService } from '../services/authService'
 import { jobsService } from '../services/jobsService'
 import JobForm from '../components/JobForm'
+import Loader from '../components/Loader'
+import toast from 'react-hot-toast'
 
 export default function EditJob() {
   const navigate = useNavigate()
@@ -14,33 +16,20 @@ export default function EditJob() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (!user || user.role !== 'recruiter') {
-      navigate('/login')
-      return
-    }
-
-    const job = jobsService.getJobById(jobId)
-    if (!job || job.companyId !== user.id) {
-      navigate('/recruiter-dashboard')
-      return
-    }
-
-    setJob({
-      ...job,
-      requirements: job.requirements.join(', '),
-    })
-  }, [jobId, user, navigate])
+    if (!user || user.role !== 'recruiter') { navigate('/login'); return }
+    const found = jobsService.getJobById(jobId)
+    if (!found || found.companyId !== user.id) { navigate('/recruiter-dashboard'); return }
+    setJob({ ...found, requirements: found.requirements.join(', ') })
+  }, [jobId, navigate])
 
   const handleSubmit = async (formData) => {
     setLoading(true)
     try {
-      jobsService.updateJob(jobId, {
-        ...formData,
-        requirements: formData.requirements,
-      })
+      jobsService.updateJob(jobId, formData)
+      toast.success('Job updated successfully!')
       navigate('/recruiter-dashboard')
     } catch (error) {
-      console.error('Error updating job:', error)
+      toast.error(error.message || 'Failed to update job.')
     } finally {
       setLoading(false)
     }
@@ -48,21 +37,20 @@ export default function EditJob() {
 
   if (!job) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <p className="text-slate-400">Loading...</p>
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <Loader size="lg" label="Loading job details..." />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-slate-950">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Edit Job</h1>
-          <p className="text-slate-400">Update the job details below</p>
+    <div className="min-h-screen bg-black">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold text-white mb-2 tracking-tighter uppercase">Edit Job</h1>
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Update the details below</p>
         </div>
-
-        <div className="bg-slate-900/50 border border-slate-700 rounded p-8">
+        <div className="bg-black border border-white/10 p-8">
           <JobForm initialData={job} onSubmit={handleSubmit} loading={loading} />
         </div>
       </div>

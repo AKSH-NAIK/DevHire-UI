@@ -1,5 +1,6 @@
 const JOBS_KEY = 'devhire_jobs'
 const APPLICATIONS_KEY = 'devhire_applications'
+const REPORTS_KEY = 'devhire_reports'
 
 // Demo jobs data
 const demoJobs = [
@@ -124,10 +125,11 @@ export const jobsService = {
     localStorage.setItem(JOBS_KEY, JSON.stringify(filtered))
   },
 
-  applyToJob: (jobId, candidateId) => {
+  // ── Applications ────────────────────────────────────────────────────────────
+
+  applyToJob: (jobId, candidateId, metadata = {}) => {
     const applications = JSON.parse(localStorage.getItem(APPLICATIONS_KEY) || '[]')
-    
-    // Check if already applied
+
     if (applications.find(a => a.jobId === jobId && a.candidateId === candidateId)) {
       throw new Error('Already applied to this job')
     }
@@ -136,14 +138,20 @@ export const jobsService = {
       id: Date.now().toString(),
       jobId,
       candidateId,
-      status: 'pending',
+      status: 'applied',
       appliedAt: new Date().toISOString(),
+      // Full metadata for recruiter review panel
+      applicantName: metadata.applicantName || '',
+      applicantEmail: metadata.applicantEmail || '',
+      phone: metadata.phone || '',
+      coverLetter: metadata.coverLetter || '',
+      resumeName: metadata.resumeName || '',
     }
 
     applications.push(application)
     localStorage.setItem(APPLICATIONS_KEY, JSON.stringify(applications))
 
-    // Increment applicant count
+    // Increment applicant count on the job
     const jobs = JSON.parse(localStorage.getItem(JOBS_KEY) || '[]')
     const jobIndex = jobs.findIndex(j => j.id === jobId)
     if (jobIndex !== -1) {
@@ -152,6 +160,23 @@ export const jobsService = {
     }
 
     return application
+  },
+
+  updateApplicationStatus: (applicationId, status) => {
+    const valid = ['applied', 'reviewed', 'accepted', 'rejected']
+    if (!valid.includes(status)) throw new Error('Invalid status')
+
+    const applications = JSON.parse(localStorage.getItem(APPLICATIONS_KEY) || '[]')
+    const index = applications.findIndex(a => a.id === applicationId)
+    if (index === -1) throw new Error('Application not found')
+
+    applications[index] = {
+      ...applications[index],
+      status,
+      updatedAt: new Date().toISOString(),
+    }
+    localStorage.setItem(APPLICATIONS_KEY, JSON.stringify(applications))
+    return applications[index]
   },
 
   getApplications: (filters = {}) => {
@@ -171,5 +196,26 @@ export const jobsService = {
   hasApplied: (jobId, candidateId) => {
     const applications = JSON.parse(localStorage.getItem(APPLICATIONS_KEY) || '[]')
     return applications.some(a => a.jobId === jobId && a.candidateId === candidateId)
+  },
+
+  // ── Reports ─────────────────────────────────────────────────────────────────
+
+  /**
+   * submitReport — stores a report WITHOUT affecting the job listing or recruiter.
+   * Job stays visible. Recruiter is NOT blocked. Admin reviews reports separately.
+   */
+  submitReport: (reportData) => {
+    const reports = JSON.parse(localStorage.getItem(REPORTS_KEY) || '[]')
+    const report = {
+      id: Date.now().toString(),
+      ...reportData,
+    }
+    reports.push(report)
+    localStorage.setItem(REPORTS_KEY, JSON.stringify(reports))
+    return report
+  },
+
+  getReports: () => {
+    return JSON.parse(localStorage.getItem(REPORTS_KEY) || '[]')
   },
 }

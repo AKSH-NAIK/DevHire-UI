@@ -4,13 +4,12 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { authService } from '../services/authService'
 import { Eye, EyeOff, AlertCircle } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { ButtonSpinner } from '../components/Loader'
 
 export default function Login() {
   const navigate = useNavigate()
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  })
+  const [formData, setFormData] = useState({ email: '', password: '' })
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -22,11 +21,13 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (loading) return          // Prevent double submission
     setError('')
     setLoading(true)
 
     try {
       const user = authService.login(formData.email, formData.password)
+      toast.success(`Welcome back, ${user.name || user.companyName}!`)
 
       if (user.role === 'recruiter') {
         navigate('/recruiter-dashboard')
@@ -35,6 +36,7 @@ export default function Login() {
       }
     } catch (err) {
       setError(err.message)
+      toast.error(err.message)
     } finally {
       setLoading(false)
     }
@@ -53,7 +55,7 @@ export default function Login() {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6 p-8 bg-black border border-white/10 rounded-none shadow-glow-sm">
+        <form onSubmit={handleSubmit} className="space-y-6 p-8 bg-black border border-white/10 shadow-glow-sm">
           {error && (
             <div className="border border-red-900/50 bg-red-950/20 p-4 flex gap-3 text-red-500 text-[10px] font-bold uppercase tracking-widest">
               <AlertCircle size={16} className="flex-shrink-0" />
@@ -68,8 +70,9 @@ export default function Login() {
               placeholder="Email address"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-5 py-4 bg-black border border-white/10 rounded-none text-white placeholder-slate-700 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all text-[10px] font-bold lowercase tracking-widest"
+              className="w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-700 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all text-[10px] font-bold lowercase tracking-widest"
               required
+              disabled={loading}
             />
 
             <div className="relative">
@@ -79,8 +82,9 @@ export default function Login() {
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-5 py-4 bg-black border border-white/10 rounded-none text-white placeholder-slate-700 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all text-[10px] font-bold uppercase tracking-widest"
+                className="w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-700 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all text-[10px] font-bold uppercase tracking-widest"
                 required
+                disabled={loading}
               />
               <button
                 type="button"
@@ -95,9 +99,9 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 border border-primary text-primary hover:bg-primary hover:text-white transition-all text-xs font-bold uppercase tracking-widest disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 py-4 border border-primary text-primary hover:bg-primary hover:text-black transition-all text-xs font-bold uppercase tracking-widest disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? <><ButtonSpinner /> Logging in...</> : 'Login'}
           </button>
         </form>
 

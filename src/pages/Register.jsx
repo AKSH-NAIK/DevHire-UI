@@ -4,7 +4,9 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { authService } from '../services/authService'
 import { Eye, EyeOff, AlertCircle } from 'lucide-react'
+import toast from 'react-hot-toast'
 import AreaOfInterestField from '../components/AreaOfInterestField'
+import { ButtonSpinner } from '../components/Loader'
 
 export default function Register() {
   const navigate = useNavigate()
@@ -40,6 +42,7 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (loading) return
     setError('')
     setLoading(true)
 
@@ -47,16 +50,12 @@ export default function Register() {
       const validationError = validateForm()
       if (validationError) {
         setError(validationError)
+        toast.error(validationError)
         setLoading(false)
         return
       }
 
-      const userData = {
-        email: formData.email,
-        password: formData.password,
-        role,
-      }
-
+      const userData = { email: formData.email, password: formData.password, role }
       if (role === 'candidate') {
         userData.name = formData.name
         userData.areaOfInterest = areaOfInterest
@@ -68,6 +67,7 @@ export default function Register() {
 
       authService.register(userData)
       const user = authService.login(formData.email, formData.password)
+      toast.success('Account created successfully! Welcome to DevHire 🎉')
 
       if (user.role === 'recruiter') {
         navigate('/recruiter-dashboard')
@@ -76,12 +76,13 @@ export default function Register() {
       }
     } catch (err) {
       setError(err.message)
+      toast.error(err.message)
     } finally {
       setLoading(false)
     }
   }
 
-  const isSeekerRole = role === 'candidate'
+  const inputClass = "w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-700 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all text-[10px] font-bold uppercase tracking-widest disabled:opacity-50"
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
@@ -97,26 +98,20 @@ export default function Register() {
 
         {/* Role Selection */}
         <div className="mb-8 flex gap-3">
-          <button
-            type="button"
-            onClick={() => setRole('candidate')}
-            className={`flex-1 py-4 border text-[10px] font-bold uppercase tracking-widest transition-all ${role === 'candidate'
-              ? 'bg-primary border-primary text-white shadow-glow-sm'
-              : 'bg-black border-white/10 text-slate-500 hover:border-primary/50'
-              }`}
-          >
-            Job Seeker
-          </button>
-          <button
-            type="button"
-            onClick={() => setRole('recruiter')}
-            className={`flex-1 py-4 border text-[10px] font-bold uppercase tracking-widest transition-all ${role === 'recruiter'
-              ? 'bg-primary border-primary text-white shadow-glow-sm'
-              : 'bg-black border-white/10 text-slate-500 hover:border-primary/50'
-              }`}
-          >
-            Recruiter
-          </button>
+          {['candidate', 'recruiter'].map(r => (
+            <button
+              key={r}
+              type="button"
+              onClick={() => setRole(r)}
+              disabled={loading}
+              className={`flex-1 py-4 border text-[10px] font-bold uppercase tracking-widest transition-all ${role === r
+                  ? 'bg-primary border-primary text-black shadow-glow-sm'
+                  : 'bg-black border-white/10 text-slate-500 hover:border-primary/50'
+                }`}
+            >
+              {r === 'candidate' ? 'Job Seeker' : 'Recruiter'}
+            </button>
+          ))}
         </div>
 
         {/* Form */}
@@ -129,25 +124,8 @@ export default function Register() {
           )}
 
           <div className="space-y-4">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email address"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-700 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all text-[10px] font-bold lowercase tracking-widest"
-              required
-            />
-
-            <input
-              type="text"
-              name="name"
-              placeholder="Full name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-700 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all text-[10px] font-bold uppercase tracking-widest"
-              required
-            />
+            <input type="email" name="email" placeholder="Email address" value={formData.email} onChange={handleChange} className={inputClass} required disabled={loading} />
+            <input type="text" name="name" placeholder="Full name" value={formData.name} onChange={handleChange} className={inputClass} required disabled={loading} />
 
             {role === 'candidate' && (
               <AreaOfInterestField value={areaOfInterest} onChange={setAreaOfInterest} />
@@ -155,60 +133,21 @@ export default function Register() {
 
             {role === 'recruiter' && (
               <>
-                <input
-                  type="text"
-                  name="companyName"
-                  placeholder="Company name"
-                  value={formData.companyName}
-                  onChange={handleChange}
-                  className="w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-700 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all text-[10px] font-bold uppercase tracking-widest"
-                  required
-                />
-                <input
-                  type="url"
-                  name="website"
-                  placeholder="Company website (optional)"
-                  value={formData.website}
-                  onChange={handleChange}
-                  className="w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-700 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all text-[10px] font-bold uppercase tracking-widest"
-                />
+                <input type="text" name="companyName" placeholder="Company name" value={formData.companyName} onChange={handleChange} className={inputClass} required disabled={loading} />
+                <input type="url" name="website" placeholder="Company website (optional)" value={formData.website} onChange={handleChange} className={inputClass} disabled={loading} />
               </>
             )}
 
             <div className="relative">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-700 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all text-[10px] font-bold uppercase tracking-widest"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-600 hover:text-primary transition-colors"
-              >
+              <input type={showPassword ? 'text' : 'password'} name="password" placeholder="Password" value={formData.password} onChange={handleChange} className={inputClass} required disabled={loading} />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-600 hover:text-primary transition-colors">
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
 
             <div className="relative">
-              <input
-                type={showConfirm ? 'text' : 'password'}
-                name="confirmPassword"
-                placeholder="Confirm password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-700 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all text-[10px] font-bold uppercase tracking-widest"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirm(!showConfirm)}
-                className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-600 hover:text-primary transition-colors"
-              >
+              <input type={showConfirm ? 'text' : 'password'} name="confirmPassword" placeholder="Confirm password" value={formData.confirmPassword} onChange={handleChange} className={inputClass} required disabled={loading} />
+              <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-600 hover:text-primary transition-colors">
                 {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
@@ -217,18 +156,15 @@ export default function Register() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 border border-primary text-primary hover:bg-primary hover:text-white transition-all text-xs font-bold uppercase tracking-widest disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 py-4 border border-primary text-primary hover:bg-primary hover:text-black transition-all text-xs font-bold uppercase tracking-widest disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {loading ? 'Creating account...' : 'Create account'}
+            {loading ? <><ButtonSpinner /> Creating account...</> : 'Create account'}
           </button>
         </form>
 
-        {/* Footer */}
         <p className="text-center text-slate-600 text-[10px] font-bold uppercase tracking-widest mt-8">
           Already have an account?{' '}
-          <Link to="/login" className="text-primary hover:underline transition-colors">
-            Sign in
-          </Link>
+          <Link to="/login" className="text-primary hover:underline transition-colors">Sign in</Link>
         </p>
       </div>
     </div>

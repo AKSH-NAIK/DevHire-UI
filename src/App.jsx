@@ -19,8 +19,6 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
 import FAQ from './pages/FAQ'
 import ContactUs from './pages/ContactUs'
-import Profile from './pages/Profile'
-
 
 export default function App() {
   return (
@@ -74,15 +72,6 @@ export default function App() {
               element={
                 <ProtectedRoute requiredRole="candidate">
                   <CandidateDashboard />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <Profile />
                 </ProtectedRoute>
               }
             />

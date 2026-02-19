@@ -45,6 +45,8 @@ coverage/
 .next/
 *.tsbuildinfo
 
-# Lock files (keeping package-lock.json, removing pnpm)
+
 pnpm-lock.yaml
 yarn.lock
+
+vercel
