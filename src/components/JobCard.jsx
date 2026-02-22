@@ -11,6 +11,7 @@ export default function JobCard({ job, userRole, onApply, isApplied = false }) {
   const user = authService.getCurrentUser()
   const [applyOpen, setApplyOpen] = useState(false)
   const [reportOpen, setReportOpen] = useState(false)
+  const [expandSkills, setExpandSkills] = useState(false)
 
   const initials = job.company
     .split(' ')
@@ -91,7 +92,7 @@ export default function JobCard({ job, userRole, onApply, isApplied = false }) {
 
         {/* Requirement tags */}
         <div className="flex flex-wrap gap-2 mb-6">
-          {job.requirements.slice(0, 3).map((req, idx) => (
+          {(expandSkills ? (job.requirements || []) : (job.requirements || []).slice(0, 3)).map((req, idx) => (
             <span
               key={idx}
               className="px-3 py-1 border border-white/5 bg-white/5 text-slate-400 text-[10px] uppercase font-bold tracking-widest"
@@ -99,10 +100,13 @@ export default function JobCard({ job, userRole, onApply, isApplied = false }) {
               {req}
             </span>
           ))}
-          {job.requirements.length > 3 && (
-            <span className="px-3 py-1 text-slate-600 text-[10px] uppercase font-bold tracking-widest">
-              +{job.requirements.length - 3} more
-            </span>
+          {job.requirements?.length > 3 && (
+            <button
+              onClick={() => setExpandSkills(!expandSkills)}
+              className="px-3 py-1 text-primary hover:text-white transition-colors text-[10px] uppercase font-bold tracking-widest border border-white/5 bg-white/5 hover:bg-primary/10"
+            >
+              {expandSkills ? 'Show Less' : `+${job.requirements.length - 3} more`}
+            </button>
           )}
         </div>
 
@@ -121,8 +125,8 @@ export default function JobCard({ job, userRole, onApply, isApplied = false }) {
                   onClick={handleApplyClick}
                   disabled={isApplied}
                   className={`px-5 py-2 border transition-all text-xs font-bold uppercase tracking-widest ${isApplied
-                      ? 'border-white/10 text-slate-600 cursor-not-allowed'
-                      : 'border-primary text-primary hover:bg-primary hover:text-black'
+                    ? 'border-white/10 text-slate-600 cursor-not-allowed'
+                    : 'border-primary text-primary hover:bg-primary hover:text-black'
                     }`}
                 >
                   {isApplied ? 'Applied ✓' : 'Apply'}

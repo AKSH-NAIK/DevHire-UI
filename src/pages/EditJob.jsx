@@ -20,8 +20,25 @@ export default function EditJob() {
     const fetchJob = async () => {
       try {
         const found = await jobsService.getJobById(jobId)
-        if (!found || found.companyId !== user.id) { navigate('/recruiter-dashboard'); return }
-        setJob({ ...found, requirements: found.requirements.join(', ') })
+
+        // Ownership check: matches the logic in RecruiterDashboard
+        const creatorId = found.createdBy?._id || found.createdBy || found.companyId;
+
+        if (!found || creatorId !== user.id) {
+          console.error("Ownership mismatch or job not found:", { jobId, creatorId, userId: user.id });
+          navigate('/recruiter-dashboard');
+          return;
+        }
+
+        // Safe requirements formatting
+        let requirementsStr = '';
+        if (Array.isArray(found.requirements)) {
+          requirementsStr = found.requirements.join(', ');
+        } else if (typeof found.requirements === 'string') {
+          requirementsStr = found.requirements;
+        }
+
+        setJob({ ...found, requirements: requirementsStr })
       } catch (error) {
         console.error("Failed to fetch job for edit:", error)
         navigate('/recruiter-dashboard')
