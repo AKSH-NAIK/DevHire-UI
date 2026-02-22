@@ -1,10 +1,26 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle, Zap, Shield, Users, TrendingUp } from 'lucide-react'
 import JobCard from '../components/JobCard'
 import { jobsService } from '../services/jobsService'
 
 export default function Landing() {
-  const featuredJobs = jobsService.getAllJobs().slice(0, 3)
+  const [featuredJobs, setFeaturedJobs] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const jobs = await jobsService.getAllJobs()
+        setFeaturedJobs(Array.isArray(jobs) ? jobs.slice(0, 3) : [])
+      } catch (error) {
+        console.error("Failed to fetch featured jobs:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchJobs()
+  }, [])
 
   return (
     <div className="min-h-screen bg-black">
@@ -111,7 +127,7 @@ export default function Landing() {
                   'Register your company and verify your account',
                   'Post detailed job openings for top talent',
                   'Review applications and manage candidates',
-                  'Hire the best developers for your team',
+                  'Hire the best candidates for your company',
                 ].map((step, idx) => (
                   <div key={idx} className="flex gap-6 group">
                     <div className="flex-shrink-0 w-10 h-10 border border-white/10 flex items-center justify-center text-slate-500 font-bold text-xs group-hover:border-primary group-hover:text-primary transition-colors">

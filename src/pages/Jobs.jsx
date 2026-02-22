@@ -20,14 +20,25 @@ export default function Jobs() {
   const [selectedLocation, setSelectedLocation] = useState('all')
 
   useEffect(() => {
-    const allJobs = jobsService.getAllJobs({ status: 'active' })
-    setJobs(allJobs)
+    const fetchJobsData = async () => {
+      try {
+        const allJobs = await jobsService.getAllJobs({ status: 'active' })
+        setJobs(Array.isArray(allJobs) ? allJobs : [])
 
-    if (user?.role === 'candidate') {
-      const applications = jobsService.getApplications({ candidateId: user.id })
-      setAppliedJobs(new Set(applications.map(a => a.jobId)))
+        if (user?.role === 'candidate') {
+          const applications = await jobsService.getApplications({ candidateId: user.id })
+          if (Array.isArray(applications)) {
+            setAppliedJobs(new Set(applications.map(a => a.jobId)))
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch jobs or applications:", error)
+      } finally {
+        setLoading(false)
+      }
     }
-    setLoading(false)
+
+    fetchJobsData()
   }, [])
 
   // Unique locations from loaded jobs for filter dropdown

@@ -49,4 +49,4 @@ coverage/
 pnpm-lock.yaml
 yarn.lock
 
-vercel
+.vercel

@@ -20,7 +20,7 @@ export default function PostJob() {
   const handleSubmit = async (formData) => {
     setLoading(true)
     try {
-      jobsService.createJob({
+      await jobsService.createJob({
         ...formData,
         companyId: user.id,
         company: user.companyName,

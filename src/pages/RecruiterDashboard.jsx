@@ -29,44 +29,60 @@ export default function RecruiterDashboard() {
     loadJobs()
   }, [navigate])
 
-  const loadJobs = () => {
-    const allJobs = jobsService.getAllJobs({ companyId: user.id })
-    setJobs(allJobs)
-    setStats({
-      totalJobs: allJobs.length,
-      activeJobs: allJobs.filter(j => j.status === 'active').length,
-      pendingJobs: allJobs.filter(j => j.status === 'pending').length,
-      totalApplications: allJobs.reduce((sum, j) => sum + (j.applicants || 0), 0),
-    })
+  const loadJobs = async () => {
+    try {
+      const allJobs = await jobsService.getAllJobs({ companyId: user.id })
+      setJobs(Array.isArray(allJobs) ? allJobs : [])
+      setStats({
+        totalJobs: allJobs.length,
+        activeJobs: allJobs.filter(j => j.status === 'active').length,
+        pendingJobs: allJobs.filter(j => j.status === 'pending').length,
+        totalApplications: allJobs.reduce((sum, j) => sum + (j.applicants || 0), 0),
+      })
+    } catch (error) {
+      console.error("Failed to load jobs:", error)
+    }
   }
 
   const handleDeleteClick = (jobId) => {
     setConfirmModal({ open: true, jobId })
   }
 
-  const handleDeleteConfirm = () => {
-    jobsService.deleteJob(confirmModal.jobId)
-    setJobs(prev => prev.filter(j => j.id !== confirmModal.jobId))
-    setStats(prev => ({ ...prev, totalJobs: prev.totalJobs - 1 }))
-    toast.success('Job listing deleted.')
+  const handleDeleteConfirm = async () => {
+    try {
+      await jobsService.deleteJob(confirmModal.jobId)
+      setJobs(prev => prev.filter(j => j.id !== confirmModal.jobId))
+      setStats(prev => ({ ...prev, totalJobs: prev.totalJobs - 1 }))
+      toast.success('Job listing deleted.')
+    } catch (error) {
+      toast.error("Failed to delete job.")
+    }
   }
 
-  const handleActivateJob = (jobId) => {
-    jobsService.updateJob(jobId, { status: 'active', verified: true })
-    setJobs(prev => prev.map(j => j.id === jobId ? { ...j, status: 'active', verified: true } : j))
-    toast.success('Job activated and now visible to candidates.')
+  const handleActivateJob = async (jobId) => {
+    try {
+      await jobsService.updateJob(jobId, { status: 'active', verified: true })
+      setJobs(prev => prev.map(j => j.id === jobId ? { ...j, status: 'active', verified: true } : j))
+      toast.success('Job activated and now visible to candidates.')
+    } catch (error) {
+      toast.error("Failed to activate job.")
+    }
   }
 
   // Toggle applicants panel for a job row
-  const handleToggleApplicants = (jobId) => {
+  const handleToggleApplicants = async (jobId) => {
     if (expandedJobId === jobId) {
       setExpandedJobId(null)
       return
     }
     setExpandedJobId(jobId)
     if (!applicantsMap[jobId]) {
-      const apps = jobsService.getApplications({ jobId })
-      setApplicantsMap(prev => ({ ...prev, [jobId]: apps }))
+      try {
+        const apps = await jobsService.getApplications({ jobId })
+        setApplicantsMap(prev => ({ ...prev, [jobId]: apps }))
+      } catch (error) {
+        console.error("Failed to fetch applications:", error)
+      }
     }
   }
 
@@ -74,7 +90,7 @@ export default function RecruiterDashboard() {
   const handleStatusUpdate = async (applicationId, status, jobId) => {
     setUpdatingApp(applicationId)
     try {
-      const updated = jobsService.updateApplicationStatus(applicationId, status)
+      const updated = await jobsService.updateApplicationStatus(applicationId, status)
       // Update local applicant map without page reload
       setApplicantsMap(prev => ({
         ...prev,

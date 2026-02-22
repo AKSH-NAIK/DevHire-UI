@@ -22,22 +22,35 @@ export default function CandidateDashboard() {
       return
     }
 
-    const userApplications = jobsService.getApplications({ candidateId: user.id })
+    const fetchDashboardData = async () => {
+      try {
+        const userApplications = await jobsService.getApplications({ candidateId: user.id })
 
-    // Enrich applications with job data
-    const enriched = userApplications.map(app => ({
-      ...app,
-      job: jobsService.getJobById(app.jobId),
-    })).filter(a => a.job)
+        // Enrich applications with job data
+        const enriched = await Promise.all(
+          userApplications.map(async (app) => {
+            const job = await jobsService.getJobById(app.jobId)
+            return job ? { ...app, job } : null
+          })
+        )
 
-    setApplications(enriched)
-    setStats({
-      total: enriched.length,
-      accepted: enriched.filter(a => a.status === 'accepted').length,
-      rejected: enriched.filter(a => a.status === 'rejected').length,
-      pending: enriched.filter(a => ['applied', 'reviewed'].includes(a.status)).length,
-    })
-    setLoading(false)
+        const validApplications = enriched.filter(Boolean)
+
+        setApplications(validApplications)
+        setStats({
+          total: validApplications.length,
+          accepted: validApplications.filter(a => a.status === 'accepted').length,
+          rejected: validApplications.filter(a => a.status === 'rejected').length,
+          pending: validApplications.filter(a => ['applied', 'reviewed'].includes(a.status)).length,
+        })
+      } catch (error) {
+        console.error("Failed to fetch dashboard data:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchDashboardData()
   }, [navigate])
 
   if (!user) return null

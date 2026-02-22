@@ -17,15 +17,23 @@ export default function EditJob() {
 
   useEffect(() => {
     if (!user || user.role !== 'recruiter') { navigate('/login'); return }
-    const found = jobsService.getJobById(jobId)
-    if (!found || found.companyId !== user.id) { navigate('/recruiter-dashboard'); return }
-    setJob({ ...found, requirements: found.requirements.join(', ') })
+    const fetchJob = async () => {
+      try {
+        const found = await jobsService.getJobById(jobId)
+        if (!found || found.companyId !== user.id) { navigate('/recruiter-dashboard'); return }
+        setJob({ ...found, requirements: found.requirements.join(', ') })
+      } catch (error) {
+        console.error("Failed to fetch job for edit:", error)
+        navigate('/recruiter-dashboard')
+      }
+    }
+    fetchJob()
   }, [jobId, navigate])
 
   const handleSubmit = async (formData) => {
     setLoading(true)
     try {
-      jobsService.updateJob(jobId, formData)
+      await jobsService.updateJob(jobId, formData)
       toast.success('Job updated successfully!')
       navigate('/recruiter-dashboard')
     } catch (error) {
