@@ -66,13 +66,12 @@ export default function Jobs() {
   }, [jobs])
 
   // Frontend filtering
-  const filteredJobs = useMemo(() => {
-    let result = jobs
+  const { appliedFilteredJobs, otherFilteredJobs } = useMemo(() => {
+    let baseResult = jobs
 
     if (searchTerm) {
       const q = searchTerm.toLowerCase()
-
-      result = result.filter(j =>
+      baseResult = baseResult.filter(j =>
         j.title?.toLowerCase().includes(q) ||
         j.company?.toLowerCase().includes(q) ||
         j.location?.toLowerCase().includes(q) ||
@@ -83,15 +82,18 @@ export default function Jobs() {
     }
 
     if (selectedType !== 'all') {
-      result = result.filter(j => j.type === selectedType)
+      baseResult = baseResult.filter(j => j.type === selectedType)
     }
 
     if (selectedLocation !== 'all') {
-      result = result.filter(j => j.location === selectedLocation)
+      baseResult = baseResult.filter(j => j.location === selectedLocation)
     }
 
-    return result
-  }, [jobs, searchTerm, selectedType, selectedLocation])
+    const applied = baseResult.filter(j => appliedJobs.has(j._id))
+    const other = baseResult.filter(j => !appliedJobs.has(j._id))
+
+    return { appliedFilteredJobs: applied, otherFilteredJobs: other }
+  }, [jobs, searchTerm, selectedType, selectedLocation, appliedJobs])
 
   const handleApplySuccess = (jobId) => {
     setAppliedJobs(prev => new Set([...prev, jobId]))
@@ -114,7 +116,7 @@ export default function Jobs() {
           <p className="text-slate-500 font-medium uppercase tracking-widest text-xs">
             {loading
               ? 'Loading...'
-              : `${filteredJobs.length} matching position${filteredJobs.length !== 1 ? 's' : ''} found`}
+              : `${appliedFilteredJobs.length + otherFilteredJobs.length} matching position${(appliedFilteredJobs.length + otherFilteredJobs.length) !== 1 ? 's' : ''} found`}
           </p>
         </div>
 
@@ -176,7 +178,7 @@ export default function Jobs() {
           <div className="flex justify-center py-24">
             <Loader size="lg" label="Loading opportunities..." />
           </div>
-        ) : filteredJobs.length === 0 ? (
+        ) : (appliedFilteredJobs.length === 0 && otherFilteredJobs.length === 0) ? (
           <EmptyState
             icon={<Briefcase size={48} />}
             title="No Jobs Found"
@@ -199,16 +201,54 @@ export default function Jobs() {
             }
           />
         ) : (
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6">
-            {filteredJobs.map(job => (
-              <JobCard
-                key={job._id}
-                job={job}
-                userRole={user?.role}
-                onApply={handleApplySuccess}
-                isApplied={appliedJobs.has(job._id)}
-              />
-            ))}
+          <div className="space-y-16">
+            {/* Applied Jobs Section */}
+            {appliedFilteredJobs.length > 0 && (
+              <div>
+                <div className="flex items-center gap-4 mb-8">
+                  <h2 className="text-2xl font-bold text-white uppercase tracking-tighter">Applied Jobs</h2>
+                  <div className="h-px flex-1 bg-white/10"></div>
+                  <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/5 px-3 py-1 border border-white/10">
+                    {appliedFilteredJobs.length} ROLE{appliedFilteredJobs.length !== 1 ? 'S' : ''}
+                  </span>
+                </div>
+                <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6">
+                  {appliedFilteredJobs.map(job => (
+                    <JobCard
+                      key={job._id}
+                      job={job}
+                      userRole={user?.role}
+                      onApply={handleApplySuccess}
+                      isApplied={true}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Other Jobs Section */}
+            {otherFilteredJobs.length > 0 && (
+              <div>
+                <div className="flex items-center gap-4 mb-8">
+                  <h2 className="text-2xl font-bold text-white uppercase tracking-tighter">Recommended Roles</h2>
+                  <div className="h-px flex-1 bg-white/10"></div>
+                  <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/5 px-3 py-1 border border-white/10">
+                    {otherFilteredJobs.length} NEW OPPORTUNIT{otherFilteredJobs.length !== 1 ? 'IES' : 'Y'}
+                  </span>
+                </div>
+                <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6">
+                  {otherFilteredJobs.map(job => (
+                    <JobCard
+                      key={job._id}
+                      job={job}
+                      userRole={user?.role}
+                      onApply={handleApplySuccess}
+                      isApplied={false}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
