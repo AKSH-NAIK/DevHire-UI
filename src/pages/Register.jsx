@@ -77,7 +77,8 @@ export default function Register() {
       await authService.register(userData)
 
       // 2️⃣ Automatically login after registration
-      const user = await authService.login(formData.email, formData.password)
+      const response = await authService.login(formData.email, formData.password)
+      const user = response.user
       toast.success('Account created successfully! Welcome to DevHire 🎉')
 
       // 3️⃣ Redirect based on role

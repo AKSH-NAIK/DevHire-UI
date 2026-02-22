@@ -26,7 +26,8 @@ export default function Login() {
     setLoading(true)
 
     try {
-      const user = await authService.login(formData.email, formData.password)
+      const response = await authService.login(formData.email, formData.password)
+      const user = response.user
       toast.success(`Welcome back, ${user.name || user.companyName}!`)
 
       if (user.role === 'recruiter') {

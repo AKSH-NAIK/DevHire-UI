@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = "http://localhost:5000/api/users";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -15,21 +15,26 @@ export const authService = {
   },
 
   login: async (email, password) => {
-    const response = await api.post("/login", {
-      email,
-      password,
-    });
+    try {
+      const response = await api.post("/login", {
+        email,
+        password,
+      });
 
-    const data = response.data;
+      const data = response.data;
 
-    if (data.token) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+      }
+
+      return data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message || "Login failed"
+      );
     }
-
-    return data;
   },
-
   logout: () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
