@@ -22,13 +22,14 @@ export default function PostJob() {
     try {
       await jobsService.createJob({
         ...formData,
-        companyId: user.id,
+        companyId: user.id || user._id,
         company: user.companyName,
       })
       toast.success('Job posted successfully! It will be reviewed before going live.')
       navigate('/recruiter-dashboard')
     } catch (error) {
-      toast.error(error.message || 'Failed to post job. Please try again.')
+      console.error('Submission error:', error);
+      toast.error(error.response?.data?.message || error.message || 'Failed to post job.')
     } finally {
       setLoading(false)
     }

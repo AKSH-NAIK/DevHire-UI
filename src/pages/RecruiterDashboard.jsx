@@ -1,19 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
-  Plus, Trash2, Edit2, BarChart3,
+  Plus, Trash2, Edit2,
   Briefcase, ChevronDown, ChevronUp,
-  User, Mail, Phone, FileText
+  Mail, Phone, FileText
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { authService } from '../services/authService'
 import { jobsService } from '../services/jobsService'
+import { getApplicationsForJob, updateApplicationStatus } from '../services/applicationService'
 import ConfirmModal from '../components/ConfirmModal'
-import StatusBadge from '../components/StatusBadge'
 import EmptyState from '../components/EmptyState'
-import { ButtonSpinner } from '../components/Loader'
 
 export default function RecruiterDashboard() {
 
@@ -21,16 +20,9 @@ export default function RecruiterDashboard() {
   const user = authService.getCurrentUser()
 
   const [jobs, setJobs] = useState([])
-  const [stats, setStats] = useState({
-    totalJobs: 0,
-    activeJobs: 0,
-    totalApplications: 0
-  })
-
-  const [confirmModal, setConfirmModal] = useState({ open: false, jobId: null })
   const [expandedJobId, setExpandedJobId] = useState(null)
   const [applicantsMap, setApplicantsMap] = useState({})
-  const [updatingApp, setUpdatingApp] = useState(null)
+  const [confirmModal, setConfirmModal] = useState({ open: false, jobId: null })
 
   useEffect(() => {
     if (!user || user.role !== 'recruiter') {
@@ -44,12 +36,10 @@ export default function RecruiterDashboard() {
     try {
       const response = await jobsService.getAllJobs()
 
-      // Handle backend response safely
       const allJobs = Array.isArray(response)
         ? response
         : response?.jobs || []
 
-      // Filter only this recruiter’s jobs
       const myJobs = allJobs.filter(job =>
         job.createdBy === user.id ||
         job.createdBy?._id === user.id
@@ -57,37 +47,9 @@ export default function RecruiterDashboard() {
 
       setJobs(myJobs)
 
-      setStats({
-        totalJobs: myJobs.length,
-        activeJobs: myJobs.length,
-        totalApplications: myJobs.reduce(
-          (sum, j) => sum + (j.applicants || 0),
-          0
-        )
-      })
-
     } catch (error) {
       console.error("Failed to load jobs:", error)
       toast.error("Failed to load jobs")
-    }
-  }
-
-  const handleDeleteClick = (jobId) => {
-    setConfirmModal({ open: true, jobId })
-  }
-
-  const handleDeleteConfirm = async () => {
-    try {
-      await jobsService.deleteJob(confirmModal.jobId)
-
-      setJobs(prev => prev.filter(j => j._id !== confirmModal.jobId))
-
-      toast.success('Job deleted successfully')
-
-    } catch (error) {
-      toast.error("Failed to delete job")
-    } finally {
-      setConfirmModal({ open: false, jobId: null })
     }
   }
 
@@ -101,36 +63,47 @@ export default function RecruiterDashboard() {
 
     if (!applicantsMap[jobId]) {
       try {
-        const apps = await jobsService.getApplications({ jobId })
+        const apps = await getApplicationsForJob(jobId)
+
         setApplicantsMap(prev => ({
           ...prev,
           [jobId]: Array.isArray(apps) ? apps : []
         }))
+
       } catch (error) {
         console.error("Failed to fetch applications:", error)
+        toast.error("Failed to fetch applications")
       }
     }
   }
 
-  const handleStatusUpdate = async (applicationId, status, jobId) => {
-    setUpdatingApp(applicationId)
-
+  const handleUpdateStatus = async (jobId, applicationId, newStatus) => {
     try {
-      const updated = await jobsService.updateApplicationStatus(applicationId, status)
+      await updateApplicationStatus(applicationId, newStatus)
+      toast.success(`Application ${newStatus}`)
 
+      // Update local state
       setApplicantsMap(prev => ({
         ...prev,
-        [jobId]: prev[jobId].map(a =>
-          a._id === applicationId ? { ...a, status: updated.status } : a
-        ),
+        [jobId]: prev[jobId].map(app =>
+          app._id === applicationId ? { ...app, status: newStatus } : app
+        )
       }))
+    } catch (error) {
+      console.error("Failed to update status:", error)
+      toast.error("Failed to update status")
+    }
+  }
 
-      toast.success("Status updated")
-
-    } catch (err) {
-      toast.error('Could not update status')
+  const handleDeleteConfirm = async () => {
+    try {
+      await jobsService.deleteJob(confirmModal.jobId)
+      setJobs(prev => prev.filter(j => j._id !== confirmModal.jobId))
+      toast.success('Job deleted successfully')
+    } catch {
+      toast.error("Failed to delete job")
     } finally {
-      setUpdatingApp(null)
+      setConfirmModal({ open: false, jobId: null })
     }
   }
 
@@ -155,14 +128,7 @@ export default function RecruiterDashboard() {
           </Link>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-6 mb-12">
-          <StatCard label="Total Jobs" value={stats.totalJobs} />
-          <StatCard label="Active Jobs" value={stats.activeJobs} />
-          <StatCard label="Applications" value={stats.totalApplications} />
-        </div>
-
-        {/* Jobs Table */}
+        {/* Jobs */}
         {jobs.length === 0 ? (
           <EmptyState
             icon={<Briefcase size={48} />}
@@ -182,39 +148,109 @@ export default function RecruiterDashboard() {
                 </tr>
               </thead>
               <tbody>
+
                 {jobs.map(job => (
-                  <tr key={job._id} className="border-b border-white/5">
-                    <td className="p-4">
-                      <p className="text-white font-bold">{job.title}</p>
-                      <p className="text-slate-500 text-sm">{job.location}</p>
-                    </td>
+                  <React.Fragment key={job._id}>
 
-                    <td className="p-4">
-                      <button
-                        onClick={() => handleToggleApplicants(job._id)}
-                        className="flex items-center gap-2"
-                      >
-                        {job.applicants || 0}
-                        {expandedJobId === job._id
-                          ? <ChevronUp size={14} />
-                          : <ChevronDown size={14} />}
-                      </button>
-                    </td>
+                    {/* Main Job Row */}
+                    <tr className="border-b border-white/5">
+                      <td className="p-4">
+                        <p className="text-white font-bold">{job.title}</p>
+                        <p className="text-slate-500 text-sm">{job.location}</p>
+                      </td>
 
-                    <td className="p-4 text-slate-500">
-                      {new Date(job.createdAt).toLocaleDateString()}
-                    </td>
+                      <td className="p-4">
+                        <button
+                          onClick={() => handleToggleApplicants(job._id)}
+                          className="flex items-center gap-2"
+                        >
+                          {applicantsMap[job._id]?.length || 0}
+                          {expandedJobId === job._id
+                            ? <ChevronUp size={14} />
+                            : <ChevronDown size={14} />}
+                        </button>
+                      </td>
 
-                    <td className="p-4 text-right flex justify-end gap-3">
-                      <Link to={`/edit-job/${job._id}`}>
-                        <Edit2 size={16} />
-                      </Link>
-                      <button onClick={() => handleDeleteClick(job._id)}>
-                        <Trash2 size={16} />
-                      </button>
-                    </td>
-                  </tr>
+                      <td className="p-4 text-slate-500">
+                        {new Date(job.createdAt).toLocaleDateString()}
+                      </td>
+
+                      <td className="p-4 text-right flex justify-end gap-3">
+                        <Link to={`/edit-job/${job._id}`}>
+                          <Edit2 size={16} />
+                        </Link>
+                        <button onClick={() => setConfirmModal({ open: true, jobId: job._id })}>
+                          <Trash2 size={16} />
+                        </button>
+                      </td>
+                    </tr>
+
+                    {/* Applications Row */}
+                    {expandedJobId === job._id && (
+                      <tr className="bg-black/40">
+                        <td colSpan="4" className="p-6">
+
+                          {!applicantsMap[job._id] || applicantsMap[job._id].length === 0 ? (
+                            <p className="text-slate-500">No applications yet.</p>
+                          ) : (
+                            <div className="space-y-4">
+
+                              {applicantsMap[job._id].map(app => (
+                                <div key={app._id} className="border border-white/10 p-4 rounded">
+
+                                  <p className="text-white font-semibold">
+                                    {app.user?.name}
+                                  </p>
+
+                                  <p className="text-slate-400 text-sm flex items-center gap-2">
+                                    <Mail size={14} /> {app.user?.email}
+                                  </p>
+
+                                  <p className="text-slate-400 text-sm flex items-center gap-2">
+                                    <Phone size={14} /> {app.phone}
+                                  </p>
+
+                                  <div className="flex items-center justify-between mt-4">
+                                    <div className="flex gap-2">
+                                      {['shortlisted', 'rejected', 'reviewed'].map(status => (
+                                        <button
+                                          key={status}
+                                          onClick={() => handleUpdateStatus(job._id, app._id, status)}
+                                          className={`px-3 py-1 text-[10px] uppercase font-bold tracking-widest border transition-all ${app.status === status
+                                            ? 'bg-primary border-primary text-black'
+                                            : 'border-white/10 text-slate-500 hover:border-primary/50'
+                                            }`}
+                                        >
+                                          {status}
+                                        </button>
+                                      ))}
+                                    </div>
+
+                                    {app.resume && (
+                                      <a
+                                        href={`http://localhost:5000/${app.resume}`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="text-primary underline text-sm flex items-center gap-2"
+                                      >
+                                        <FileText size={14} /> View Resume
+                                      </a>
+                                    )}
+                                  </div>
+
+                                </div>
+                              ))}
+
+                            </div>
+                          )}
+
+                        </td>
+                      </tr>
+                    )}
+
+                  </React.Fragment>
                 ))}
+
               </tbody>
             </table>
           </div>
@@ -231,15 +267,6 @@ export default function RecruiterDashboard() {
         confirmText="Delete"
         confirmVariant="danger"
       />
-    </div>
-  )
-}
-
-function StatCard({ label, value }) {
-  return (
-    <div className="border border-white/10 p-6">
-      <p className="text-slate-500 text-sm">{label}</p>
-      <p className="text-3xl text-white font-bold">{value}</p>
     </div>
   )
 }

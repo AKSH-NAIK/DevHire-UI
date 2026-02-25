@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { Briefcase, FileText, Zap, Search } from 'lucide-react'
 import { authService } from '../services/authService'
 import { jobsService } from '../services/jobsService'
+import { getMyApplications } from '../services/applicationService'
 import StatusBadge from '../components/StatusBadge'
 import EmptyState from '../components/EmptyState'
 import Loader from '../components/Loader'
@@ -24,24 +25,17 @@ export default function CandidateDashboard() {
 
     const fetchDashboardData = async () => {
       try {
-        const userApplications = await jobsService.getApplications({ candidateId: user.id })
+        const userApplications = await getMyApplications()
 
-        // Enrich applications with job data
-        const enriched = await Promise.all(
-          userApplications.map(async (app) => {
-            const job = await jobsService.getJobById(app.jobId)
-            return job ? { ...app, job } : null
-          })
-        )
-
-        const validApplications = enriched.filter(Boolean)
+        // Backend population should handle the job data, but we filter null just in case
+        const validApplications = userApplications.filter(app => app.job)
 
         setApplications(validApplications)
         setStats({
           total: validApplications.length,
           accepted: validApplications.filter(a => a.status === 'accepted').length,
           rejected: validApplications.filter(a => a.status === 'rejected').length,
-          pending: validApplications.filter(a => ['applied', 'reviewed'].includes(a.status)).length,
+          pending: validApplications.filter(a => ['pending', 'reviewed'].includes(a.status)).length,
         })
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error)
@@ -121,7 +115,7 @@ export default function CandidateDashboard() {
                         {job.company} · {job.location}
                       </p>
                       <p className="text-slate-700 text-[10px] uppercase tracking-widest mt-1">
-                        Applied {new Date(app.appliedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        Applied {new Date(app.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </p>
                     </div>
                   </div>

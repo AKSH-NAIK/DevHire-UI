@@ -36,10 +36,17 @@ export default function JobForm({ initialData = null, onSubmit, loading = false 
     const fieldErrors = validate(formData)
     if (Object.keys(fieldErrors).length > 0) {
       setErrors(fieldErrors)
+      const firstError = Object.values(fieldErrors)[0]
+      toast.error(firstError)
       return
     }
     const requirements = formData.requirements.split(',').map(r => r.trim()).filter(Boolean)
-    onSubmit({ ...formData, requirements })
+    try {
+      onSubmit({ ...formData, requirements })
+    } catch (err) {
+      console.error('JobForm onSubmit error:', err)
+      toast.error('An unexpected error occurred. Please try again.')
+    }
   }
 
   const inputClass = (field) =>

@@ -54,7 +54,8 @@ export default function EditJob() {
       toast.success('Job updated successfully!')
       navigate('/recruiter-dashboard')
     } catch (error) {
-      toast.error(error.message || 'Failed to update job.')
+      console.error('Update error:', error);
+      toast.error(error.response?.data?.message || error.message || 'Failed to update job.')
     } finally {
       setLoading(false)
     }

@@ -94,10 +94,10 @@ function ResumeDropZone({ resume, setResume, error }) {
                     onDrop={handleDrop}
                     onClick={() => inputRef.current?.click()}
                     className={`flex flex-col items-center justify-center gap-2 py-8 border ${dragging
-                            ? 'border-primary bg-primary/5'
-                            : error
-                                ? 'border-red-800'
-                                : 'border-white/10 border-dashed'
+                        ? 'border-primary bg-primary/5'
+                        : error
+                            ? 'border-red-800'
+                            : 'border-white/10 border-dashed'
                         } cursor-pointer hover:border-primary/50 transition-all`}
                 >
                     <Upload size={24} className={dragging ? 'text-primary' : 'text-slate-600'} />
@@ -155,7 +155,7 @@ export default function ApplyJobModal({ isOpen, onClose, job, user, onApplySucce
         setLoading(true);
 
         try {
-            await applyToJob(job._id, resume);
+            await applyToJob(job._id, resume, formData.phone, formData.coverLetter);
 
             setSubmitted(true);
             onApplySuccess?.(job._id);

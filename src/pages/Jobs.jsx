@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { Search, Briefcase, MapPin } from 'lucide-react'
 import { authService } from '../services/authService'
 import { jobsService } from '../services/jobsService'
+import { getMyApplications } from '../services/applicationService'
 import JobCard from '../components/JobCard'
 import Loader from '../components/Loader'
 import EmptyState from '../components/EmptyState'
@@ -37,7 +38,7 @@ export default function Jobs() {
 
         // ✅ If candidate, fetch applied jobs
         if (user?.role === 'candidate') {
-          const applications = await jobsService.getApplications()
+          const applications = await getMyApplications()
 
           if (Array.isArray(applications)) {
             const appliedSet = new Set(

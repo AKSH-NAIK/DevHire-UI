@@ -70,7 +70,7 @@ export default function Register() {
         userData.areaOfInterest = areaOfInterest
       } else {
         userData.companyName = formData.companyName
-        userData.website = formData.website
+        userData.companyWebsite = formData.website
       }
 
       // 1️⃣ Register user in DB
