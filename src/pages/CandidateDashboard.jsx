@@ -160,15 +160,22 @@ export default function CandidateDashboard() {
                             day: 'numeric',
                             year: 'numeric'
                           })}
+                          {' · '}
+                          {job.type}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-3">
+                      {job.createdBy?.email && (
+                        <a
+                          href={`mailto:${job.createdBy.email}`}
+                          className="text-[10px] border border-primary/50 px-3 py-1.5 uppercase font-bold tracking-widest text-primary hover:bg-primary hover:text-black transition"
+                        >
+                          Contact Recruiter
+                        </a>
+                      )}
                       <StatusBadge status={app.status} />
-                      <span className="text-slate-600 text-xs hidden sm:block">
-                        {job.type}
-                      </span>
                     </div>
                   </div>
                 )

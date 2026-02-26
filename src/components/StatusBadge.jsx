@@ -3,7 +3,7 @@ import React from "react";
 export default function StatusBadge({ status }) {
 
     const baseStyle =
-        "px-3 py-1 text-xs uppercase font-bold tracking-widest border";
+        "px-3 py-1.5 text-xs uppercase font-bold tracking-widest border";
 
     const statusStyles = {
         pending:

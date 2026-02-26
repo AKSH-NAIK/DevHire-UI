@@ -113,9 +113,24 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
 
         {/* Footer */}
         <div className="flex items-center justify-between pt-5 border-t border-white/5">
-          <div className="flex items-center gap-2 text-slate-500 text-[10px] uppercase font-bold tracking-widest">
-            <Users size={14} className="text-primary" />
-            {job.applicants || 0} applicants
+          <div className="flex items-center gap-2 text-slate-500 text-[10px] uppercase font-bold tracking-widest min-h-[32px]">
+            {/* Show applicants ONLY for recruiters */}
+            {userRole === 'recruiter' && (
+              <>
+                <Users size={14} className="text-primary" />
+                {job.applicants || 0} applicants
+              </>
+            )}
+
+            {/* If applied candidate, show Contact Recruiter on the left */}
+            {userRole === 'candidate' && isApplied && job.createdBy?.email && (
+              <a
+                href={`mailto:${job.createdBy.email}`}
+                className="text-[10px] border border-primary/50 px-3 py-1.5 uppercase font-bold tracking-widest text-primary hover:bg-primary hover:text-black transition flex-shrink-0"
+              >
+                Contact Recruiter
+              </a>
+            )}
           </div>
 
           <div className="flex items-center gap-2">
@@ -145,7 +160,7 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
         </div>
 
         <div className="text-slate-700 text-[10px] mt-3 uppercase font-bold tracking-widest">
-          Posted {formatDate(job.postedAt)}
+          Posted {formatDate(job.createdAt)}
         </div>
       </div>
 
