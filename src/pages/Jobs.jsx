@@ -13,7 +13,7 @@ export default function Jobs() {
   const user = authService.getCurrentUser()
 
   const [jobs, setJobs] = useState([])
-  const [appliedJobs, setAppliedJobs] = useState(new Set())
+  const [applications, setApplications] = useState([])
   const [loading, setLoading] = useState(true)
 
   // Filters
@@ -38,15 +38,9 @@ export default function Jobs() {
 
         // ✅ If candidate, fetch applied jobs
         if (user?.role === 'candidate') {
-          const applications = await getMyApplications()
-
-          if (Array.isArray(applications)) {
-            const appliedSet = new Set(
-              applications.map(a =>
-                a.job?._id || a.job || a.jobId
-              )
-            )
-            setAppliedJobs(appliedSet)
+          const apps = await getMyApplications()
+          if (Array.isArray(apps)) {
+            setApplications(apps)
           }
         }
 
@@ -86,18 +80,19 @@ export default function Jobs() {
       baseResult = baseResult.filter(j => j.type === selectedType)
     }
 
-    if (selectedLocation !== 'all') {
-      baseResult = baseResult.filter(j => j.location === selectedLocation)
+    const appliedJobsSet = new Set(applications.map(a => a.job?._id || a.job))
+    const other = baseResult.filter(j => !appliedJobsSet.has(j._id))
+
+    return { otherFilteredJobs: other }
+  }, [jobs, searchTerm, selectedType, selectedLocation, applications])
+
+  const handleApplySuccess = async () => {
+    try {
+      const apps = await getMyApplications()
+      if (Array.isArray(apps)) setApplications(apps)
+    } catch (err) {
+      console.error("Failed to refresh applications:", err)
     }
-
-    const applied = baseResult.filter(j => appliedJobs.has(j._id))
-    const other = baseResult.filter(j => !appliedJobs.has(j._id))
-
-    return { appliedFilteredJobs: applied, otherFilteredJobs: other }
-  }, [jobs, searchTerm, selectedType, selectedLocation, appliedJobs])
-
-  const handleApplySuccess = (jobId) => {
-    setAppliedJobs(prev => new Set([...prev, jobId]))
   }
 
   const jobTypes = ['Full-time', 'Part-time', 'Contract', 'Internship']
@@ -117,7 +112,7 @@ export default function Jobs() {
           <p className="text-slate-500 font-medium uppercase tracking-widest text-xs">
             {loading
               ? 'Loading...'
-              : `${appliedFilteredJobs.length + otherFilteredJobs.length} matching position${(appliedFilteredJobs.length + otherFilteredJobs.length) !== 1 ? 's' : ''} found`}
+              : `${applications.length + otherFilteredJobs.length} matching position${(applications.length + otherFilteredJobs.length) !== 1 ? 's' : ''} found`}
           </p>
         </div>
 
@@ -179,7 +174,7 @@ export default function Jobs() {
           <div className="flex justify-center py-24">
             <Loader size="lg" label="Loading opportunities..." />
           </div>
-        ) : (appliedFilteredJobs.length === 0 && otherFilteredJobs.length === 0) ? (
+        ) : (applications.length === 0 && otherFilteredJobs.length === 0) ? (
           <EmptyState
             icon={<Briefcase size={48} />}
             title="No Jobs Found"
@@ -204,23 +199,24 @@ export default function Jobs() {
         ) : (
           <div className="space-y-16">
             {/* Applied Jobs Section */}
-            {appliedFilteredJobs.length > 0 && (
+            {applications.length > 0 && (
               <div>
                 <div className="flex items-center gap-4 mb-8">
                   <h2 className="text-2xl font-bold text-white uppercase tracking-tighter">Applied Jobs</h2>
                   <div className="h-px flex-1 bg-white/10"></div>
                   <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/5 px-3 py-1 border border-white/10">
-                    {appliedFilteredJobs.length} ROLE{appliedFilteredJobs.length !== 1 ? 'S' : ''}
+                    {applications.length} ROLE{applications.length !== 1 ? 'S' : ''}
                   </span>
                 </div>
                 <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6">
-                  {appliedFilteredJobs.map(job => (
+                  {applications.filter(app => app.job).map(app => (
                     <JobCard
-                      key={job._id}
-                      job={job}
+                      key={app._id}
+                      job={app.job}
                       userRole={user?.role}
                       onApply={handleApplySuccess}
                       isApplied={true}
+                      status={app.status}
                     />
                   ))}
                 </div>

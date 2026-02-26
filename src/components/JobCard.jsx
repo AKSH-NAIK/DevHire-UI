@@ -4,10 +4,11 @@ import { useState } from 'react'
 import { MapPin, Briefcase, Users, Flag } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 import { authService } from '../services/authService'
+import StatusBadge from './StatusBadge'
 import ApplyJobModal from './ApplyJobModal'
 import ReportJobModal from './ReportJobModal'
 
-export default function JobCard({ job, userRole, onApply, isApplied = false }) {
+export default function JobCard({ job, userRole, onApply, isApplied = false, status }) {
   const user = authService.getCurrentUser()
   const [applyOpen, setApplyOpen] = useState(false)
   const [reportOpen, setReportOpen] = useState(false)
@@ -121,16 +122,16 @@ export default function JobCard({ job, userRole, onApply, isApplied = false }) {
             {/* Candidates: Apply + Report */}
             {(!userRole || userRole === 'candidate') && (
               <>
-                <button
-                  onClick={handleApplyClick}
-                  disabled={isApplied}
-                  className={`px-5 py-2 border transition-all text-xs font-bold uppercase tracking-widest ${isApplied
-                    ? 'border-white/10 text-slate-600 cursor-not-allowed'
-                    : 'border-primary text-primary hover:bg-primary hover:text-black'
-                    }`}
-                >
-                  {isApplied ? 'Applied ✓' : 'Apply'}
-                </button>
+                {isApplied ? (
+                  <StatusBadge status={status || 'pending'} />
+                ) : (
+                  <button
+                    onClick={handleApplyClick}
+                    className="px-5 py-2 border border-primary text-primary hover:bg-primary hover:text-black transition-all text-xs font-bold uppercase tracking-widest"
+                  >
+                    Apply
+                  </button>
+                )}
                 <button
                   onClick={handleReportClick}
                   title="Report this job"

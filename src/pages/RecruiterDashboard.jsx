@@ -21,6 +21,7 @@ export default function RecruiterDashboard() {
 
   const [jobs, setJobs] = useState([])
   const [expandedJobId, setExpandedJobId] = useState(null)
+  const [expandedCoverLetter, setExpandedCoverLetter] = useState(null)
   const [applicantsMap, setApplicantsMap] = useState({})
   const [confirmModal, setConfirmModal] = useState({ open: false, jobId: null })
 
@@ -82,7 +83,6 @@ export default function RecruiterDashboard() {
       await updateApplicationStatus(applicationId, newStatus)
       toast.success(`Application ${newStatus}`)
 
-      // Update local state
       setApplicantsMap(prev => ({
         ...prev,
         [jobId]: prev[jobId].map(app =>
@@ -152,7 +152,7 @@ export default function RecruiterDashboard() {
                 {jobs.map(job => (
                   <React.Fragment key={job._id}>
 
-                    {/* Main Job Row */}
+                    {/* Job Row */}
                     <tr className="border-b border-white/5">
                       <td className="p-4">
                         <p className="text-white font-bold">{job.title}</p>
@@ -185,7 +185,7 @@ export default function RecruiterDashboard() {
                       </td>
                     </tr>
 
-                    {/* Applications Row */}
+                    {/* Applications Section */}
                     {expandedJobId === job._id && (
                       <tr className="bg-black/40">
                         <td colSpan="4" className="p-6">
@@ -210,7 +210,33 @@ export default function RecruiterDashboard() {
                                     <Phone size={14} /> {app.phone}
                                   </p>
 
+                                  {/* Collapsible Cover Letter */}
+                                  {app.coverLetter && (
+                                    <div className="mt-4">
+                                      <button
+                                        onClick={() =>
+                                          setExpandedCoverLetter(
+                                            expandedCoverLetter === app._id ? null : app._id
+                                          )
+                                        }
+                                        className="text-xs uppercase tracking-wider text-primary hover:underline"
+                                      >
+                                        {expandedCoverLetter === app._id
+                                          ? "Hide Cover Letter"
+                                          : "View Cover Letter"}
+                                      </button>
+
+                                      {expandedCoverLetter === app._id && (
+                                        <div className="mt-3 bg-black border border-white/10 p-4 rounded-md max-h-40 overflow-y-auto text-slate-300 text-sm">
+                                          {app.coverLetter}
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+
+                                  {/* Status + Resume */}
                                   <div className="flex items-center justify-between mt-4">
+
                                     <div className="flex gap-2">
                                       {['shortlisted', 'rejected', 'reviewed'].map(status => (
                                         <button
@@ -236,6 +262,7 @@ export default function RecruiterDashboard() {
                                         <FileText size={14} /> View Resume
                                       </a>
                                     )}
+
                                   </div>
 
                                 </div>

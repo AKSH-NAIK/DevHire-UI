@@ -160,7 +160,7 @@ export default function ApplyJobModal({ isOpen, onClose, job, user, onApplySucce
             setSubmitted(true);
             onApplySuccess?.(job._id);
 
-            toast.success('Application submitted successfully! 🎉');
+            toast.success('Application submitted successfully!');
 
             setTimeout(() => {
                 onClose();
@@ -232,7 +232,7 @@ export default function ApplyJobModal({ isOpen, onClose, job, user, onApplySucce
                         name="coverLetter"
                         value={formData.coverLetter}
                         onChange={handleChange}
-                        placeholder="Cover Letter"
+                        placeholder="Explain why you are a good fit for this job(50 letters minimum)"
                         rows={5}
                         className="w-full px-4 py-3 bg-black border border-white/10 text-white resize-none"
                     />

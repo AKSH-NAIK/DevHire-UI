@@ -2,16 +2,11 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/jobs";
 
-/**
- * All functions now communicate with backend.
- * No more localStorage.
- */
-
 export const jobsService = {
 
-  // ─────────────────────────────────────────────
+
   // Get all jobs
-  // ─────────────────────────────────────────────
+
   getAllJobs: async (filters = {}) => {
     const response = await axios.get(API_URL, {
       params: filters
@@ -20,17 +15,17 @@ export const jobsService = {
     return response.data;
   },
 
-  // ─────────────────────────────────────────────
+
   // Get single job by ID
-  // ─────────────────────────────────────────────
+
   getJobById: async (id) => {
     const response = await axios.get(`${API_URL}/${id}`);
     return response.data;
   },
 
-  // ─────────────────────────────────────────────
+
   // Create job (Recruiter only)
-  // ─────────────────────────────────────────────
+
   createJob: async (jobData) => {
     const token = localStorage.getItem("token");
 
@@ -43,9 +38,9 @@ export const jobsService = {
     return response.data;
   },
 
-  // ─────────────────────────────────────────────
+
   // Update job
-  // ─────────────────────────────────────────────
+
   updateJob: async (jobId, updates) => {
     const token = localStorage.getItem("token");
 
