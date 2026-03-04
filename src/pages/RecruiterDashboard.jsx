@@ -31,7 +31,14 @@ export default function RecruiterDashboard() {
       return
     }
     loadJobs()
-  }, [])
+
+    // Polling interval (10 seconds)
+    const intervalId = setInterval(() => {
+      loadJobs()
+    }, 10000)
+
+    return () => clearInterval(intervalId)
+  }, [user, navigate]) // Removed expandedJobId as loadJobs now handles all
 
   const loadJobs = async () => {
     try {
@@ -48,9 +55,20 @@ export default function RecruiterDashboard() {
 
       setJobs(myJobs)
 
+      // Automatically fetch applicant details for all jobs to keep counts updated
+      const appsPromises = myJobs.map(job => getApplicationsForJob(job._id))
+      const allAppsList = await Promise.all(appsPromises)
+
+      const newMap = {}
+      myJobs.forEach((job, idx) => {
+        newMap[job._id] = Array.isArray(allAppsList[idx]) ? allAppsList[idx] : []
+      })
+      setApplicantsMap(newMap)
+
     } catch (error) {
-      console.error("Failed to load jobs:", error)
-      toast.error("Failed to load jobs")
+      console.error("Failed to load jobs/applicants:", error)
+      // Only show error toast on initial load, not during polling to avoid annoyance
+      if (jobs.length === 0) toast.error("Failed to load dashboard data")
     }
   }
 
@@ -164,7 +182,7 @@ export default function RecruiterDashboard() {
                           onClick={() => handleToggleApplicants(job._id)}
                           className="flex items-center gap-2"
                         >
-                          {applicantsMap[job._id]?.length || 0}
+                          {applicantsMap[job._id]?.length ?? (Array.isArray(job.applicants) ? job.applicants.length : job.applicants ?? 0)}
                           {expandedJobId === job._id
                             ? <ChevronUp size={14} />
                             : <ChevronDown size={14} />}
@@ -238,7 +256,7 @@ export default function RecruiterDashboard() {
                                   <div className="flex items-center justify-between mt-4">
 
                                     <div className="flex gap-2">
-                                      {['shortlisted', 'rejected', 'reviewed'].map(status => (
+                                      {['shortlisted', 'rejected'].map(status => (
                                         <button
                                           key={status}
                                           onClick={() => handleUpdateStatus(job._id, app._id, status)}
