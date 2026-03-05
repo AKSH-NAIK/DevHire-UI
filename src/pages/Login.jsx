@@ -2,13 +2,14 @@
 
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { authService } from '../services/authService'
+import { useAuth } from '../context/AuthContext'
 import { Eye, EyeOff, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { ButtonSpinner } from '../components/Loader'
 
 export default function Login() {
   const navigate = useNavigate()
+  const { login } = useAuth()
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
@@ -27,7 +28,11 @@ export default function Login() {
 
     try {
       const response = await authService.login(formData.email, formData.password)
-      const user = response.user
+      const { user, token } = response
+
+      // Update global context
+      login(user, token)
+
       toast.success(`Welcome back, ${user.name || user.companyName}!`)
 
       if (user.role === 'recruiter') {

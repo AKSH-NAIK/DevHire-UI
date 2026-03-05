@@ -1,16 +1,16 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Menu, X, LogOut, LayoutDashboard } from 'lucide-react'
-import { authService } from '../services/authService'
+import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
 
 export default function Navbar() {
   const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const user = authService.getCurrentUser()
+  const { user, logout } = useAuth()
 
   const handleLogout = () => {
-    authService.logout()
+    logout()
     toast.success('Logged out successfully')
     navigate('/')
     setMobileMenuOpen(false)

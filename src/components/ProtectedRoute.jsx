@@ -1,11 +1,11 @@
 import { Navigate } from 'react-router-dom'
-import { authService } from '../services/authService'
+import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-hot-toast'
 
 export default function ProtectedRoute({ children, requiredRole = null }) {
-  const user = authService.getCurrentUser()
+  const { user, isAuthenticated } = useAuth()
 
-  if (!user) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />
   }
 

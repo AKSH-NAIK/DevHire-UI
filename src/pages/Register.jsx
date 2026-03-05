@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { authService } from '../services/authService'
+import { useAuth } from '../context/AuthContext'
 import { Eye, EyeOff, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 import AreaOfInterestField from '../components/AreaOfInterestField'
@@ -10,6 +10,7 @@ import { ButtonSpinner } from '../components/Loader'
 
 export default function Register() {
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const [role, setRole] = useState('candidate')
   const [formData, setFormData] = useState({
@@ -78,7 +79,11 @@ export default function Register() {
 
       // 2️⃣ Automatically login after registration
       const response = await authService.login(formData.email, formData.password)
-      const user = response.user
+      const { user, token } = response
+
+      // Update global context
+      login(user, token)
+
       toast.success('Account created successfully! Welcome to DevHire 🎉')
 
       // 3️⃣ Redirect based on role
