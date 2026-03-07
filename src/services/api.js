@@ -26,14 +26,17 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response && error.response.status === 401) {
-            // Clear storage and redirect
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            // Only act if we actually had a token (i.e., session truly expired, not a login attempt)
+            const hadToken = !!localStorage.getItem('token');
+            if (hadToken) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
 
-            // We can't use useNavigate here as it's not a component
-            // But we can trigger a window event or let the AuthContext handle it via state
-            // For now, let's just clear and let the next state update handle logic
-            window.location.href = '/login';
+                // Dispatch a custom event so AuthContext / React Router can handle
+                // the redirect gracefully, instead of a hard window.location.href
+                // which wipes React state mid-session and causes further API failures.
+                window.dispatchEvent(new CustomEvent('auth:expired'));
+            }
         }
         return Promise.reject(error);
     }

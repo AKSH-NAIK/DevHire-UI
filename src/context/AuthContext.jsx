@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 const AuthContext = createContext(null);
@@ -6,6 +7,7 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -31,6 +33,17 @@ export const AuthProvider = ({ children }) => {
 
         checkAuth();
     }, []);
+
+    // Listen for JWT expiry events dispatched by the api interceptor
+    useEffect(() => {
+        const handleAuthExpired = () => {
+            setUser(null);
+            navigate('/login');
+        };
+
+        window.addEventListener('auth:expired', handleAuthExpired);
+        return () => window.removeEventListener('auth:expired', handleAuthExpired);
+    }, [navigate]);
 
     const login = (userData, token) => {
         localStorage.setItem('token', token);

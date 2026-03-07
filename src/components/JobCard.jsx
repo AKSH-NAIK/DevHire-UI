@@ -89,7 +89,13 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
             <Briefcase size={14} className="text-primary flex-shrink-0" />
             {job.type}
           </div>
-          <div className="col-span-2 text-primary font-bold text-lg tracking-tight">{job.salary}</div>
+          <div className="col-span-2 flex items-center gap-1.5">
+            <span className="text-primary font-bold text-lg">₹</span>
+            <span className="text-primary font-bold text-lg tracking-tight">{job.salary}</span>
+            {job.salaryPeriod && (
+              <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest border border-white/10 bg-white/5 px-2 py-0.5 rounded-md ml-1">/ {job.salaryPeriod}</span>
+            )}
+          </div>
         </div>
 
         {/* Description */}

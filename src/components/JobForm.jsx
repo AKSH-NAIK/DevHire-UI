@@ -21,7 +21,7 @@ function FieldError({ msg }) {
 
 export default function JobForm({ initialData = null, onSubmit, loading = false }) {
   const [formData, setFormData] = useState(
-    initialData || { title: '', location: '', salary: '', type: 'Full-time', description: '', requirements: '' }
+    initialData || { title: '', location: '', salary: '', salaryPeriod: 'Monthly', type: 'Full-time', description: '', requirements: '' }
   )
   const [errors, setErrors] = useState({})
 
@@ -94,15 +94,33 @@ export default function JobForm({ initialData = null, onSubmit, loading = false 
           <label className="block text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1.5">
             Salary Range <span className="text-red-500">*</span>
           </label>
-          <input
-            type="text"
-            name="salary"
-            value={formData.salary}
-            onChange={handleChange}
-            placeholder="e.g., $80,000 – $120,000"
-            className={inputClass('salary')}
-            disabled={loading}
-          />
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary font-bold text-sm pointer-events-none">₹</span>
+              <input
+                type="text"
+                name="salary"
+                value={formData.salary}
+                onChange={handleChange}
+                placeholder="e.g., 80,000 – 1,20,000"
+                className={`${inputClass('salary')} pl-8`}
+                disabled={loading}
+              />
+            </div>
+            <div className="relative">
+              <select
+                name="salaryPeriod"
+                value={formData.salaryPeriod}
+                onChange={handleChange}
+                className="h-full appearance-none px-4 py-3 bg-black border border-white/10 text-white focus:outline-none focus:border-primary transition-all text-sm cursor-pointer pr-8"
+                disabled={loading}
+              >
+                <option value="Monthly" className="bg-black">Monthly</option>
+                <option value="Yearly" className="bg-black">Yearly</option>
+              </select>
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-600 text-[10px]">▼</div>
+            </div>
+          </div>
           <FieldError msg={errors.salary} />
         </div>
 

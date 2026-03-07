@@ -8,16 +8,16 @@ import {
   Mail, Phone, FileText
 } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { authService } from '../services/authService'
 import { jobsService } from '../services/jobsService'
 import { getApplicationsForJob, updateApplicationStatus } from '../services/applicationService'
 import ConfirmModal from '../components/ConfirmModal'
 import EmptyState from '../components/EmptyState'
+import { useAuth } from '../context/AuthContext'
 
 export default function RecruiterDashboard() {
 
   const navigate = useNavigate()
-  const user = authService.getCurrentUser()
+  const { user } = useAuth()
 
   const [jobs, setJobs] = useState([])
   const [expandedJobId, setExpandedJobId] = useState(null)
@@ -32,8 +32,12 @@ export default function RecruiterDashboard() {
     }
     loadJobs()
 
-    // Polling interval (10 seconds)
+    // Polling interval (10 seconds) - stops automatically if token expires
     const intervalId = setInterval(() => {
+      if (!localStorage.getItem('token')) {
+        clearInterval(intervalId)
+        return
+      }
       loadJobs()
     }, 10000)
 
