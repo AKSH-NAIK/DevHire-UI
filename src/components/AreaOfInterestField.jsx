@@ -75,28 +75,28 @@ export default function AreaOfInterestField({ value = [], onChange }) {
 
   return (
     <div ref={containerRef} className="space-y-3">
-      <label className="block text-sm font-medium text-white">
+      <label className="block text-[10px] font-bold text-white uppercase tracking-widest mb-2">
         Area of Interest
-        <span className="text-cyan-400 ml-1">
+        <span className="text-primary ml-2 opacity-60">
           ({value.length}/3)
         </span>
       </label>
 
       {/* Selected Tags */}
-      <div className="flex flex-wrap gap-2 mb-3 min-h-[2.5rem] flex-col justify-center">
+      <div className="flex flex-wrap gap-2 mb-4 min-h-[1.5rem] mt-2">
         {value.length > 0 ? (
           value.map((role) => (
             <div
               key={role}
-              className="inline-flex items-center gap-2 bg-cyan-500/20 border border-cyan-500/50 rounded px-3 py-1.5 text-sm text-cyan-200"
+              className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-lg px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary shadow-glow-primary/5"
             >
               {role}
               <button
                 type="button"
                 onClick={() => handleRemoveRole(role)}
-                className="hover:text-cyan-100 transition-colors"
+                className="hover:text-white transition-colors"
               >
-                <X size={16} />
+                <X size={14} />
               </button>
             </div>
           ))
@@ -109,7 +109,7 @@ export default function AreaOfInterestField({ value = [], onChange }) {
 
       {/* Input Field */}
       <div className="relative">
-        <div className="flex items-center bg-slate-900/30 border border-cyan-500/50 rounded focus-within:border-cyan-400 focus-within:ring-1 focus-within:ring-cyan-500/30 transition-colors">
+        <div className="flex items-center glass-dark border border-white/10 rounded-xl focus-within:border-primary/50 focus-within:shadow-glow-primary/10 transition-all duration-300">
           <input
             ref={inputRef}
             type="text"
@@ -120,27 +120,27 @@ export default function AreaOfInterestField({ value = [], onChange }) {
             placeholder={
               value.length >= 3
                 ? 'Maximum selections reached'
-                : 'Type to search roles...'
+                : 'Search roles...'
             }
             disabled={value.length >= 3}
-            className="flex-1 px-4 py-3 bg-transparent text-white placeholder-slate-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-5 py-4 bg-transparent text-white placeholder-slate-700 text-[10px] font-bold uppercase tracking-widest focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
           />
           <ChevronDown
-            size={18}
-            className={`mr-3 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''
+            size={16}
+            className={`mr-4 text-slate-600 transition-transform duration-300 ${isOpen ? 'rotate-180 text-primary' : ''
               }`}
           />
         </div>
 
         {/* Dropdown Suggestions */}
         {isOpen && suggestions.length > 0 && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-slate-900 border border-slate-700 rounded shadow-lg z-50 max-h-64 overflow-y-auto">
+          <div className="absolute top-full left-0 right-0 mt-3 glass-dark border border-white/10 rounded-xl shadow-2xl z-50 max-h-60 overflow-y-auto backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-200">
             {suggestions.map((role) => (
               <button
                 key={role}
                 type="button"
                 onClick={() => handleSelectRole(role)}
-                className="w-full text-left px-4 py-3 hover:bg-cyan-500/20 border-b border-slate-700/50 last:border-b-0 text-slate-300 hover:text-cyan-300 transition-colors text-sm"
+                className="w-full text-left px-5 py-4 hover:bg-primary/10 border-b border-white/5 last:border-b-0 text-slate-400 hover:text-primary transition-all text-[10px] font-bold uppercase tracking-widest"
               >
                 {role}
               </button>
@@ -150,7 +150,7 @@ export default function AreaOfInterestField({ value = [], onChange }) {
 
         {/* No suggestions message */}
         {isOpen && suggestions.length === 0 && inputValue && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-slate-900 border border-slate-700 rounded p-3 text-slate-400 text-sm text-center z-50">
+          <div className="absolute top-full left-0 right-0 mt-3 glass-dark border border-white/10 rounded-xl p-5 text-slate-500 text-[10px] font-bold uppercase tracking-widest text-center z-50 animate-in fade-in slide-in-from-top-2 duration-200">
             No matching roles found
           </div>
         )}

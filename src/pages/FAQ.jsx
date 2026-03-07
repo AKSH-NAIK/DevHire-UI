@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { ChevronDown, HelpCircle } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 export default function FAQ() {
     const [openIndex, setOpenIndex] = useState(0)
@@ -58,70 +60,91 @@ export default function FAQ() {
     ]
 
     return (
-        <div className="min-h-screen bg-black">
+        <div className="min-h-screen mesh-gradient">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
                 {/* Header */}
-                <div className="text-left mb-24">
-                    <div className="inline-flex items-center justify-center w-12 h-12 border border-primary mb-8">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-left mb-24"
+                >
+                    <div className="inline-flex items-center justify-center w-14 h-14 border border-primary/30 mb-8 rounded-2xl bg-primary/5 shadow-glow-primary/5">
                         <HelpCircle className="text-primary" size={24} />
                     </div>
-                    <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 uppercase tracking-tighter">
+                    <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 uppercase tracking-tighter text-glow">
                         Frequently Asked Questions
                     </h1>
-                    <p className="text-slate-500 text-[10px] uppercase font-bold tracking-[0.3em]">
+                    <p className="text-slate-500 text-[10px] uppercase font-bold tracking-[0.4em]">
                         Everything you need to know about DevHire
                     </p>
-                </div>
-
+                </motion.div>
                 {/* FAQ Accordion */}
-                <div className="space-y-px bg-white/5 border border-white/5">
+                <div className="space-y-4">
                     {faqs.map((faq, idx) => (
-                        <div
+                        <motion.div
                             key={idx}
-                            className="bg-black overflow-hidden group border-b border-white/5 last:border-0"
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: idx * 0.05 }}
+                            className="glass-dark overflow-hidden group border border-white/10 rounded-2xl"
                         >
                             <button
                                 onClick={() => setOpenIndex(openIndex === idx ? -1 : idx)}
-                                className="w-full px-8 py-6 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors"
+                                className="w-full px-8 py-7 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors"
                             >
                                 <h3 className="text-lg font-bold text-white uppercase tracking-widest leading-relaxed pr-8">
-                                    <span className="text-primary mr-4">[{String(idx + 1).padStart(2, '0')}]</span>
+                                    <span className="text-primary/60 mr-4 font-mono">[{String(idx + 1).padStart(2, '0')}]</span>
                                     {faq.question}
                                 </h3>
                                 <ChevronDown
-                                    className={`text-slate-600 transition-transform duration-300 group-hover:text-primary ${openIndex === idx ? 'rotate-180 text-primary' : ''
+                                    className={`text-slate-600 transition-transform duration-500 group-hover:text-primary ${openIndex === idx ? 'rotate-180 text-primary' : ''
                                         }`}
                                     size={16}
                                 />
                             </button>
-                            <div
-                                className={`transition-all duration-300 ease-in-out ${openIndex === idx ? 'max-h-96' : 'max-h-0'
-                                    }`}
-                            >
-                                <div className="px-8 pb-8 pt-2 text-base text-slate-500 leading-relaxed uppercase font-medium tracking-tight border-t border-white/5 mx-8">
-                                    {faq.answer}
-                                </div>
-                            </div>
-                        </div>
+                            <AnimatePresence>
+                                {openIndex === idx && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                                    >
+                                        <div className="px-8 pb-8 pt-2 text-base text-slate-500 leading-relaxed uppercase font-medium tracking-tight border-t border-white/5 mx-8 mt-2">
+                                            {faq.answer}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </motion.div>
                     ))}
                 </div>
 
                 {/* Contact CTA */}
-                <div className="mt-24 border border-white/10 p-16 text-center relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[100px] pointer-events-none group-hover:bg-primary/10 transition-colors"></div>
-                    <h2 className="text-3xl font-bold text-white mb-4 uppercase tracking-tight">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="mt-24 glass-dark border border-white/10 p-16 rounded-[2rem] text-center relative overflow-hidden group shadow-glow-primary/5"
+                >
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] pointer-events-none group-hover:bg-primary/10 transition-colors"></div>
+                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 blur-[100px] pointer-events-none group-hover:bg-primary/10 transition-colors"></div>
+
+                    <h2 className="text-3xl font-bold text-white mb-4 uppercase tracking-tighter text-glow">
                         Still have questions?
                     </h2>
-                    <p className="text-slate-500 mb-10 text-[10px] uppercase font-bold tracking-widest">
+                    <p className="text-slate-500 mb-10 text-[10px] uppercase font-bold tracking-[0.2em] max-w-md mx-auto">
                         Can't find the answer you're looking for? Please chat to our friendly team.
                     </p>
-                    <a
-                        href="/contact"
-                        className="inline-block px-12 py-4 border border-primary text-primary hover:bg-primary hover:text-white transition-all text-xs font-bold uppercase tracking-widest shadow-glow-sm"
+                    <Link
+                        to="/contact"
+                        className="inline-block px-12 py-4 border border-primary text-primary hover:bg-primary hover:text-black transition-all text-xs font-bold uppercase tracking-widest shadow-glow-primary rounded-xl"
                     >
                         Contact Us
-                    </a>
-                </div>
+                    </Link>
+                </motion.div>
             </div>
         </div>
     )

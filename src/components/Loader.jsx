@@ -16,17 +16,21 @@ export default function Loader({ size = 'sm', fullScreen = false, label = '' }) 
     }
 
     const spinner = (
-        <div className="flex flex-col items-center gap-3">
-            <div className={`${sizeMap[size]} border-primary border-t-transparent rounded-full animate-spin`} />
+        <div className="flex flex-col items-center gap-4">
+            <div className="relative">
+                <div className={`${sizeMap[size]} border-primary/20 border-t-primary rounded-full animate-spin`} />
+                <div className={`${sizeMap[size]} absolute inset-0 border-white/5 border-t-transparent rounded-full animate-spin [animation-duration:1.5s]`} />
+            </div>
             {label && (
-                <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">{label}</p>
+                <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] animate-pulse">{label}</p>
             )}
         </div>
     )
 
     if (fullScreen) {
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div className="fixed inset-0 z-[100] flex items-center justify-center glass-dark backdrop-blur-xl">
+                <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
                 {spinner}
             </div>
         )

@@ -98,10 +98,10 @@ export default function Jobs() {
   const jobTypes = ['Full-time', 'Part-time', 'Contract', 'Internship']
 
   const filterInputClass =
-    "w-full appearance-none px-4 py-3.5 bg-black border border-white/10 text-slate-400 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all uppercase text-[10px] font-bold tracking-widest cursor-pointer"
+    "w-full appearance-none px-4 py-3.5 glass-dark border border-white/10 text-slate-400 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all uppercase text-[10px] font-bold tracking-widest cursor-pointer"
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen mesh-gradient">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         {/* Header */}
@@ -130,7 +130,7 @@ export default function Jobs() {
               placeholder="Search role, company, skill..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 bg-black border border-white/10 text-white placeholder-slate-600 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all uppercase text-[10px] font-bold tracking-widest"
+              className="w-full pl-12 pr-4 py-3.5 glass-dark border border-white/10 text-white placeholder-slate-600 focus:outline-none focus:border-primary focus:shadow-glow-sm transition-all uppercase text-[10px] font-bold tracking-widest rounded-lg"
             />
           </div>
 
@@ -139,7 +139,7 @@ export default function Jobs() {
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className={filterInputClass}
+              className={`${filterInputClass} rounded-lg`}
             >
               <option value="all">All Types</option>
               {jobTypes.map(t => (
@@ -158,7 +158,7 @@ export default function Jobs() {
             <select
               value={selectedLocation}
               onChange={(e) => setSelectedLocation(e.target.value)}
-              className={`${filterInputClass} pl-10`}
+              className={`${filterInputClass} pl-10 rounded-lg`}
             >
               <option value="all">All Locations</option>
               {locations.map(loc => (

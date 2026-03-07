@@ -7,6 +7,7 @@ import { authService } from '../services/authService'
 import StatusBadge from './StatusBadge'
 import ApplyJobModal from './ApplyJobModal'
 import ReportJobModal from './ReportJobModal'
+import { motion } from 'framer-motion'
 
 export default function JobCard({ job, userRole, onApply, isApplied = false, status }) {
   const user = authService.getCurrentUser()
@@ -14,7 +15,7 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
   const [reportOpen, setReportOpen] = useState(false)
   const [expandSkills, setExpandSkills] = useState(false)
 
-  const initials = job.company
+  const initials = (job.company || 'Unknown')
     .split(' ')
     .map(word => word[0])
     .join('')
@@ -56,11 +57,14 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
 
   return (
     <>
-      <div className="bg-black border border-white/10 rounded-none p-6 hover:border-primary/50 transition-all duration-200 group hover:shadow-[0_0_24px_rgba(0,200,200,0.07)] flex flex-col">
+      <motion.div
+        whileHover={{ y: -5, borderColor: 'rgba(59, 130, 246, 0.5)' }}
+        className="glass p-6 transition-all duration-200 group flex flex-col rounded-2xl h-full border border-white/10"
+      >
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-center gap-4 flex-1">
-            <div className="w-12 h-12 border border-white/10 flex items-center justify-center text-primary font-bold text-lg group-hover:border-primary/60 group-hover:shadow-glow-sm transition-all flex-shrink-0">
+            <div className="w-12 h-12 border border-white/10 flex items-center justify-center text-primary font-bold text-lg group-hover:border-primary/60 group-hover:shadow-glow-sm transition-all flex-shrink-0 rounded-xl bg-white/5">
               {initials}
             </div>
             <div className="flex-1 min-w-0">
@@ -69,7 +73,7 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
             </div>
           </div>
           {job.verified && (
-            <div className="px-2 py-0.5 border border-primary/30 text-primary text-[10px] uppercase tracking-widest font-bold bg-primary/5 flex-shrink-0 ml-2">
+            <div className="px-2 py-0.5 border border-primary/30 text-primary text-[10px] uppercase tracking-widest font-bold bg-primary/5 flex-shrink-0 ml-2 rounded-md">
               Verified
             </div>
           )}
@@ -89,14 +93,18 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
         </div>
 
         {/* Description */}
-        <p className="text-slate-400 text-sm line-clamp-2 mb-6 leading-relaxed flex-1">{job.description}</p>
+        <p className="text-slate-400 text-sm line-clamp-2 mb-6 leading-relaxed flex-1">
+          {job.description
+            ?.replace(/Ananlysis/g, 'Analysis')
+            ?.replace(/ ,/g, ',')}
+        </p>
 
         {/* Requirement tags */}
         <div className="flex flex-wrap gap-2 mb-6">
           {(expandSkills ? (job.requirements || []) : (job.requirements || []).slice(0, 3)).map((req, idx) => (
             <span
               key={idx}
-              className="px-3 py-1 border border-white/5 bg-white/5 text-slate-400 text-[10px] uppercase font-bold tracking-widest"
+              className="px-3 py-1 border border-white/5 bg-white/5 text-slate-400 text-[10px] uppercase font-bold tracking-widest rounded-md"
             >
               {req}
             </span>
@@ -104,7 +112,7 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
           {job.requirements?.length > 3 && (
             <button
               onClick={() => setExpandSkills(!expandSkills)}
-              className="px-3 py-1 text-primary hover:text-white transition-colors text-[10px] uppercase font-bold tracking-widest border border-white/5 bg-white/5 hover:bg-primary/10"
+              className="px-3 py-1 text-primary hover:text-white transition-colors text-[10px] uppercase font-bold tracking-widest border border-white/5 bg-white/5 hover:bg-primary/10 rounded-md"
             >
               {expandSkills ? 'Show Less' : `+${job.requirements.length - 3} more`}
             </button>
@@ -126,7 +134,7 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
             {userRole === 'candidate' && isApplied && job.createdBy?.email && (
               <a
                 href={`mailto:${job.createdBy.email}`}
-                className="text-[10px] border border-primary/50 px-3 py-1.5 uppercase font-bold tracking-widest text-primary hover:bg-primary hover:text-black transition flex-shrink-0"
+                className="text-[10px] border border-primary/50 px-3 py-1.5 uppercase font-bold tracking-widest text-primary hover:bg-primary hover:text-black transition flex-shrink-0 rounded-md"
               >
                 Contact Recruiter
               </a>
@@ -142,7 +150,7 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
                 ) : (
                   <button
                     onClick={handleApplyClick}
-                    className="px-5 py-2 border border-primary text-primary hover:bg-primary hover:text-black transition-all text-xs font-bold uppercase tracking-widest"
+                    className="px-5 py-2 border border-primary text-primary hover:bg-primary hover:text-black transition-all text-xs font-bold uppercase tracking-widest rounded-md"
                   >
                     Apply
                   </button>
@@ -162,7 +170,7 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
         <div className="text-slate-700 text-[10px] mt-3 uppercase font-bold tracking-widest">
           Posted {formatDate(job.createdAt)}
         </div>
-      </div>
+      </motion.div>
 
       {/* Apply Modal */}
       <ApplyJobModal

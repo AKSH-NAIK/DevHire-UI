@@ -1,4 +1,5 @@
 import { Shield } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export default function PrivacyPolicy() {
     const lastUpdated = 'February 12, 2026'
@@ -99,37 +100,55 @@ export default function PrivacyPolicy() {
     ]
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-[#0a0e27]">
+        <div className="min-h-screen mesh-gradient">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
                 {/* Header */}
-                <div className="text-center mb-16">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-cyan-500/10 rounded-full border border-cyan-500/20 mb-6">
-                        <Shield className="text-cyan-400" size={32} />
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center mb-16"
+                >
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl border border-primary/20 mb-6 shadow-glow-primary/5">
+                        <Shield className="text-primary" size={32} />
                     </div>
-                    <h1 className="text-5xl font-bold text-white mb-4">Privacy Policy</h1>
-                    <p className="text-slate-400">Last updated: {lastUpdated}</p>
-                </div>
+                    <h1 className="text-5xl font-bold text-white mb-4 tracking-tighter text-glow">Privacy Policy</h1>
+                    <p className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">Last updated: {lastUpdated}</p>
+                </motion.div>
 
                 {/* Introduction */}
-                <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-8 mb-8">
-                    <p className="text-slate-300 leading-relaxed">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="glass-dark border border-white/10 rounded-2xl p-8 mb-8"
+                >
+                    <p className="text-slate-400 leading-relaxed text-sm uppercase font-medium tracking-tight">
                         At DevHire, we take your privacy seriously. This Privacy Policy explains how we
                         collect, use, and protect your personal information when you use our platform.
                         By using DevHire, you agree to the collection and use of information in accordance
                         with this policy.
                     </p>
-                </div>
+                </motion.div>
 
                 {/* Sections */}
-                <div className="space-y-8">
+                <div className="space-y-6">
                     {sections.map((section, idx) => (
-                        <div
+                        <motion.div
                             key={idx}
-                            className="bg-slate-900/50 border border-slate-700 rounded-lg p-8 hover:border-cyan-500/40 transition-all duration-300"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.05 * idx }}
+                            className="glass-dark border border-white/10 rounded-2xl p-8 hover:border-primary/40 transition-all duration-300"
                         >
-                            <h2 className="text-2xl font-bold text-white mb-4">{section.title}</h2>
-                            <div className="text-slate-300 leading-relaxed">{section.content}</div>
-                        </div>
+                            <h2 className="text-xl font-bold text-white mb-6 uppercase tracking-widest leading-none">
+                                <span className="text-primary/60 mr-4 font-mono text-sm">{String(idx + 1).padStart(2, '0')}</span>
+                                {section.title.split('. ')[1] || section.title}
+                            </h2>
+                            <div className="text-slate-400 leading-relaxed text-sm uppercase font-medium tracking-tight">
+                                {section.content}
+                            </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
