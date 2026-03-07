@@ -78,10 +78,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to={getRecruiterLink('/recruiter-dashboard')}
+                  to={getRecruiterLink('/recruiter-help')}
                   className="text-slate-500 hover:text-primary transition-colors text-[10px] uppercase font-bold tracking-widest"
                 >
-                  Find Talent
+                  Help Guide
                 </Link>
               </li>
               <li>

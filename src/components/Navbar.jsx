@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Menu, X, LogOut, LayoutDashboard } from 'lucide-react'
+import { Menu, X, LogOut, LayoutDashboard, HelpCircle } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -39,6 +39,15 @@ export default function Navbar() {
                   <span className="text-slate-200 font-medium">{user.name || user.companyName}</span>
                   <span className="ml-2 text-[10px] text-slate-600 uppercase tracking-widest font-bold border border-white/10 px-1.5 py-0.5">{user.role}</span>
                 </span>
+                {user.role === 'recruiter' && (
+                  <Link
+                    to="/recruiter-help"
+                    className="flex items-center gap-1.5 text-slate-500 hover:text-white transition-colors text-sm"
+                  >
+                    <HelpCircle size={15} />
+                    Help Guide
+                  </Link>
+                )}
                 <Link
                   to={dashboardPath}
                   className="flex items-center gap-1.5 text-slate-500 hover:text-white transition-colors text-sm"
@@ -97,6 +106,11 @@ export default function Navbar() {
                     <span className="text-slate-200 font-medium">{user.name || user.companyName}</span>
                     <span className="ml-2 text-[10px] text-slate-600 uppercase tracking-widest font-bold border border-white/10 px-1.5 py-0.5">{user.role}</span>
                   </p>
+                  {user.role === 'recruiter' && (
+                    <Link to="/recruiter-help" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 text-slate-500 hover:text-white py-2 transition-colors">
+                      <HelpCircle size={16} /> Help Guide
+                    </Link>
+                  )}
                   <Link to={dashboardPath} onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 text-slate-500 hover:text-white py-2 transition-colors">
                     <LayoutDashboard size={16} /> Dashboard
                   </Link>

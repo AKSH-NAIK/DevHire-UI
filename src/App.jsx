@@ -21,6 +21,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
 import FAQ from './pages/FAQ'
 import ContactUs from './pages/ContactUs'
+import RecruiterHelpGuide from './pages/RecruiterHelpGuide'
 
 function AppContent() {
   const { loading } = useAuth()
@@ -51,6 +52,14 @@ function AppContent() {
             element={
               <ProtectedRoute requiredRole="recruiter">
                 <RecruiterDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/recruiter-help"
+            element={
+              <ProtectedRoute requiredRole="recruiter">
+                <RecruiterHelpGuide />
               </ProtectedRoute>
             }
           />

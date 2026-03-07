@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import {
   Plus, Trash2, Edit2,
   Briefcase, ChevronDown, ChevronUp,
-  Mail, Phone, FileText
+  Mail, Phone, FileText, HelpCircle
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { jobsService } from '../services/jobsService'
@@ -142,12 +142,20 @@ export default function RecruiterDashboard() {
             <p className="text-slate-500 text-sm">{user?.companyName}</p>
           </div>
 
-          <Link
-            to="/post-job"
-            className="flex items-center gap-2 px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-black transition-all"
-          >
-            <Plus size={16} /> Post Job
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              to="/recruiter-help"
+              className="flex items-center gap-2 px-6 py-3 border border-white/20 text-white hover:bg-white/10 transition-all"
+            >
+              <HelpCircle size={16} /> Help Guide
+            </Link>
+            <Link
+              to="/post-job"
+              className="flex items-center gap-2 px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-black transition-all"
+            >
+              <Plus size={16} /> Post Job
+            </Link>
+          </div>
         </div>
 
         {/* Jobs */}
