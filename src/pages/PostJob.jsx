@@ -23,7 +23,6 @@ export default function PostJob() {
       await jobsService.createJob({
         ...formData,
         companyId: user.id || user._id,
-        company: user.companyName,
       })
       toast.success('Job posted successfully! It will be reviewed before going live.')
       navigate('/recruiter-dashboard')
@@ -43,7 +42,7 @@ export default function PostJob() {
           <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Fill in the details to create a new listing</p>
         </div>
         <div className="bg-black border border-white/10 p-8">
-          <JobForm onSubmit={handleSubmit} loading={loading} />
+          <JobForm onSubmit={handleSubmit} loading={loading} defaultCompany={user.companyName || ''} />
         </div>
       </div>
     </div>

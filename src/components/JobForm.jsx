@@ -7,6 +7,7 @@ import { ButtonSpinner } from './Loader'
 function validate(fields) {
   const errors = {}
   if (!fields.title.trim()) errors.title = 'Job title is required'
+  if (!fields.company?.trim()) errors.company = 'Company name is required'
   if (!fields.location.trim()) errors.location = 'Location is required'
   if (!fields.salary.trim()) errors.salary = 'Salary range is required'
   if (!fields.description.trim()) errors.description = 'Description is required'
@@ -19,9 +20,9 @@ function FieldError({ msg }) {
   return <p className="mt-1 text-red-400 text-[10px] font-bold uppercase tracking-widest">{msg}</p>
 }
 
-export default function JobForm({ initialData = null, onSubmit, loading = false }) {
+export default function JobForm({ initialData = null, onSubmit, loading = false, defaultCompany = '' }) {
   const [formData, setFormData] = useState(
-    initialData || { title: '', location: '', salary: '', salaryPeriod: 'Monthly', type: 'Full-time', description: '', requirements: '' }
+    initialData || { title: '', company: defaultCompany, location: '', salary: '', salaryPeriod: 'Monthly', type: 'Full-time', description: '', requirements: '' }
   )
   const [errors, setErrors] = useState({})
 
@@ -52,8 +53,26 @@ export default function JobForm({ initialData = null, onSubmit, loading = false 
   const inputClass = (field) =>
     `w-full px-4 py-3 bg-black border ${errors[field] ? 'border-red-800 focus:border-red-500' : 'border-white/10 focus:border-primary'} text-white placeholder-slate-600 focus:outline-none focus:shadow-glow-sm transition-all text-sm`
 
+  const initials = (formData.company || 'Unknown')
+    .split(' ')
+    .filter(Boolean)
+    .map(word => word[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
+
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
+      <div className="flex items-center gap-4 mb-6 p-4 border border-white/5 bg-white/5 rounded-xl">
+        <div className="w-12 h-12 border border-white/10 flex items-center justify-center text-primary font-bold text-lg flex-shrink-0 rounded-xl bg-black">
+          {initials}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">Live Preview</p>
+          <p className="text-white font-medium truncate">{formData.company || 'Your Company Name'}</p>
+        </div>
+      </div>
+
       <div className="grid md:grid-cols-2 gap-5">
         {/* Title */}
         <div>
@@ -70,6 +89,23 @@ export default function JobForm({ initialData = null, onSubmit, loading = false 
             disabled={loading}
           />
           <FieldError msg={errors.title} />
+        </div>
+
+        {/* Company name */}
+        <div>
+          <label className="block text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1.5">
+            Company Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="company"
+            value={formData.company}
+            onChange={handleChange}
+            placeholder="e.g., Tech Corp"
+            className={inputClass('company')}
+            disabled={loading}
+          />
+          <FieldError msg={errors.company} />
         </div>
 
         {/* Location */}
