@@ -46,16 +46,11 @@ export default function RecruiterDashboard() {
 
   const loadJobs = async () => {
     try {
-      const response = await jobsService.getAllJobs()
+      const response = await jobsService.getMyJobs()
 
-      const allJobs = Array.isArray(response)
+      const myJobs = Array.isArray(response)
         ? response
         : response?.jobs || []
-
-      const myJobs = allJobs.filter(job =>
-        job.createdBy === user.id ||
-        job.createdBy?._id === user.id
-      )
 
       setJobs(myJobs)
 

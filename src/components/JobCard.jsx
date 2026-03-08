@@ -9,8 +9,9 @@ import ApplyJobModal from './ApplyJobModal'
 import ReportJobModal from './ReportJobModal'
 import { motion } from 'framer-motion'
 
-export default function JobCard({ job, userRole, onApply, isApplied = false, status }) {
+export default function JobCard({ job, userRole: propUserRole, onApply, isApplied = false, status }) {
   const user = authService.getCurrentUser()
+  const activeUserRole = propUserRole || user?.role
   const [applyOpen, setApplyOpen] = useState(false)
   const [reportOpen, setReportOpen] = useState(false)
   const [expandSkills, setExpandSkills] = useState(false)
@@ -36,8 +37,8 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
   const handleApplyClick = (e) => {
     e.preventDefault()
     if (!user) { window.location.href = '/login'; return }
-    if (userRole === 'recruiter') {
-      toast.error('Recruiters cannot apply for jobs.')
+    if (activeUserRole === 'recruiter') {
+      toast.error('/ you cannot apply for jobs .')
       return
     }
     if (isApplied) { toast('You have already applied to this job.', { icon: '⚠️' }); return }
@@ -129,7 +130,7 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
         <div className="flex items-center justify-between pt-5 border-t border-white/5">
           <div className="flex items-center gap-2 text-slate-500 text-[10px] uppercase font-bold tracking-widest min-h-[32px]">
             {/* Show applicants ONLY for recruiters */}
-            {userRole === 'recruiter' && (
+            {activeUserRole === 'recruiter' && (
               <>
                 <Users size={14} className="text-primary" />
                 {job.applicants || 0} applicants
@@ -137,7 +138,7 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
             )}
 
             {/* If applied candidate, show Contact Recruiter on the left */}
-            {userRole === 'candidate' && isApplied && job.createdBy?.email && (
+            {activeUserRole === 'candidate' && isApplied && job.createdBy?.email && (
               <a
                 href={`mailto:${job.createdBy.email}`}
                 className="text-[10px] border border-primary/50 px-3 py-1.5 uppercase font-bold tracking-widest text-primary hover:bg-primary hover:text-black transition flex-shrink-0 rounded-md"
@@ -149,14 +150,17 @@ export default function JobCard({ job, userRole, onApply, isApplied = false, sta
 
           <div className="flex items-center gap-2">
             {/* Candidates: Apply + Report */}
-            {(!userRole || userRole === 'candidate') && (
+            {(!activeUserRole || activeUserRole === 'candidate') && (
               <>
                 {isApplied ? (
                   <StatusBadge status={status || 'pending'} />
                 ) : (
                   <button
                     onClick={handleApplyClick}
-                    className="px-5 py-2 border border-primary text-primary hover:bg-primary hover:text-black transition-all text-xs font-bold uppercase tracking-widest rounded-md"
+                    className={`px-5 py-2 border border-primary text-primary transition-all text-xs font-bold uppercase tracking-widest rounded-md ${activeUserRole === 'recruiter'
+                      ? 'opacity-50 cursor-not-allowed bg-transparent'
+                      : 'hover:bg-primary hover:text-black'
+                      }`}
                   >
                     Apply
                   </button>

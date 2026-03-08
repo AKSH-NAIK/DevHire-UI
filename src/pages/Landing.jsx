@@ -4,8 +4,10 @@ import { ArrowRight, CheckCircle, Zap, Shield, Users, TrendingUp } from 'lucide-
 import JobCard from '../components/JobCard'
 import { jobsService } from '../services/jobsService'
 import { motion } from 'framer-motion'
+import { useAuth } from '../context/AuthContext'
 
 export default function Landing() {
+  const { user } = useAuth()
   const [featuredJobs, setFeaturedJobs] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -99,16 +101,16 @@ export default function Landing() {
               </p>
               <div className="flex flex-col sm:flex-row gap-6">
                 <Link
-                  to="/register"
+                  to={user ? "/jobs" : "/register"}
                   className="px-10 py-5 bg-primary text-black hover:bg-primary/90 transition-all text-xs font-bold uppercase tracking-widest shadow-glow-primary rounded-lg text-center"
                 >
                   Find Jobs
                 </Link>
                 <Link
-                  to="/register"
+                  to={user ? (user.role === 'recruiter' ? "/recruiter-dashboard" : "/candidate-dashboard") : "/register"}
                   className="px-10 py-5 border border-white/10 text-white hover:border-primary/50 hover:bg-white/5 transition-all text-xs font-bold uppercase tracking-widest rounded-lg text-center"
                 >
-                  Hire Talent
+                  {user ? "Dashboard" : "Hire Talent"}
                 </Link>
               </div>
             </div>
@@ -208,7 +210,7 @@ export default function Landing() {
               whileHover={{ y: -10 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <JobCard job={job} />
+              <JobCard job={job} userRole={user?.role} />
             </motion.div>
           ))}
         </div>
@@ -266,18 +268,29 @@ export default function Landing() {
             Join thousands of developers and companies on DevHire today.
           </p>
           <div className="flex flex-col sm:flex-row gap-8 justify-center relative z-10">
-            <Link
-              to="/register"
-              className="px-12 py-5 bg-primary text-black hover:bg-primary/90 transition-all text-xs font-bold uppercase tracking-widest shadow-glow-primary rounded-lg text-center"
-            >
-              Get Started
-            </Link>
-            <Link
-              to="/login"
-              className="px-12 py-5 border border-white/10 text-white hover:border-primary hover:bg-white/5 transition-all text-xs font-bold uppercase tracking-widest rounded-lg text-center"
-            >
-              Sign In
-            </Link>
+            {user ? (
+              <Link
+                to={user.role === 'recruiter' ? "/recruiter-dashboard" : "/candidate-dashboard"}
+                className="px-12 py-5 bg-primary text-black hover:bg-primary/90 transition-all text-xs font-bold uppercase tracking-widest shadow-glow-primary rounded-lg text-center"
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/register"
+                  className="px-12 py-5 bg-primary text-black hover:bg-primary/90 transition-all text-xs font-bold uppercase tracking-widest shadow-glow-primary rounded-lg text-center"
+                >
+                  Get Started
+                </Link>
+                <Link
+                  to="/login"
+                  className="px-12 py-5 border border-white/10 text-white hover:border-primary hover:bg-white/5 transition-all text-xs font-bold uppercase tracking-widest rounded-lg text-center"
+                >
+                  Sign In
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </motion.section>

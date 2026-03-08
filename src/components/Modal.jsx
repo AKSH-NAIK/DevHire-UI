@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 
 /**
@@ -14,6 +15,11 @@ import { X } from 'lucide-react'
  */
 export default function Modal({ isOpen, onClose, title, children, maxWidth = 'max-w-lg' }) {
     const overlayRef = useRef(null)
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     // ESC key to close
     useEffect(() => {
@@ -28,14 +34,14 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'ma
         }
     }, [isOpen, onClose])
 
-    if (!isOpen) return null
+    if (!isOpen || !mounted) return null
 
     // Click outside overlay closes modal
     const handleOverlayClick = (e) => {
         if (e.target === overlayRef.current) onClose()
     }
 
-    return (
+    return createPortal(
         <div
             ref={overlayRef}
             onClick={handleOverlayClick}
@@ -61,6 +67,7 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'ma
                     {children}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     )
 }

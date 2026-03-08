@@ -1,4 +1,5 @@
 import api from "./api";
+import axios from "axios";
 
 export const jobsService = {
   // Get all jobs
@@ -7,6 +8,17 @@ export const jobsService = {
       params: filters
     });
     return response.data;
+  },
+
+  // Get recruiter's jobs
+  getMyJobs: async () => {
+    const token = localStorage.getItem('token');
+    const res = await axios.get("http://localhost:5000/api/jobs/my-jobs", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return res.data;
   },
 
   // Get single job by ID
