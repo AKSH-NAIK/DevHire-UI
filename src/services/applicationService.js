@@ -2,14 +2,15 @@ import api from "./api";
 
 export const applyToJob = async (jobId, resumeFile, phone, coverLetter) => {
     const formData = new FormData();
+
     formData.append("jobId", jobId);
     formData.append("resume", resumeFile);
     formData.append("phone", phone);
     formData.append("coverLetter", coverLetter);
 
-    const response = await api.post("/applications", formData, {
+    const response = await api.post("/applications/apply", formData, {
         headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": undefined,
         },
     });
 
