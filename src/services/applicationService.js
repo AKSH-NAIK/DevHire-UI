@@ -19,12 +19,12 @@ export const applyToJob = async (jobId, resumeFile, phone, coverLetter) => {
 
 export const getMyApplications = async () => {
     const response = await api.get("/applications/my");
-    return response.data;
+    return response.data?.applications || response.data || [];
 };
 
 export const getApplicationsForJob = async (jobId) => {
     const response = await api.get(`/applications/job/${jobId}`);
-    return response.data;
+    return response.data?.applications || response.data || [];
 };
 
 export const updateApplicationStatus = async (applicationId, status) => {
