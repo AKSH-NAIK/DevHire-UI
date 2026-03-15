@@ -25,12 +25,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           {/* Brand */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2 group">
+            <Link to="/" className="flex items-center gap-2 group" aria-label="DevHire Home">
               <div className="w-8 h-8 border border-primary flex items-center justify-center transition-all group-hover:shadow-glow">
                 <span className="text-primary font-bold text-sm">D</span>
               </div>
               <span className="font-bold text-white text-xl tracking-tighter">DevHire</span>
-            </div>
+            </Link>
             <p className="text-slate-600 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
               The world's leading platform for technical hiring. Connecting elite developers with the most innovative companies.
             </p>
@@ -38,7 +38,7 @@ export default function Footer() {
 
           {/* For Candidates */}
           <div>
-            <h4 className="text-white text-[10px] font-bold mb-6 uppercase tracking-[0.2em]">For Candidates</h4>
+            <h2 className="text-white text-[10px] font-bold mb-6 uppercase tracking-[0.2em]">For Candidates</h2>
             <ul className="space-y-3">
               <li>
                 <Link to="/jobs" className="text-slate-500 hover:text-primary transition-colors text-[10px] uppercase font-bold tracking-widest">
@@ -66,7 +66,7 @@ export default function Footer() {
 
           {/* For Recruiters */}
           <div>
-            <h4 className="text-white text-[10px] font-bold mb-6 uppercase tracking-[0.2em]">For Recruiters</h4>
+            <h2 className="text-white text-[10px] font-bold mb-6 uppercase tracking-[0.2em]">For Recruiters</h2>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -97,7 +97,7 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="text-white text-[10px] font-bold mb-6 uppercase tracking-[0.2em]">Company</h4>
+            <h2 className="text-white text-[10px] font-bold mb-6 uppercase tracking-[0.2em]">Company</h2>
             <ul className="space-y-3">
               <li>
                 <Link to="/about" className="text-slate-500 hover:text-primary transition-colors text-[10px] uppercase font-bold tracking-widest">
@@ -130,7 +130,12 @@ export default function Footer() {
           </p>
           <div className="flex gap-8 mt-6 md:mt-0">
             {['Twitter', 'LinkedIn', 'GitHub'].map((social) => (
-              <a key={social} href="#" className="text-slate-600 hover:text-primary transition-colors text-[10px] font-bold uppercase tracking-widest">
+              <a 
+                key={social} 
+                href="#" 
+                className="text-slate-600 hover:text-primary transition-colors text-[10px] font-bold uppercase tracking-widest"
+                aria-label={`Follow us on ${social}`}
+              >
                 {social}
               </a>
             ))}

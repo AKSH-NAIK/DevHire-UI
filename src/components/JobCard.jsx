@@ -161,6 +161,7 @@ export default function JobCard({ job, userRole: propUserRole, onApply, isApplie
                       ? 'opacity-50 cursor-not-allowed bg-transparent'
                       : 'hover:bg-primary hover:text-black'
                       }`}
+                    aria-label={`Apply for ${job.title} at ${job.company}`}
                   >
                     Apply
                   </button>
@@ -168,6 +169,7 @@ export default function JobCard({ job, userRole: propUserRole, onApply, isApplie
                 <button
                   onClick={handleReportClick}
                   title="Report this job"
+                  aria-label={`Report ${job.title} job at ${job.company}`}
                   className="p-2 text-slate-600 hover:text-red-400 transition-colors border border-transparent hover:border-red-900/40"
                 >
                   <Flag size={15} />

@@ -24,7 +24,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
+          <Link to="/" className="flex items-center gap-2 group" aria-label="DevHire Home">
             <div className="w-8 h-8 border border-primary flex items-center justify-center transition-all group-hover:shadow-glow">
               <span className="text-primary font-bold">D</span>
             </div>
@@ -43,6 +43,7 @@ export default function Navbar() {
                   <Link
                     to="/recruiter-help"
                     className="flex items-center gap-1.5 text-slate-500 hover:text-white transition-colors text-sm"
+                    aria-label="View recruiter help guide"
                   >
                     <HelpCircle size={15} />
                     Help Guide
@@ -51,6 +52,7 @@ export default function Navbar() {
                 <Link
                   to={dashboardPath}
                   className="flex items-center gap-1.5 text-slate-500 hover:text-white transition-colors text-sm"
+                  aria-label="Go to dashboard"
                 >
                   <LayoutDashboard size={15} />
                   Dashboard
@@ -58,6 +60,7 @@ export default function Navbar() {
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-1.5 text-slate-500 hover:text-white transition-colors text-sm"
+                  aria-label="Logout from account"
                 >
                   <LogOut size={15} />
                   Logout
@@ -85,6 +88,8 @@ export default function Navbar() {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden text-white hover:text-primary transition-colors"
+            aria-label={mobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

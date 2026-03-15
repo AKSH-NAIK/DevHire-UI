@@ -279,9 +279,9 @@ export default function RecruiterDashboard() {
 
                                     {app.resume && (
                                       <a
-                                        href={`http://localhost:5000/${app.resume}`}
+                                        href={app.resume}
                                         target="_blank"
-                                        rel="noreferrer"
+                                        rel="noopener noreferrer"
                                         className="text-primary underline text-sm flex items-center gap-2"
                                       >
                                         <FileText size={14} /> View Resume
