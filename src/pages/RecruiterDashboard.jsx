@@ -124,6 +124,27 @@ export default function RecruiterDashboard() {
     }
   }
 
+  const handleDownloadResume = async (resumeUrl, filename) => {
+    try {
+      const response = await fetch(resumeUrl);
+      if (!response.ok) throw new Error('Download failed');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename || 'resume.pdf';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error("Resume download error:", error);
+      toast.error("Failed to download resume");
+      // Fallback: open in new tab if blob download fails
+      window.open(resumeUrl, '_blank');
+    }
+  };
+
   if (!user) return null
 
   return (
@@ -244,7 +265,7 @@ export default function RecruiterDashboard() {
                                             expandedCoverLetter === app._id ? null : app._id
                                           )
                                         }
-                                        className="text-xs uppercase tracking-wider text-primary hover:underline"
+                                        className="text-[10px] border border-primary/50 px-3 py-1.5 uppercase font-bold tracking-widest text-primary hover:bg-primary hover:text-black transition transition-all duration-200 flex items-center gap-2 rounded-md w-fit"
                                       >
                                         {expandedCoverLetter === app._id
                                           ? "Hide Cover Letter"
@@ -278,14 +299,12 @@ export default function RecruiterDashboard() {
                                     </div>
 
                                     {app.resume && (
-                                      <a
-                                        href={app.resume}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-primary underline text-sm flex items-center gap-2"
+                                      <button
+                                        onClick={() => handleDownloadResume(app.resume, `${app.user?.name.replace(/\s+/g, '_')}_Resume.pdf`)}
+                                        className="text-[10px] border border-primary/50 px-3 py-1.5 uppercase font-bold tracking-widest text-primary hover:bg-primary hover:text-black transition transition-all duration-200 flex items-center gap-2 rounded-md"
                                       >
-                                        <FileText size={14} /> View Resume
-                                      </a>
+                                        <FileText size={14} /> Download Resume
+                                      </button>
                                     )}
 
                                   </div>

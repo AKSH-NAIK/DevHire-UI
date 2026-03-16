@@ -21,8 +21,8 @@ function validateApplyForm({ name, email, phone, coverLetter, resume }) {
     }
     if (!coverLetter.trim()) {
         errors.coverLetter = 'Cover letter is required';
-    } else if (coverLetter.trim().length < 50) {
-        errors.coverLetter = `Too short — ${50 - coverLetter.trim().length} more characters needed`;
+    } else if (coverLetter.trim().length < 20) {
+        errors.coverLetter = `Too short — ${20 - coverLetter.trim().length} more characters needed`;
     }
     if (!resume) {
         errors.resume = 'Resume (PDF) is required';
@@ -232,7 +232,7 @@ export default function ApplyJobModal({ isOpen, onClose, job, user, onApplySucce
                         name="coverLetter"
                         value={formData.coverLetter}
                         onChange={handleChange}
-                        placeholder="Explain why you are a good fit for this job(50 letters minimum)"
+                        placeholder="Explain why you are a good fit for this job (20 letters minimum)"
                         rows={5}
                         className="w-full px-4 py-3 bg-black border border-white/10 text-white resize-none"
                     />
