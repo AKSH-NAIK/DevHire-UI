@@ -35,13 +35,13 @@ export default function PostJob() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[#1F1F1F]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-10">
           <h1 className="text-4xl font-bold text-white mb-2 tracking-tighter uppercase">Post a Job</h1>
           <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Fill in the details to create a new listing</p>
         </div>
-        <div className="bg-black border border-white/10 p-8">
+        <div className="bg-[#1F1F1F] border border-white/10 p-8">
           <JobForm onSubmit={handleSubmit} loading={loading} defaultCompany={user.companyName || ''} />
         </div>
       </div>

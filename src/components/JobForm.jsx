@@ -51,7 +51,7 @@ export default function JobForm({ initialData = null, onSubmit, loading = false,
   }
 
   const inputClass = (field) =>
-    `w-full px-4 py-3 bg-black border ${errors[field] ? 'border-red-800 focus:border-red-500' : 'border-white/10 focus:border-primary'} text-white placeholder-slate-600 focus:outline-none focus:shadow-glow-sm transition-all text-sm`
+    `w-full px-4 py-3 bg-[#2A2A2A] border ${errors[field] ? 'border-red-800 focus:border-red-500' : 'border-white/10 focus:border-primary'} text-white placeholder-slate-600 focus:outline-none focus:shadow-glow-sm transition-all text-sm`
 
   const initials = (formData.company || 'Unknown')
     .split(' ')
@@ -64,7 +64,7 @@ export default function JobForm({ initialData = null, onSubmit, loading = false,
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
       <div className="flex items-center gap-4 mb-6 p-4 border border-white/5 bg-white/5 rounded-xl">
-        <div className="w-12 h-12 border border-white/10 flex items-center justify-center text-primary font-bold text-lg flex-shrink-0 rounded-xl bg-black">
+        <div className="w-12 h-12 border border-white/10 flex items-center justify-center text-primary font-bold text-lg flex-shrink-0 rounded-xl bg-[#2A2A2A]">
           {initials}
         </div>
         <div className="flex-1 min-w-0">
@@ -148,11 +148,11 @@ export default function JobForm({ initialData = null, onSubmit, loading = false,
                 name="salaryPeriod"
                 value={formData.salaryPeriod}
                 onChange={handleChange}
-                className="h-full appearance-none px-4 py-3 bg-black border border-white/10 text-white focus:outline-none focus:border-primary transition-all text-sm cursor-pointer pr-8"
+                className="h-full appearance-none px-4 py-3 bg-[#2A2A2A] border border-white/10 text-white focus:outline-none focus:border-primary transition-all text-sm cursor-pointer pr-8"
                 disabled={loading}
               >
-                <option value="Monthly" className="bg-black">Monthly</option>
-                <option value="Yearly" className="bg-black">Yearly</option>
+                <option value="Monthly" className="bg-[#2A2A2A]">Monthly</option>
+                <option value="Yearly" className="bg-[#2A2A2A]">Yearly</option>
               </select>
               <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-600 text-[10px]">▼</div>
             </div>
@@ -170,11 +170,11 @@ export default function JobForm({ initialData = null, onSubmit, loading = false,
               name="type"
               value={formData.type}
               onChange={handleChange}
-              className="w-full appearance-none px-4 py-3 bg-black border border-white/10 text-white focus:outline-none focus:border-primary transition-all text-sm cursor-pointer"
+              className="w-full appearance-none px-4 py-3 bg-[#2A2A2A] border border-white/10 text-white focus:outline-none focus:border-primary transition-all text-sm cursor-pointer"
               disabled={loading}
             >
               {['Full-time', 'Part-time', 'Contract', 'Internship'].map(t => (
-                <option key={t} value={t} className="bg-black">{t}</option>
+                <option key={t} value={t} className="bg-[#2A2A2A]">{t}</option>
               ))}
             </select>
             <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-600 text-[10px]">▼</div>

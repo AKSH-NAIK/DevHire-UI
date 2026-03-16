@@ -91,7 +91,7 @@ export default function PrivacyPolicy() {
             content: (
                 <p>
                     If you have any questions about this Privacy Policy, please contact us at{' '}
-                    <a href="mailto:privacy@devhire.com" className="text-cyan-400 hover:text-cyan-300">
+                    <a href="mailto:privacy@devhire.com" className="text-amber-400 hover:text-amber-300">
                         privacy@devhire.com
                     </a>
                 </p>

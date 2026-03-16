@@ -59,7 +59,7 @@ export default function Landing() {
               Find your
               <br />
               <motion.span
-                animate={{ color: ['#3b82f6', '#60a5fa', '#3b82f6'] }}
+                animate={{ color: ['#F59E0B', '#FBBF24', '#F59E0B'] }}
                 transition={{ duration: 4, repeat: Infinity }}
                 className="text-primary text-glow"
               >

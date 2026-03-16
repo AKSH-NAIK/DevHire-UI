@@ -1,97 +1,99 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import {
-    Briefcase,
-    Users,
-    Lightbulb,
-    PlusCircle,
-    Settings,
-    MessageSquare,
-    Calendar,
-    Layers,
+    Search,
+    Send,
+    FileText,
+    Bell,
+    User,
     CheckCircle2,
-    ArrowRight
+    ArrowRight,
+    Briefcase,
+    Lightbulb,
+    MessageSquare
 } from 'lucide-react'
 
-export default function RecruiterHelpGuide() {
+export default function CandidateHelpGuide() {
     const sections = [
         {
-            id: 'posting',
-            title: 'Posting a Job',
-            icon: <PlusCircle className="text-primary w-6 h-6" />,
-            description: 'Expand your team by publishing a new job opening easily.',
+            id: 'finding-jobs',
+            title: 'Finding Your Next Role',
+            icon: <Search className="text-primary w-6 h-6" />,
+            description: 'Learn how to effectively search and discover jobs that match your skills.',
             details: [
-                'Navigate to "Post Jobs" in the dashboard.',
-                'Fill in the Job Title, Company Name, and Location.',
-                'Specify the Required Skills and a comprehensive Job Description.',
-                'Submit the form, and your job becomes instantly visible to candidates.'
+                'Use the search bar to filter jobs by title, company, or keywords.',
+                'Refine your search by location (Remote, Hybrid, or On-site).',
+                'Explore the "Browse Jobs" section for the latest openings.',
+                'Check job requirements and tech stack before applying.'
             ],
-            link: '/post-job',
-            linkText: 'Post a Job Now'
+            link: '/jobs',
+            linkText: 'Browse Jobs'
         },
         {
-            id: 'managing',
-            title: 'Managing Your Jobs',
-            icon: <Briefcase className="text-primary w-6 h-6" />,
-            description: 'Keep your job listings organized and up-to-date.',
+            id: 'applying',
+            title: 'Applying for Jobs',
+            icon: <Send className="text-primary w-6 h-6" />,
+            description: 'Make a great first impression with your application.',
             details: [
-                'Access all your active listings directly from the Recruiter Dashboard.',
-                'View and track the total number of applicants for each job.',
-                'Edit job details if requirements or location change.',
-                'Remove or close jobs that are no longer available.'
+                'Click "Apply Now" on any job that matches your profile.',
+                'Review your contact details to ensure recruiters can reach you.',
+                'Submit your resume and cover letter (if required).',
+                'Join the waitlist if a job is currently filled but still relevant.'
             ],
-            link: '/recruiter-dashboard',
+            link: '/jobs',
+            linkText: 'Find a Job'
+        },
+        {
+            id: 'tracking',
+            title: 'Tracking Applications',
+            icon: <FileText className="text-primary w-6 h-6" />,
+            description: 'Keep tabs on all your job applications in one place.',
+            details: [
+                'Navigate to "My Applications" in your Candidate Dashboard.',
+                'Monitor the status of each application (e.g., Applied, Shortlisted).',
+                'Review the details of jobs you have already applied for.',
+                'Keep track of application dates and company information.'
+            ],
+            link: '/candidate-dashboard',
             linkText: 'Go to Dashboard'
         },
         {
-            id: 'reviewing',
-            title: 'Reviewing Applicants',
-            icon: <Users className="text-primary w-6 h-6" />,
-            description: 'Evaluate candidates and find the perfect match for your roles.',
-            details: [
-                'Expand the Applicants section on any posted job in the dashboard.',
-                'See a comprehensive list of candidates who applied.',
-                'Review candidate cover letters, contact information, and resumes.',
-                'Update applicant status (e.g., Shortlisted, Rejected) to keep track.'
-            ],
-            link: '/recruiter-dashboard',
-            linkText: 'Review Applicants'
-        },
-        {
             id: 'tips',
-            title: 'Hiring Tips',
+            title: 'Job Search Tips',
             icon: <Lightbulb className="text-primary w-6 h-6" />,
-            description: 'Best practices for attracting top talent to your company.',
+            description: 'Best practices to stand out to recruiters and land interviews.',
             details: [
-                'Write clear, engaging, and detailed job descriptions.',
-                'Explicitly mention required skills, experience level, and tech stack.',
-                'Include precise job location and remote/hybrid expectations.',
-                'Keep the description concise and structured with bullet points.'
+                'Keep your resume updated and tailored to technical roles.',
+                'Highlight projects that showcase your skills and problem-solving.',
+                'Respond promptly to recruiter messages or interview requests.',
+                'Research the company before any potential interview.'
             ]
         },
         {
             id: 'communication',
-            title: 'Candidate Communication',
+            title: 'Recruiter Interaction',
             icon: <MessageSquare className="text-primary w-6 h-6" />,
-            description: 'Interact with applicants seamlessly using provided contact details.',
+            description: 'How to manage communication with potential employers.',
             details: [
-                'Find applicant email addresses and phone numbers in your dashboard.',
-                'Reach out to shortlisted candidates directly to schedule interviews.',
-                'Communicate promptly to ensure a smooth hiring experience.',
-                'Maintain candidate status updates to keep your workflow clear.'
+                'Ensure your email and phone number are correct in your profile.',
+                'Expect potential reach-outs via the contact info you provided.',
+                'Maintain professional communication during the hiring process.',
+                'Keep your status updated to reflect your current availability.'
             ]
         },
         {
-            id: 'settings',
-            title: 'Account & Platform',
-            icon: <Settings className="text-primary w-6 h-6" />,
-            description: 'Manage your recruiter profile and get the most out of the platform.',
+            id: 'account',
+            title: 'Managing Your Profile',
+            icon: <User className="text-primary w-6 h-6" />,
+            description: 'Keeping your personal information and preferences up to date.',
             details: [
-                'Keep your company information updated during account creation.',
-                'Access all features securely by maintaining your login session.',
-                'Use the platform regularly to monitor new applications.',
-                'Contact support if you encounter any technical difficulties.'
-            ]
+                'Update your profile information in the dashboard.',
+                'Manage your notification settings to stay alert for new jobs.',
+                'Ensure your tech stack and experience levels are accurate.',
+                'Contact support if you need help with your account.'
+            ],
+            link: '/candidate-dashboard',
+            linkText: 'Update Profile'
         }
     ]
 
@@ -102,10 +104,10 @@ export default function RecruiterHelpGuide() {
                 {/* Header Section */}
                 <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
-                        Recruiter <span className="text-primary">Help Guide</span>
+                        Candidate <span className="text-primary">Help Guide</span>
                     </h1>
                     <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-                        Everything you need to know to find, manage, and hire top talent using our job portal.
+                        Everything you need to know to find your dream job and manage your applications efficiently.
                     </p>
                 </div>
 
@@ -158,7 +160,7 @@ export default function RecruiterHelpGuide() {
                 <div className="mt-16 bg-gradient-to-r from-primary/10 to-transparent border border-primary/20 rounded-2xl p-8 text-center md:text-left md:flex items-center justify-between">
                     <div>
                         <h3 className="text-2xl font-bold text-white mb-2">Still need help?</h3>
-                        <p className="text-slate-400">Our support team is always ready to assist you with any questions.</p>
+                        <p className="text-slate-400">Our support team is here to help you navigate your job search.</p>
                     </div>
                     <div className="mt-6 md:mt-0">
                         <Link

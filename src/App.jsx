@@ -23,6 +23,7 @@ const TermsOfService = lazy(() => import('./pages/TermsOfService'))
 const FAQ = lazy(() => import('./pages/FAQ'))
 const ContactUs = lazy(() => import('./pages/ContactUs'))
 const RecruiterHelpGuide = lazy(() => import('./pages/RecruiterHelpGuide'))
+const CandidateHelpGuide = lazy(() => import('./pages/CandidateHelpGuide'))
 
 function AppContent() {
   const { loading } = useAuth()
@@ -88,6 +89,14 @@ function AppContent() {
               element={
                 <ProtectedRoute requiredRole="candidate">
                   <CandidateDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/candidate-help"
+              element={
+                <ProtectedRoute requiredRole="candidate">
+                  <CandidateHelpGuide />
                 </ProtectedRoute>
               }
             />

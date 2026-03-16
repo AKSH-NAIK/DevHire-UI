@@ -120,10 +120,10 @@ export default function ReportJobModal({ isOpen, onClose, job, user }) {
                                 name="reason"
                                 value={formData.reason}
                                 onChange={handleChange}
-                                className={`w-full appearance-none px-4 py-3 bg-black border ${errors.reason ? 'border-red-800' : 'border-white/10'} text-white focus:outline-none focus:border-primary transition-all text-sm cursor-pointer`}
+                                className={`w-full appearance-none px-4 py-3 bg-[#2A2A2A] border ${errors.reason ? 'border-red-800' : 'border-white/10'} text-white focus:outline-none focus:border-primary transition-all text-sm cursor-pointer`}
                             >
                                 {REPORT_REASONS.map(r => (
-                                    <option key={r.value} value={r.value} disabled={!r.value} className="bg-black">
+                                    <option key={r.value} value={r.value} disabled={!r.value} className="bg-[#2A2A2A]">
                                         {r.label}
                                     </option>
                                 ))}
@@ -149,7 +149,7 @@ export default function ReportJobModal({ isOpen, onClose, job, user }) {
                             onChange={handleChange}
                             placeholder="Describe the issue in detail so our team can investigate effectively..."
                             rows={4}
-                            className={`w-full px-4 py-3 bg-black border ${errors.description ? 'border-red-800' : 'border-white/10'} text-white placeholder-slate-700 focus:outline-none focus:border-primary transition-all text-sm resize-none`}
+                            className={`w-full px-4 py-3 bg-[#2A2A2A] border ${errors.description ? 'border-red-800' : 'border-white/10'} text-white placeholder-slate-700 focus:outline-none focus:border-primary transition-all text-sm resize-none`}
                         />
                         <FieldError msg={errors.description} />
                     </div>

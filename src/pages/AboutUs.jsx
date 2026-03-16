@@ -3,7 +3,7 @@ import { ArrowRight, Target, Heart, Zap, Users } from 'lucide-react'
 
 export default function AboutUs() {
     return (
-        <div className="min-h-screen bg-black">
+        <div className="min-h-screen bg-[#1F1F1F]">
             {/* Hero Section */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 md:py-48">
                 <div className="text-left space-y-8">
@@ -27,7 +27,7 @@ export default function AboutUs() {
             {/* Mission & Vision */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-white/5">
                 <div className="grid md:grid-cols-2 gap-12">
-                    <div className="bg-black border border-white/10 p-10 hover:border-primary/40 transition-all group">
+                    <div className="bg-[#1F1F1F] border border-white/10 p-10 hover:border-primary/40 transition-all group">
                         <Target className="text-primary mb-6 transition-transform group-hover:scale-110" size={32} />
                         <h2 className="text-2xl font-bold text-white mb-4 uppercase tracking-tight">Our Mission</h2>
                         <p className="text-slate-500 leading-relaxed font-medium">
@@ -35,7 +35,7 @@ export default function AboutUs() {
                             We believe in the power of code and the people who write it.
                         </p>
                     </div>
-                    <div className="bg-black border border-white/10 p-10 hover:border-primary/40 transition-all group">
+                    <div className="bg-[#1F1F1F] border border-white/10 p-10 hover:border-primary/40 transition-all group">
                         <Heart className="text-primary mb-6 transition-transform group-hover:scale-110" size={32} />
                         <h2 className="text-2xl font-bold text-white mb-4 uppercase tracking-tight">Our Vision</h2>
                         <p className="text-slate-500 leading-relaxed font-medium">
@@ -68,7 +68,7 @@ export default function AboutUs() {
 
             {/* CTA */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
-                <div className="bg-black border border-white/10 p-20 text-center relative group overflow-hidden">
+                <div className="bg-[#1F1F1F] border border-white/10 p-20 text-center relative group overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[100px] pointer-events-none"></div>
                     <h2 className="text-5xl font-bold text-white mb-6 uppercase tracking-tight">Ready to join?</h2>
                     <p className="text-slate-500 mb-12 max-w-xl mx-auto uppercase tracking-widest text-[10px] font-bold">

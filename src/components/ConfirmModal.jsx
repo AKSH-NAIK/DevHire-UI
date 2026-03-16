@@ -53,7 +53,7 @@ export default function ConfirmModal({
             onClick={handleOverlayClick}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
         >
-            <div className="relative w-full max-w-sm bg-black border border-white/10 shadow-2xl shadow-black/50 animate-in zoom-in-95 slide-in-from-bottom-4 duration-200">
+            <div className="relative w-full max-w-sm bg-[#2A2A2A] border border-white/10 shadow-2xl shadow-black/50 animate-in zoom-in-95 slide-in-from-bottom-4 duration-200">
                 {/* Header */}
                 <div className="flex items-start justify-between px-6 pt-6 pb-0">
                     <div className="flex items-center gap-3">
@@ -95,4 +95,4 @@ export default function ConfirmModal({
         </div>
     )
 }
-}
+

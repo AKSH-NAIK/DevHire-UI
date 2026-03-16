@@ -63,20 +63,20 @@ export default function EditJob() {
 
   if (!job) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-[#1F1F1F] flex items-center justify-center">
         <Loader size="lg" label="Loading job details..." />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[#1F1F1F]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-10">
           <h1 className="text-4xl font-bold text-white mb-2 tracking-tighter uppercase">Edit Job</h1>
           <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Update the details below</p>
         </div>
-        <div className="bg-black border border-white/10 p-8">
+        <div className="bg-[#1F1F1F] border border-white/10 p-8">
           <JobForm initialData={job} onSubmit={handleSubmit} loading={loading} />
         </div>
       </div>

@@ -215,7 +215,7 @@ export default function ApplyJobModal({ isOpen, onClose, job, user, onApplySucce
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="Full Name"
-                        className="w-full px-4 py-3 bg-black border border-white/10 text-white"
+                        className="w-full px-4 py-3 bg-[#2A2A2A] border border-white/10 text-white"
                     />
 
                     {/* Phone */}
@@ -224,7 +224,7 @@ export default function ApplyJobModal({ isOpen, onClose, job, user, onApplySucce
                         value={formData.phone}
                         onChange={handleChange}
                         placeholder="Phone Number"
-                        className="w-full px-4 py-3 bg-black border border-white/10 text-white"
+                        className="w-full px-4 py-3 bg-[#2A2A2A] border border-white/10 text-white"
                     />
 
                     {/* Cover Letter */}
@@ -234,7 +234,7 @@ export default function ApplyJobModal({ isOpen, onClose, job, user, onApplySucce
                         onChange={handleChange}
                         placeholder="Explain why you are a good fit for this job (20 letters minimum)"
                         rows={5}
-                        className="w-full px-4 py-3 bg-black border border-white/10 text-white resize-none"
+                        className="w-full px-4 py-3 bg-[#2A2A2A] border border-white/10 text-white resize-none"
                     />
 
                     {/* Resume Upload */}

@@ -11,7 +11,7 @@ export default function ContactUs() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        // In a real app, this would send the form data to a backend
+
         alert('Thank you for your message! We\'ll get back to you soon.')
         setFormData({ name: '', email: '', subject: '', message: '' })
     }
@@ -21,7 +21,7 @@ export default function ContactUs() {
     }
 
     return (
-        <div className="min-h-screen bg-black">
+        <div className="min-h-screen bg-[#1F1F1F]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
                 {/* Header */}
                 <div className="text-left mb-24">
@@ -46,43 +46,43 @@ export default function ContactUs() {
 
                         <div className="space-y-px bg-white/5 border border-white/5">
                             {/* Email */}
-                            <div className="flex items-start gap-6 bg-black p-8 hover:bg-white/[0.02] transition-all group">
+                            <div className="flex items-start gap-6 bg-[#1F1F1F] p-8 hover:bg-white/[0.02] transition-all group">
                                 <div className="border border-white/10 p-3 group-hover:border-primary transition-colors">
                                     <Mail className="text-slate-500 group-hover:text-primary transition-colors" size={20} />
                                 </div>
                                 <div className="pt-1">
                                     <h3 className="text-white text-[10px] font-bold uppercase tracking-widest mb-2">Email</h3>
                                     <a
-                                        href="mailto:support@devhire.com"
+                                        href="mailto:devhiresupport@example.com"
                                         className="text-slate-500 hover:text-primary transition-colors text-[10px] font-bold uppercase tracking-widest"
                                     >
-                                        support@devhire.com
+                                        devhiresupport@example.com
                                     </a>
                                 </div>
                             </div>
 
                             {/* Phone */}
-                            <div className="flex items-start gap-6 bg-black p-8 hover:bg-white/[0.02] transition-all group">
+                            <div className="flex items-start gap-6 bg-[#1F1F1F] p-8 hover:bg-white/[0.02] transition-all group">
                                 <div className="border border-white/10 p-3 group-hover:border-primary transition-colors">
                                     <Phone className="text-slate-500 group-hover:text-primary transition-colors" size={20} />
                                 </div>
                                 <div className="pt-1">
                                     <h3 className="text-white text-[10px] font-bold uppercase tracking-widest mb-2">Phone</h3>
-                                    <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">+1 (555) 123-4567</p>
+                                    <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">+91 9867840585</p>
                                 </div>
                             </div>
 
                             {/* Location */}
-                            <div className="flex items-start gap-6 bg-black p-8 hover:bg-white/[0.02] transition-all group">
+                            <div className="flex items-start gap-6 bg-[#1F1F1F] p-8 hover:bg-white/[0.02] transition-all group">
                                 <div className="border border-white/10 p-3 group-hover:border-primary transition-colors">
                                     <MapPin className="text-slate-500 group-hover:text-primary transition-colors" size={20} />
                                 </div>
                                 <div className="pt-1">
                                     <h3 className="text-white text-[10px] font-bold uppercase tracking-widest mb-2">Office</h3>
                                     <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
-                                        123 Tech Street, Suite 100
+                                        Dombivli, Kalyan
                                         <br />
-                                        San Francisco, CA 94105
+                                        Maharashtra, INDIA
                                     </p>
                                 </div>
                             </div>
@@ -90,7 +90,7 @@ export default function ContactUs() {
                     </div>
 
                     {/* Contact Form */}
-                    <div className="bg-black border border-white/10 p-10 shadow-glow-sm">
+                    <div className="bg-[#1F1F1F] border border-white/10 p-10 shadow-glow-sm">
                         <form onSubmit={handleSubmit} className="space-y-8">
                             {/* Name */}
                             <div className="space-y-3">
@@ -107,7 +107,7 @@ export default function ContactUs() {
                                     value={formData.name}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-800 focus:outline-none focus:border-primary transition-all text-[10px] font-bold uppercase tracking-widest"
+                                    className="w-full px-5 py-4 bg-[#1F1F1F] border border-white/10 text-white placeholder-slate-800 focus:outline-none focus:border-primary transition-all text-[10px] font-bold uppercase tracking-widest"
                                     placeholder="John Doe"
                                 />
                             </div>
@@ -127,7 +127,7 @@ export default function ContactUs() {
                                     value={formData.email}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-800 focus:outline-none focus:border-primary transition-all text-[10px] font-bold lowercase tracking-widest"
+                                    className="w-full px-5 py-4 bg-[#1F1F1F] border border-white/10 text-white placeholder-slate-800 focus:outline-none focus:border-primary transition-all text-[10px] font-bold lowercase tracking-widest"
                                     placeholder="john@example.com"
                                 />
                             </div>
@@ -147,7 +147,7 @@ export default function ContactUs() {
                                     value={formData.subject}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-800 focus:outline-none focus:border-primary transition-all text-[10px] font-bold uppercase tracking-widest"
+                                    className="w-full px-5 py-4 bg-[#1F1F1F] border border-white/10 text-white placeholder-slate-800 focus:outline-none focus:border-primary transition-all text-[10px] font-bold uppercase tracking-widest"
                                     placeholder="How can we help?"
                                 />
                             </div>
@@ -167,7 +167,7 @@ export default function ContactUs() {
                                     onChange={handleChange}
                                     required
                                     rows={5}
-                                    className="w-full px-5 py-4 bg-black border border-white/10 text-white placeholder-slate-800 focus:outline-none focus:border-primary transition-all text-[10px] font-bold uppercase tracking-widest resize-none"
+                                    className="w-full px-5 py-4 bg-[#1F1F1F] border border-white/10 text-white placeholder-slate-800 focus:outline-none focus:border-primary transition-all text-[10px] font-bold uppercase tracking-widest resize-none"
                                     placeholder="Type your message here..."
                                 />
                             </div>

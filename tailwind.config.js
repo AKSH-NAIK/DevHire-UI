@@ -20,8 +20,8 @@ export default {
   				foreground: 'hsl(var(--popover-foreground))'
   			},
   			primary: {
-  				DEFAULT: '#3b82f6',
-  				foreground: '#ffffff'
+  				DEFAULT: '#F59E0B',
+  				foreground: '#1F1F1F'
   			},
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',
@@ -32,8 +32,8 @@ export default {
   				foreground: 'hsl(var(--muted-foreground))'
   			},
   			accent: {
-  				DEFAULT: '#3b82f6',
-  				foreground: '#ffffff'
+  				DEFAULT: '#F59E0B',
+  				foreground: '#1F1F1F'
   			},
   			destructive: {
   				DEFAULT: 'hsl(var(--destructive))',
@@ -59,8 +59,8 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		boxShadow: {
-  			glow: '0 0 15px -3px rgba(59, 130, 246, 0.5)',
-  			'glow-sm': '0 0 10px -2px rgba(59, 130, 246, 0.3)'
+  			glow: '0 0 15px -3px rgba(245, 158, 11, 0.5)',
+  			'glow-sm': '0 0 10px -2px rgba(245, 158, 11, 0.3)'
   		},
   		fontFamily: {
   			sans: [
@@ -74,4 +74,3 @@ export default {
   },
   plugins: [],
 }
-

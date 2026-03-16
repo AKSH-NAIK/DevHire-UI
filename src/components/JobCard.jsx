@@ -59,7 +59,7 @@ export default function JobCard({ job, userRole: propUserRole, onApply, isApplie
   return (
     <>
       <motion.div
-        whileHover={{ y: -5, borderColor: 'rgba(59, 130, 246, 0.5)' }}
+        whileHover={{ y: -5, borderColor: 'rgba(245, 158, 11, 0.5)' }}
         className="glass p-6 transition-all duration-200 group flex flex-col rounded-2xl h-full border border-white/10"
       >
         {/* Header */}

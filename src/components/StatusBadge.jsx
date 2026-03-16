@@ -7,7 +7,7 @@ export default function StatusBadge({ status }) {
 
     const statusStyles = {
         pending:
-            "bg-yellow-500/10 border-yellow-500/30 text-yellow-400",
+            "bg-amber-500/10 border-amber-500/30 text-amber-400",
         shortlisted:
             "bg-green-500/10 border-green-500/30 text-green-400",
         rejected:

@@ -48,7 +48,7 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'ma
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
         >
             <div
-                className={`relative w-full ${maxWidth} bg-black border border-white/10 shadow-2xl shadow-black/50 animate-in zoom-in-95 slide-in-from-bottom-4 duration-200`}
+                className={`relative w-full ${maxWidth} bg-[#2A2A2A] border border-white/10 shadow-2xl shadow-black/50 animate-in zoom-in-95 slide-in-from-bottom-4 duration-200`}
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">

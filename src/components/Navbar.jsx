@@ -49,6 +49,16 @@ export default function Navbar() {
                     Help Guide
                   </Link>
                 )}
+                {user.role === 'candidate' && (
+                  <Link
+                    to="/candidate-help"
+                    className="flex items-center gap-1.5 text-slate-500 hover:text-white transition-colors text-sm"
+                    aria-label="View candidate help guide"
+                  >
+                    <HelpCircle size={15} />
+                    Help Guide
+                  </Link>
+                )}
                 <Link
                   to={dashboardPath}
                   className="flex items-center gap-1.5 text-slate-500 hover:text-white transition-colors text-sm"
@@ -113,6 +123,11 @@ export default function Navbar() {
                   </p>
                   {user.role === 'recruiter' && (
                     <Link to="/recruiter-help" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 text-slate-500 hover:text-white py-2 transition-colors">
+                      <HelpCircle size={16} /> Help Guide
+                    </Link>
+                  )}
+                  {user.role === 'candidate' && (
+                    <Link to="/candidate-help" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 text-slate-500 hover:text-white py-2 transition-colors">
                       <HelpCircle size={16} /> Help Guide
                     </Link>
                   )}

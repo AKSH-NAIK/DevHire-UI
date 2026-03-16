@@ -64,7 +64,7 @@ export default function CandidateDashboard() {
   ]
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[#1F1F1F]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         {/* Header */}
@@ -84,7 +84,7 @@ export default function CandidateDashboard() {
             return (
               <div
                 key={idx}
-                className="bg-black border border-white/10 p-8 transition-all hover:border-primary/30 group"
+                className="bg-[#1F1F1F] border border-white/10 p-8 transition-all hover:border-primary/30 group"
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -130,7 +130,7 @@ export default function CandidateDashboard() {
                 return (
                   <div
                     key={app._id}   // ✅ Fixed key
-                    className="bg-black border border-white/10 p-5 hover:border-white/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group"
+                    className="bg-[#1F1F1F] border border-white/10 p-5 hover:border-white/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group"
                   >
                     <div className="flex items-start sm:items-center gap-4">
 

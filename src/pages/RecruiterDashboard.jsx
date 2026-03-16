@@ -148,7 +148,7 @@ export default function RecruiterDashboard() {
   if (!user) return null
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[#1F1F1F]">
       <div className="max-w-7xl mx-auto px-4 py-12">
 
         {/* Header */}
@@ -233,7 +233,7 @@ export default function RecruiterDashboard() {
 
                     {/* Applications Section */}
                     {expandedJobId === job._id && (
-                      <tr className="bg-black/40">
+                      <tr className="bg-[#1F1F1F]/40">
                         <td colSpan="4" className="p-6">
 
                           {!applicantsMap[job._id] || applicantsMap[job._id].length === 0 ? (
@@ -273,7 +273,7 @@ export default function RecruiterDashboard() {
                                       </button>
 
                                       {expandedCoverLetter === app._id && (
-                                        <div className="mt-3 bg-black border border-white/10 p-4 rounded-md max-h-40 overflow-y-auto text-slate-300 text-sm">
+                                        <div className="mt-3 bg-[#1F1F1F] border border-white/10 p-4 rounded-md max-h-40 overflow-y-auto text-slate-300 text-sm">
                                           {app.coverLetter}
                                         </div>
                                       )}

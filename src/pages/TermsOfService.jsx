@@ -128,7 +128,7 @@ export default function TermsOfService() {
             content: (
                 <p>
                     If you have questions about these Terms of Service, please contact us at{' '}
-                    <a href="mailto:legal@devhire.com" className="text-cyan-400 hover:text-cyan-300">
+                    <a href="mailto:legal@devhire.com" className="text-amber-400 hover:text-amber-300">
                         legal@devhire.com
                     </a>
                 </p>

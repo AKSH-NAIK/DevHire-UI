@@ -20,7 +20,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-black border-t border-white/10 mt-24">
+    <footer className="bg-[#1F1F1F] border-t border-white/10 mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           {/* Brand */}
@@ -55,10 +55,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to={getCandidateLink('/candidate-dashboard')}
+                  to={getCandidateLink('/candidate-help')}
                   className="text-slate-500 hover:text-primary transition-colors text-[10px] uppercase font-bold tracking-widest"
                 >
-                  My Profile
+                  Help Guide
                 </Link>
               </li>
             </ul>
@@ -124,7 +124,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center bg-black">
+        <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center bg-[#1F1F1F]">
           <p className="text-slate-600 text-[10px] font-bold uppercase tracking-widest">
             &copy; {new Date().getFullYear()} DevHire. All rights reserved.
           </p>
