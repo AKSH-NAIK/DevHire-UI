@@ -41,7 +41,6 @@ export default function Register() {
     if (formData.password.length < 6) return 'Password must be at least 6 characters'
     if (formData.password !== formData.confirmPassword) return 'Passwords do not match'
     if (!formData.name) return 'Name is required'
-    if (role === 'recruiter' && !formData.companyName) return 'Company name is required'
     return ''
   }
 
@@ -197,11 +196,10 @@ export default function Register() {
                 <input
                   type="text"
                   name="companyName"
-                  placeholder="Company name"
+                  placeholder="Company name (optional)"
                   value={formData.companyName}
                   onChange={handleChange}
                   className={inputClass}
-                  required
                   disabled={loading}
                 />
                 <input

@@ -49,17 +49,17 @@ export default function AboutUs() {
             {/* Stats */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
                 <div className="border border-white/10 p-16 bg-white/[0.02]">
-                    <h2 className="text-[10px] font-bold text-slate-500 text-center mb-16 uppercase tracking-[0.3em]">DevHire Stats</h2>
+                    <h2 className="text-[10px] font-bold text-slate-500 text-center mb-16 uppercase tracking-[0.4em]">Platform Highlights</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
                         {[
-                            { value: '2.5K', label: 'Active Jobs' },
-                            { value: '10K+', label: 'Verified Developers' },
-                            { value: '500+', label: 'Happy Companies' },
-                            { value: '92%', label: 'Success Rate' },
-                        ].map((stat, idx) => (
+                            'Fast & Simple Hiring',
+                            'Verified Recruiters',
+                            'Secure Applications',
+                            'Built for Developers',
+                        ].map((highlight, idx) => (
                             <div key={idx} className="text-center group">
-                                <div className="text-4xl md:text-5xl font-bold text-white mb-3 tracking-tighter group-hover:text-primary transition-colors">{stat.value}</div>
-                                <p className="text-slate-600 text-[10px] uppercase font-bold tracking-widest">{stat.label}</p>
+                                <div className="h-0.5 w-8 bg-primary/30 mx-auto mb-6 group-hover:w-12 group-hover:bg-primary transition-all"></div>
+                                <p className="text-white text-[11px] md:text-xs uppercase font-bold tracking-[0.2em] leading-relaxed px-4">{highlight}</p>
                             </div>
                         ))}
                     </div>

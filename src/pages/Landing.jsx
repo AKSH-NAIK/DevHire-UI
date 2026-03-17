@@ -77,20 +77,20 @@ export default function Landing() {
             {/* Stats */}
             <div className="grid grid-cols-2 gap-px bg-white/5 border border-white/5 glass rounded-2xl overflow-hidden">
               <div className="p-6 hover:bg-white/[0.02] transition-colors group">
-                <div className="text-5xl font-bold text-white mb-3 tracking-tighter group-hover:text-primary transition-colors">2.5K</div>
+                <div className="text-5xl font-bold text-white mb-3 tracking-tighter group-hover:text-primary transition-colors">25+</div>
                 <p className="text-slate-600 text-[10px] font-bold uppercase tracking-widest">Active Jobs</p>
               </div>
               <div className="p-6 hover:bg-white/[0.02] transition-colors group border-l border-white/5">
-                <div className="text-5xl font-bold text-white mb-3 tracking-tighter group-hover:text-primary transition-colors">10K+</div>
+                <div className="text-5xl font-bold text-white mb-3 tracking-tighter group-hover:text-primary transition-colors">100+</div>
                 <p className="text-slate-600 text-[10px] font-bold uppercase tracking-widest">Verified Candidates</p>
               </div>
               <div className="p-6 hover:bg-white/[0.02] transition-colors group border-t border-white/5">
-                <div className="text-5xl font-bold text-white mb-3 tracking-tighter group-hover:text-primary transition-colors">500+</div>
+                <div className="text-5xl font-bold text-white mb-3 tracking-tighter group-hover:text-primary transition-colors">10+</div>
                 <p className="text-slate-600 text-[10px] font-bold uppercase tracking-widest">Companies</p>
               </div>
               <div className="p-6 hover:bg-white/[0.02] transition-colors group border-t border-l border-white/5">
                 <div className="text-5xl font-bold text-white mb-3 tracking-tighter group-hover:text-primary transition-colors">92%</div>
-                <p className="text-slate-600 text-[10px] font-bold uppercase tracking-widest">Fill Rate</p>
+                <p className="text-slate-600 text-[10px] font-bold uppercase tracking-widest">Positive Reviews</p>
               </div>
             </div>
 
