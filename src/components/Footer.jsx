@@ -129,14 +129,19 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} DevHire. All rights reserved.
           </p>
           <div className="flex gap-8 mt-6 md:mt-0">
-            {['Twitter', 'LinkedIn', 'GitHub'].map((social) => (
+            {[
+              { name: 'LinkedIn', url: 'https://www.linkedin.com/in/akshnaik/' },
+              { name: 'GitHub', url: 'https://github.com/AKSH-NAIK' }
+            ].map((social) => (
               <a 
-                key={social} 
-                href="#" 
+                key={social.name} 
+                href={social.url} 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-slate-600 hover:text-primary transition-colors text-[10px] font-bold uppercase tracking-widest"
-                aria-label={`Follow us on ${social}`}
+                aria-label={`Follow us on ${social.name}`}
               >
-                {social}
+                {social.name}
               </a>
             ))}
           </div>
