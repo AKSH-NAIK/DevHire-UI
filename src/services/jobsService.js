@@ -13,7 +13,7 @@ export const jobsService = {
   // Get recruiter's jobs
   getMyJobs: async () => {
     const token = localStorage.getItem('token');
-    const res = await axios.get("http://localhost:5000/api/jobs/my-jobs", {
+    const res = await axios.get("https://devhire-backend-1.onrender.com/api/jobs/my-jobs", {
       headers: {
         Authorization: `Bearer ${token}`
       }
