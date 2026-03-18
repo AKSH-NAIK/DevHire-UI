@@ -27,7 +27,6 @@ DevHire is a comprehensive, modern job portal designed to streamline the hiring 
 ## 🔗 Repository Links
 
 - **Live Link**: [https://devhire-web.vercel.app/](https://devhire-web.vercel.app/)
-- **Frontend**: [https://github.com/AKSH-NAIK/Devhire-UI](https://github.com/AKSH-NAIK/Devhire-UI)
 - **Backend**: [https://github.com/AKSH-NAIK/Devhire-Backend](https://github.com/AKSH-NAIK/Devhire-Backend)
 
 ## 🏗️ Getting Started
