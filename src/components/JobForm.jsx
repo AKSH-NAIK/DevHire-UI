@@ -118,7 +118,7 @@ export default function JobForm({ initialData = null, onSubmit, loading = false,
             name="location"
             value={formData.location}
             onChange={handleChange}
-            placeholder="e.g., San Francisco, CA or Remote"
+            placeholder="e.g., Mumbai ,India or Remote"
             className={inputClass('location')}
             disabled={loading}
           />
