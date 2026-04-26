@@ -78,21 +78,12 @@ export default function Register() {
       // 1️⃣ Register user in DB
       await authService.register(userData)
 
-      // 2️⃣ Automatically login after registration
-      const response = await authService.login(formData.email, formData.password)
-      const { user, token } = response
+      // 2️⃣ Show success toast and redirect to login
+      toast.success('Registration successful. A verification email has been sent. Please verify before logging in.', {
+        duration: 6000,
+      })
 
-      // Update global context
-      login(user, token)
-
-      toast.success('Account created successfully! Welcome to DevHire 🎉')
-
-      // 3️⃣ Redirect based on role
-      if (user.role === 'recruiter') {
-        navigate('/recruiter-dashboard')
-      } else {
-        navigate('/jobs')
-      }
+      navigate('/login')
 
     } catch (err) {
       const message =

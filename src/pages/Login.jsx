@@ -43,8 +43,16 @@ export default function Login() {
         navigate('/jobs')
       }
     } catch (err) {
-      setError(err.message)
-      toast.error(err.message)
+      const errorMessage = err.message
+      setError(errorMessage)
+
+      if (errorMessage.toLowerCase().includes('verify your email')) {
+        toast.error('Email not verified. Please check your inbox and verify first.', {
+          duration: 5000,
+        })
+      } else {
+        toast.error(errorMessage)
+      }
     } finally {
       setLoading(false)
     }
