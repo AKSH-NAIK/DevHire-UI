@@ -79,7 +79,7 @@ export default function Register() {
       await authService.register(userData)
 
       // 2️⃣ Show success toast and redirect to login
-      toast.success('Registration successful. A verification email has been sent. Please verify before logging in.', {
+      toast.success('Verification email sent. Please verify before logging in.', {
         duration: 6000,
       })
 

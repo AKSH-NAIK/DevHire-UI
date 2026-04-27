@@ -47,7 +47,7 @@ export default function Login() {
       setError(errorMessage)
 
       if (errorMessage.toLowerCase().includes('verify your email')) {
-        toast.error('Email not verified. Please check your inbox and verify first.', {
+        toast.error('Email not verified. Please check your inbox.', {
           duration: 5000,
         })
       } else {
