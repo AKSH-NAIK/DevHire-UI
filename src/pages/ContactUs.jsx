@@ -56,7 +56,7 @@ export default function ContactUs() {
                                         href="mailto:devhiresupport@example.com"
                                         className="text-slate-500 hover:text-primary transition-colors text-[10px] font-bold uppercase tracking-widest"
                                     >
-                                        devhiresupport@example.com
+                                        devhiresupport@gmail.com
                                     </a>
                                 </div>
                             </div>
