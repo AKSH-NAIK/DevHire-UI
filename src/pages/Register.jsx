@@ -60,10 +60,10 @@ export default function Register() {
         return
       }
 
-      // Prepare user data
+      // Prepare user data - exact keys expected by backend
       const userData = {
-        name: formData.name,
-        email: formData.email,
+        name: formData.name.trim(),
+        email: formData.email.toLowerCase().trim(),
         password: formData.password,
         role,
       }
@@ -72,7 +72,7 @@ export default function Register() {
         userData.areaOfInterest = areaOfInterest
       } else {
         userData.companyName = formData.companyName
-        userData.companyWebsite = formData.website
+        userData.companyWebsite = formData.website // Backend expects companyWebsite
       }
 
       // 1️⃣ Register user in DB

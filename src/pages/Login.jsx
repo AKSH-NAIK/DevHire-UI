@@ -29,7 +29,11 @@ export default function Login() {
     setLoading(true)
 
     try {
-      const response = await authService.login(formData.email, formData.password)
+      // Normalize email before sending
+      const response = await authService.login(
+        formData.email.toLowerCase().trim(),
+        formData.password
+      )
       const { user, token } = response
 
       // Update global context
