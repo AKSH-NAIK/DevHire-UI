@@ -34,10 +34,16 @@ export default function Login() {
         formData.email.toLowerCase().trim(),
         formData.password
       )
-      const { user, token } = response
+      const { user, token } = response;
+
+      // ADD THIS CHECK
+      if (!user) {
+        console.error("Invalid response from backend:", response);
+        throw new Error("User data missing from server");
+      }
 
       // Update global context
-      login(user, token)
+      login(user, token);
 
       toast.success(`Welcome back, ${user.name || user.companyName}!`)
 
