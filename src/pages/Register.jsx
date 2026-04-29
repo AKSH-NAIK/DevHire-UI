@@ -75,10 +75,10 @@ export default function Register() {
         userData.companyWebsite = formData.website // Backend expects companyWebsite
       }
 
-      // 1️⃣ Register user in DB
+      // 1️ Register user in DB
       await authService.register(userData)
 
-      // 2️⃣ Show success toast and redirect to login
+      // 2️ Show success toast and redirect to login
       toast.success('Verification email sent. Please verify before logging in.', {
         duration: 6000,
       })
