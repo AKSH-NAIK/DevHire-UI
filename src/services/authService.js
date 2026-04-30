@@ -21,7 +21,7 @@ export const authService = {
 
       return response.data;
     } catch (error) {
-      // Pass the backend message directly
+
       throw new Error(
         error.response?.data?.message || "Login failed"
       );
@@ -34,8 +34,21 @@ export const authService = {
   },
 
   getCurrentUser: () => {
-    const user = localStorage.getItem("user");
-    return user ? JSON.parse(user) : null;
+    try {
+      const userStr = localStorage.getItem("user");
+      
+      // Handle cases where userStr is null, undefined, or the literal strings "null"/"undefined"
+      if (!userStr || userStr === "undefined" || userStr === "null") {
+        return null;
+      }
+
+      return JSON.parse(userStr);
+    } catch (error) {
+      console.error("Failed to parse user from localStorage:", error);
+      // Clear corrupt data to prevent future crashes
+      localStorage.removeItem("user");
+      return null;
+    }
   },
 
   getToken: () => {

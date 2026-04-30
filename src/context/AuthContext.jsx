@@ -34,7 +34,6 @@ export const AuthProvider = ({ children }) => {
         checkAuth();
     }, []);
 
-    // Listen for JWT expiry events dispatched by the api interceptor
     useEffect(() => {
         const handleAuthExpired = () => {
             setUser(null);
@@ -46,8 +45,10 @@ export const AuthProvider = ({ children }) => {
     }, [navigate]);
 
     const login = (userData, token) => {
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(userData));
+        if (token) localStorage.setItem('token', token);
+        if (userData) {
+            localStorage.setItem('user', JSON.stringify(userData));
+        }
         setUser(userData);
     };
 

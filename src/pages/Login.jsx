@@ -29,11 +29,21 @@ export default function Login() {
     setLoading(true)
 
     try {
-      const response = await authService.login(formData.email, formData.password)
-      const { user, token } = response
+      // Normalize email before sending
+      const response = await authService.login(
+        formData.email.toLowerCase().trim(),
+        formData.password
+      )
+      const { user, token } = response;
+
+      // ADD THIS CHECK
+      if (!user) {
+        console.error("Invalid response from backend:", response);
+        throw new Error("User data missing from server");
+      }
 
       // Update global context
-      login(user, token)
+      login(user, token);
 
       toast.success(`Welcome back, ${user.name || user.companyName}!`)
 
