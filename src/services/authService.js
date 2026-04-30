@@ -34,18 +34,21 @@ export const authService = {
   },
 
   getCurrentUser: () => {
-    const userStr = localStorage.getItem("user");
-    let user = null;
-
     try {
-      if (userStr && userStr !== "undefined") {
-        user = JSON.parse(userStr);
+      const userStr = localStorage.getItem("user");
+      
+      // Handle cases where userStr is null, undefined, or the literal strings "null"/"undefined"
+      if (!userStr || userStr === "undefined" || userStr === "null") {
+        return null;
       }
-    } catch (e) {
-      console.error("Invalid user in localStorage");
-    }
 
-    return user;
+      return JSON.parse(userStr);
+    } catch (error) {
+      console.error("Failed to parse user from localStorage:", error);
+      // Clear corrupt data to prevent future crashes
+      localStorage.removeItem("user");
+      return null;
+    }
   },
 
   getToken: () => {
