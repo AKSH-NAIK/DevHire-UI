@@ -37,7 +37,7 @@ export default function CandidateDashboard() {
 
         setApplications(validApplications)
 
-        // ✅ Correct Status Logic
+        // Correct Status Logic
         setStats({
           total: validApplications.length,
           shortlisted: validApplications.filter(a => a.status === 'shortlisted').length,
@@ -129,7 +129,7 @@ export default function CandidateDashboard() {
 
                 return (
                   <div
-                    key={app._id}   // ✅ Fixed key
+                    key={app._id}
                     className="bg-[#1F1F1F] border border-white/10 p-5 hover:border-white/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group"
                   >
                     <div className="flex items-start sm:items-center gap-4">

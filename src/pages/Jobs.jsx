@@ -26,7 +26,7 @@ export default function Jobs() {
       try {
         setLoading(true)
 
-        // ✅ Get all jobs (backend already handles filtering)
+        // Get all jobs (backend already handles filtering)
         const response = await jobsService.getAllJobs()
 
         // Handle both formats: { jobs: [] } OR []
@@ -36,7 +36,7 @@ export default function Jobs() {
 
         setJobs(allJobs)
 
-        // ✅ If candidate, fetch applied jobs
+        //  If candidate, fetch applied jobs
         if (user?.role === 'candidate') {
           const apps = await getMyApplications()
           if (Array.isArray(apps)) {
