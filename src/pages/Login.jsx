@@ -46,8 +46,9 @@ export default function Login() {
       login(user, token);
 
       toast.success(`Welcome back, ${user.name || user.companyName}!`)
-
-      if (user.role === 'recruiter') {
+      if (user.role === 'admin') {
+        navigate('/admin-dashboard')
+      } else if (user.role === 'recruiter') {
         navigate('/recruiter-dashboard')
       } else {
         navigate('/jobs')
