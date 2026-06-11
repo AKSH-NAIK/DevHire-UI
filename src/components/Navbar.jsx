@@ -17,7 +17,11 @@ export default function Navbar() {
     setMobileMenuOpen(false)
   }
 
-  const dashboardPath = user?.role === 'recruiter' ? '/recruiter-dashboard' : '/candidate-dashboard'
+  const dashboardPath = user?.role === 'admin'
+    ? '/admin-dashboard'
+    : user?.role === 'recruiter'
+      ? '/recruiter-dashboard'
+      : '/candidate-dashboard'
 
   return (
     <nav className="sticky top-0 z-50 glass-dark border-b border-white/5">

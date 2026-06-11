@@ -17,6 +17,7 @@ const RecruiterDashboard = lazy(() => import('./pages/RecruiterDashboard'))
 const PostJob = lazy(() => import('./pages/PostJob'))
 const EditJob = lazy(() => import('./pages/EditJob'))
 const CandidateDashboard = lazy(() => import('./pages/CandidateDashboard'))
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
 const AboutUs = lazy(() => import('./pages/AboutUs'))
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
 const TermsOfService = lazy(() => import('./pages/TermsOfService'))
@@ -97,6 +98,16 @@ function AppContent() {
               element={
                 <ProtectedRoute requiredRole="candidate">
                   <CandidateHelpGuide />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Admin Routes */}
+            <Route
+              path="/admin-dashboard"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminDashboard />
                 </ProtectedRoute>
               }
             />

@@ -45,10 +45,17 @@ export default function Login() {
       // Update global context
       login(user, token);
 
+      // DEBUG - log user role to console (remove after debugging)
+      console.log('LOGIN RESPONSE - user:', JSON.stringify(user))
+      console.log('LOGIN RESPONSE - user.role:', user.role)
+
       toast.success(`Welcome back, ${user.name || user.companyName}!`)
-      if (user.role === 'admin') {
+      
+      // Normalize role to lowercase for comparison
+      const role = (user.role || '').toLowerCase()
+      if (role === 'admin') {
         navigate('/admin-dashboard')
-      } else if (user.role === 'recruiter') {
+      } else if (role === 'recruiter') {
         navigate('/recruiter-dashboard')
       } else {
         navigate('/jobs')

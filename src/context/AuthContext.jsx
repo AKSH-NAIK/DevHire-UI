@@ -20,12 +20,34 @@ export const AuthProvider = ({ children }) => {
             try {
                 // Fetch profile using the /me endpoint
                 const response = await api.get('/users/me');
-                setUser(response.data.user);
+                // Backend may wrap user in response.data.user OR just response.data
+                const fetchedUser = response.data.user || response.data;
+                console.log('[AuthContext] /users/me response:', JSON.stringify(fetchedUser));
+                setUser(fetchedUser);
             } catch (error) {
                 console.error('Auth check failed:', error);
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                setUser(null);
+                // Don't clear auth if it's a server error (5xx) or 403 —
+                // fall back to the locally stored user so admin isn't kicked out
+                if (error.response?.status === 401) {
+                    // Truly unauthorized — clear it
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    setUser(null);
+                } else {
+                    // For network errors, 403, 500 etc — try to use the cached user
+                    try {
+                        const cached = localStorage.getItem('user');
+                        if (cached && cached !== 'null' && cached !== 'undefined') {
+                            const cachedUser = JSON.parse(cached);
+                            console.log('[AuthContext] Using cached user:', JSON.stringify(cachedUser));
+                            setUser(cachedUser);
+                        } else {
+                            setUser(null);
+                        }
+                    } catch {
+                        setUser(null);
+                    }
+                }
             } finally {
                 setLoading(false);
             }

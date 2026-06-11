@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+// 🔧 Backend URL — toggle between local and deployed:
+const BACKEND_URL =
+    'http://localhost:5000/api';          // ← Local development
+'https://devhire-backend-1.onrender.com/api'; // 
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'https://devhire-backend-1.onrender.com/api',
+    baseURL: import.meta.env.VITE_API_URL || BACKEND_URL,
     headers: {
         'Content-Type': 'application/json',
     },
