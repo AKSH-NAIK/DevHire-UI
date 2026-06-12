@@ -79,7 +79,6 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error("Error loading admin dashboard data:", error)
       toast.error("Failed to fetch platform statistics")
-      setUsers(MOCK_USERS)
     } finally {
       setLoading(false)
     }
@@ -332,27 +331,18 @@ export default function AdminDashboard() {
                 </h3>
 
                 <div className="space-y-5 max-h-[200px] overflow-y-auto pr-2">
-                  <div className="flex gap-3 text-xs">
-                    <span className="text-slate-600 font-mono">11:51</span>
-                    <div>
-                      <p className="text-white font-medium">Administrator Synced Console</p>
-                      <p className="text-slate-500 text-[10px]">Manual database sync completed successfully</p>
+                  {users.length > 0 && (
+                    <div className="flex gap-3 text-xs">
+                      <span className="text-slate-600 font-mono">{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                      <div>
+                        <p className="text-white font-medium">Console Loaded</p>
+                        <p className="text-slate-500 text-[10px]">{users.length} user{users.length !== 1 ? 's' : ''} & {jobs.length} job{jobs.length !== 1 ? 's' : ''} fetched from database</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex gap-3 text-xs">
-                    <span className="text-slate-600 font-mono">10:42</span>
-                    <div>
-                      <p className="text-white font-medium">New Candidate registered</p>
-                      <p className="text-slate-500 text-[10px]">Elena Rostova verified profile & applied</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-3 text-xs">
-                    <span className="text-slate-600 font-mono">09:15</span>
-                    <div>
-                      <p className="text-white font-medium">Recruiter account verified</p>
-                      <p className="text-slate-500 text-[10px]">Nexus Solutions updated job board catalog</p>
-                    </div>
-                  </div>
+                  )}
+                  {users.length === 0 && jobs.length === 0 && (
+                    <p className="text-slate-600 text-xs text-center py-6">No recent events — sync data to refresh</p>
+                  )}
                 </div>
               </div>
             </div>
