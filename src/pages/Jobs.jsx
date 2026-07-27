@@ -8,6 +8,7 @@ import { getMyApplications } from '../services/applicationService'
 import JobCard from '../components/JobCard'
 import Loader from '../components/Loader'
 import EmptyState from '../components/EmptyState'
+import { Link } from 'react-router-dom'
 
 export default function Jobs() {
   const user = authService.getCurrentUser()
@@ -86,6 +87,10 @@ export default function Jobs() {
     return { otherFilteredJobs: other }
   }, [jobs, searchTerm, selectedType, selectedLocation, applications])
 
+  const hasDemoJobs = useMemo(() => {
+    return otherFilteredJobs.some(job => job.isDemo) || applications.some(app => app.job?.isDemo)
+  }, [applications, otherFilteredJobs])
+
   const handleApplySuccess = async () => {
     try {
       const apps = await getMyApplications()
@@ -115,6 +120,16 @@ export default function Jobs() {
               : `${applications.length + otherFilteredJobs.length} matching position${(applications.length + otherFilteredJobs.length) !== 1 ? 's' : ''} found`}
           </p>
         </div>
+
+        {!loading && hasDemoJobs && (
+          <div className="mb-10 rounded-2xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-xs font-medium text-amber-100/90">
+            ⚡ Showing sample listings while recruiters onboard.{' '}
+            <Link to="/register" className="font-semibold text-amber-300 underline decoration-amber-300/40 underline-offset-4 hover:text-amber-200">
+              Sign up as a Recruiter
+            </Link>{' '}
+            to post live roles!
+          </div>
+        )}
 
         {/* Search & Filters */}
         <div className="grid lg:grid-cols-4 gap-4 mb-12">

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// 🔧 Backend URL — toggle between local and deployed:
+//  Backend URL — toggle between local and deployed:
 const BACKEND_URL =
     'http://localhost:5000/api';          // ← Local development
 'https://devhire-backend-1.onrender.com/api'; // 

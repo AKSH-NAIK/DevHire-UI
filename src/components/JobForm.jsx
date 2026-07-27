@@ -2,6 +2,12 @@
 
 import { useState } from 'react'
 import { ButtonSpinner } from './Loader'
+import { toast } from 'react-hot-toast'
+
+const toSalaryValue = (value) => {
+  if (value === '' || value === null || value === undefined) return ''
+  return Number(value)
+}
 
 // Per-field validation
 function validate(fields) {
@@ -9,7 +15,15 @@ function validate(fields) {
   if (!fields.title.trim()) errors.title = 'Job title is required'
   if (!fields.company?.trim()) errors.company = 'Company name is required'
   if (!fields.location.trim()) errors.location = 'Location is required'
-  if (!fields.salary.trim()) errors.salary = 'Salary range is required'
+  if (fields.salaryMin === '' || Number.isNaN(Number(fields.salaryMin))) errors.salaryMin = 'Minimum salary is required'
+  if (fields.salaryMax === '' || Number.isNaN(Number(fields.salaryMax))) errors.salaryMax = 'Maximum salary is required'
+  if (
+    fields.salaryMin !== '' &&
+    fields.salaryMax !== '' &&
+    Number(fields.salaryMax) < Number(fields.salaryMin)
+  ) {
+    errors.salaryMax = 'Maximum salary must be greater than minimum salary'
+  }
   if (!fields.description.trim()) errors.description = 'Description is required'
   if (!fields.requirements.trim()) errors.requirements = 'Requirements are required'
   return errors
@@ -22,14 +36,28 @@ function FieldError({ msg }) {
 
 export default function JobForm({ initialData = null, onSubmit, loading = false, defaultCompany = '' }) {
   const [formData, setFormData] = useState(
-    initialData || { title: '', company: defaultCompany, location: '', salary: '', salaryPeriod: 'Monthly', type: 'Full-time', description: '', requirements: '' }
+    initialData
+      ? {
+          ...initialData,
+          company: initialData.company || defaultCompany,
+          salaryMin: toSalaryValue(initialData.salaryMin),
+          salaryMax: toSalaryValue(initialData.salaryMax),
+          requirements: Array.isArray(initialData.requirements) ? initialData.requirements.join(', ') : (initialData.requirements || ''),
+          salaryPeriod: initialData.salaryPeriod || 'Monthly',
+          type: initialData.type || 'Full-time',
+        }
+      : { title: '', company: defaultCompany, location: '', salaryMin: '', salaryMax: '', salaryPeriod: 'Monthly', type: 'Full-time', description: '', requirements: '' }
   )
   const [errors, setErrors] = useState({})
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    const nextValue = name === 'salaryMin' || name === 'salaryMax' ? value.replace(/\D/g, '') : value
+    setFormData(prev => ({ ...prev, [name]: nextValue }))
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }))
+    if (name === 'salaryMin' || name === 'salaryMax') {
+      setErrors(prev => ({ ...prev, salaryMin: '', salaryMax: '' }))
+    }
   }
 
   const handleSubmit = (e) => {
@@ -43,7 +71,12 @@ export default function JobForm({ initialData = null, onSubmit, loading = false,
     }
     const requirements = formData.requirements.split(',').map(r => r.trim()).filter(Boolean)
     try {
-      onSubmit({ ...formData, requirements })
+      onSubmit({
+                ...formData,
+                 salaryMin: Number(formData.salaryMin),
+                 salaryMax: Number(formData.salaryMax),
+                 requirements,
+    })
     } catch (err) {
       console.error('JobForm onSubmit error:', err)
       toast.error('An unexpected error occurred. Please try again.')
@@ -124,42 +157,77 @@ export default function JobForm({ initialData = null, onSubmit, loading = false,
           />
           <FieldError msg={errors.location} />
         </div>
+{/* Salary */}
+<div>
+  <label className="block text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1.5">
+    Salary Range <span className="text-red-500">*</span>
+  </label>
 
-        {/* Salary */}
-        <div>
-          <label className="block text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1.5">
-            Salary Range <span className="text-red-500">*</span>
-          </label>
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary font-bold text-sm pointer-events-none">₹</span>
-              <input
-                type="text"
-                name="salary"
-                value={formData.salary}
-                onChange={handleChange}
-                placeholder="e.g., 80,000 – 1,20,000"
-                className={`${inputClass('salary')} pl-8`}
-                disabled={loading}
-              />
-            </div>
-            <div className="relative">
-              <select
-                name="salaryPeriod"
-                value={formData.salaryPeriod}
-                onChange={handleChange}
-                className="h-full appearance-none px-4 py-3 bg-[#2A2A2A] border border-white/10 text-white focus:outline-none focus:border-primary transition-all text-sm cursor-pointer pr-8"
-                disabled={loading}
-              >
-                <option value="Monthly" className="bg-[#2A2A2A]">Monthly</option>
-                <option value="Yearly" className="bg-[#2A2A2A]">Yearly</option>
-              </select>
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-600 text-[10px]">▼</div>
-            </div>
-          </div>
-          <FieldError msg={errors.salary} />
-        </div>
+  <div className="grid gap-3 md:grid-cols-2">
+    {/* Minimum Salary */}
+    <div className="relative flex-1">
+      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary font-bold text-sm pointer-events-none">
+        ₹
+      </span>
 
+      <input
+        type="text"
+        name="salaryMin"
+        value={formData.salaryMin}
+        onChange={handleChange}
+        placeholder="1200000"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        className={`${inputClass('salaryMin')} pl-8`}
+        disabled={loading}
+      />
+    </div>
+
+    {/* Maximum Salary */}
+    <div className="relative flex-1">
+      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary font-bold text-sm pointer-events-none">
+        ₹
+      </span>
+
+      <input
+        type="text"
+        name="salaryMax"
+        value={formData.salaryMax}
+        onChange={handleChange}
+        placeholder="1800000"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        className={`${inputClass('salaryMax')} pl-8`}
+        disabled={loading}
+      />
+    </div>
+  </div>
+
+  {/* Salary Period */}
+  <div className="relative mt-3 max-w-xs">
+    <select
+      name="salaryPeriod"
+      value={formData.salaryPeriod}
+      onChange={handleChange}
+      className="w-full appearance-none px-4 py-3 bg-[#2A2A2A] border border-white/10 text-white focus:outline-none focus:border-primary transition-all text-sm cursor-pointer pr-8"
+      disabled={loading}
+    >
+      <option value="Monthly" className="bg-[#2A2A2A]">
+        Monthly
+      </option>
+      <option value="Yearly" className="bg-[#2A2A2A]">
+        Yearly
+      </option>
+    </select>
+
+    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-600 text-[10px]">
+      ▼
+    </div>
+  </div>
+
+  <FieldError msg={errors.salaryMin} />
+  <FieldError msg={errors.salaryMax} />
+  </div>  
         {/* Job Type */}
         <div>
           <label className="block text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1.5">

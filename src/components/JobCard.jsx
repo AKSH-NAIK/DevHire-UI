@@ -16,6 +16,18 @@ export default function JobCard({ job, userRole: propUserRole, onApply, isApplie
   const [reportOpen, setReportOpen] = useState(false)
   const [expandSkills, setExpandSkills] = useState(false)
 
+  const formatSalary = (value) => {
+    if (value === null || value === undefined || value === '') return null
+    const numericValue = Number(value)
+    if (Number.isNaN(numericValue)) return null
+    return numericValue.toLocaleString('en-IN')
+  }
+
+  const salaryMin = formatSalary(job.salaryMin)
+  const salaryMax = formatSalary(job.salaryMax)
+  const salaryPeriodLabel = job.salaryPeriod === 'Yearly' ? 'yr' : job.salaryPeriod === 'Monthly' ? 'mo' : job.salaryPeriod
+  const isDemo = Boolean(job.isDemo)
+
   const initials = (job.company || 'Unknown')
     .split(' ')
     .map(word => word[0])
@@ -69,7 +81,14 @@ export default function JobCard({ job, userRole: propUserRole, onApply, isApplie
               {initials}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-white font-bold text-lg line-clamp-2 tracking-tight group-hover:text-primary transition-colors">{job.title}</h3>
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-white font-bold text-lg line-clamp-2 tracking-tight group-hover:text-primary transition-colors">{job.title}</h3>
+                {isDemo && (
+                  <span className="rounded border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-400">
+                    Demo Role
+                  </span>
+                )}
+              </div>
               <p className="text-slate-500 text-sm font-medium">{job.company}</p>
             </div>
           </div>
@@ -91,10 +110,15 @@ export default function JobCard({ job, userRole: propUserRole, onApply, isApplie
             {job.type}
           </div>
           <div className="col-span-2 flex items-center gap-1.5">
-            <span className="text-primary font-bold text-lg">₹</span>
-            <span className="text-primary font-bold text-lg tracking-tight">{job.salary}</span>
-            {job.salaryPeriod && (
-              <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest border border-white/10 bg-white/5 px-2 py-0.5 rounded-md ml-1">/ {job.salaryPeriod}</span>
+            {salaryMin && salaryMax ? (
+              <span className="text-primary font-bold text-lg tracking-tight">₹{salaryMin} - ₹{salaryMax}</span>
+            ) : job.salary ? (
+              <span className="text-primary font-bold text-lg tracking-tight">{job.salary}</span>
+            ) : (
+              <span className="text-slate-500 text-xs uppercase font-bold tracking-widest">Salary not disclosed</span>
+            )}
+            {salaryPeriodLabel && (
+              <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest border border-white/10 bg-white/5 px-2 py-0.5 rounded-md ml-1">/ {salaryPeriodLabel || job.salaryPeriod}</span>
             )}
           </div>
         </div>
@@ -155,16 +179,24 @@ export default function JobCard({ job, userRole: propUserRole, onApply, isApplie
                 {isApplied ? (
                   <StatusBadge status={status || 'pending'} />
                 ) : (
-                  <button
-                    onClick={handleApplyClick}
-                    className={`px-5 py-2 border border-primary text-primary transition-all text-xs font-bold uppercase tracking-widest rounded-md ${activeUserRole === 'recruiter'
-                      ? 'opacity-50 cursor-not-allowed bg-transparent'
-                      : 'hover:bg-primary hover:text-black'
-                      }`}
-                    aria-label={`Apply for ${job.title} at ${job.company}`}
-                  >
-                    Apply
-                  </button>
+                  isDemo ? (
+                    <button
+                      type="button"
+                      title="This is a demo listing. Sign up to apply for live positions!"
+                      className="px-5 py-2 border border-neutral-700 bg-neutral-800 text-neutral-500 cursor-not-allowed transition-all text-xs font-bold uppercase tracking-widest rounded-md"
+                      disabled
+                    >
+                      Demo Role
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleApplyClick}
+                      className="px-5 py-2 border border-amber-500 bg-amber-500 text-black transition-all text-xs font-bold uppercase tracking-widest rounded-md hover:bg-amber-400"
+                      aria-label={`Apply for ${job.title} at ${job.company}`}
+                    >
+                      Apply Now
+                    </button>
+                  )
                 )}
                 <button
                   onClick={handleReportClick}

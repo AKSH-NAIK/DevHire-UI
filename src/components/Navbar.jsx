@@ -24,15 +24,15 @@ export default function Navbar() {
       : '/candidate-dashboard'
 
   return (
-    <nav className="sticky top-0 z-50 glass-dark border-b border-white/5">
+    <nav className="sticky top-0 z-50 border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group" aria-label="DevHire Home">
-            <div className="w-8 h-8 border border-primary flex items-center justify-center transition-all group-hover:shadow-glow">
-              <span className="text-primary font-bold">D</span>
+            <div className="flex h-8 w-8 items-center justify-center border border-amber-500/40 bg-amber-500/10 transition-all group-hover:border-amber-400/70 group-hover:bg-amber-500/20">
+              <span className="font-bold text-amber-300">D</span>
             </div>
-            <span className="font-bold text-white text-xl tracking-tight hidden sm:block">DevHire</span>
+            <span className="hidden text-xl font-bold tracking-tight text-zinc-100 sm:block">DevHire</span>
           </Link>
 
           {/* Desktop Menu */}
@@ -90,7 +90,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   to="/register"
-                  className="px-5 py-2 border border-primary text-primary hover:bg-primary hover:text-black transition-all text-sm font-semibold uppercase tracking-wider"
+                  className="rounded-xl border border-amber-500/40 bg-amber-500 px-5 py-2 text-sm font-semibold text-zinc-950 transition-all hover:bg-amber-400"
                 >
                   Get started
                 </Link>
