@@ -7,6 +7,17 @@ import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import { jobsService } from '../services/jobsService'
 
+const sampleFeaturedJob = {
+  title: 'Team Manager',
+  company: 'Aksh Naik',
+  location: 'Mumbai,India',
+  description: 'KUCH BHI KARLO',
+  salary: '₹45,000 - ₹50,000 / mo',
+  skills: ['KARO', 'MAN', 'KARO'],
+  type: 'Full-Time',
+  postedAt: '29 JUL 2026',
+}
+
 const formatSalaryRange = (job) => {
   const salaryMin = Number(job?.salaryMin)
   const salaryMax = Number(job?.salaryMax)
@@ -106,13 +117,13 @@ export default function Landing() {
               </div>
 
               <h1 className="max-w-4xl text-5xl font-bold leading-[0.94] tracking-[-0.04em] text-zinc-100 md:text-7xl lg:text-8xl">
-                Find technical roles that are
+                Where Developers and Great Teams
                 <br />
-                <span className="text-amber-400">actually live.</span>
+                <span className="text-amber-400">Connect Directly.</span>
               </h1>
 
               <p className="max-w-2xl text-base leading-8 text-zinc-400 md:text-lg">
-                Search active developer jobs, explore real-time salary ranges, and apply directly.
+               Browse live roles with upfront salary ranges and zero middleman clutter.
               </p>
 
               <form
@@ -194,63 +205,99 @@ export default function Landing() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-[0_30px_100px_rgba(0,0,0,0.35)] backdrop-blur-xl"
+              className="space-y-3"
             >
-              <div className="mb-6 flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-amber-300">Featured jobs</p>
-                  <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-zinc-100">Current openings</h2>
-                </div>
-                <div className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-amber-300">
-                  Live
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                {loading ? (
-                  Array.from({ length: 3 }).map((_, index) => (
-                    <div key={index} className="rounded-2xl border border-zinc-800 bg-zinc-950/80 p-4">
-                      <div className="h-4 w-28 rounded-full bg-zinc-800" />
-                      <div className="mt-4 h-6 w-3/4 rounded-full bg-zinc-800" />
-                      <div className="mt-5 h-4 w-40 rounded-full bg-zinc-800" />
-                    </div>
-                  ))
-                ) : sortedJobs.slice(0, 3).length > 0 ? (
-                  sortedJobs.slice(0, 3).map((job) => (
-                    <div
-                      key={job._id || job.id}
-                      className="rounded-2xl border border-zinc-800 bg-zinc-950/80 p-4 transition-all duration-300 hover:border-amber-500/40 hover:bg-zinc-900"
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <h3 className="text-base font-semibold text-zinc-100">{job?.title || 'Untitled role'}</h3>
-                          <p className="mt-1 text-sm text-zinc-400">
-                            {job?.company || 'Company not listed'} • {job?.location || 'Location not listed'}
-                          </p>
-                        </div>
-                        <span className="rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-300">
-                          {job?.type || 'Full-Time'}
-                        </span>
-                      </div>
-
-                      <div className="mt-4 flex items-center justify-between gap-4 text-sm text-zinc-400">
-                        <span>{formatSalaryRange(job)}</span>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="rounded-2xl border border-zinc-800 bg-zinc-950/80 p-6 text-center">
-                    <h3 className="text-lg font-semibold text-zinc-100">No active job listings yet.</h3>
-                    <p className="mt-2 text-sm text-zinc-400">Be the first recruiter to post a role on DevHire.</p>
-                    <Link
-                      to="/post-job"
-                      className="mt-5 inline-flex items-center justify-center rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-zinc-950 transition-colors hover:bg-amber-400"
-                    >
-                      + Post a Job
-                    </Link>
+              {loading ? (
+                Array.from({ length: 3 }).map((_, index) => (
+                  <div key={index} className="rounded-2xl border border-zinc-800 bg-zinc-950/80 p-4">
+                    <div className="h-4 w-28 rounded-full bg-zinc-800" />
+                    <div className="mt-4 h-6 w-3/4 rounded-full bg-zinc-800" />
+                    <div className="mt-5 h-4 w-40 rounded-full bg-zinc-800" />
                   </div>
-                )}
-              </div>
+                ))
+              ) : sortedJobs.slice(0, 3).length > 0 ? (
+                sortedJobs.slice(0, 3).map((job) => (
+                  <div
+                    key={job._id || job.id}
+                    className="rounded-2xl border border-zinc-800 bg-zinc-950/80 p-4 transition-all duration-300 hover:border-amber-500/40 hover:bg-zinc-900"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <h3 className="text-base font-semibold text-zinc-100">{job?.title || 'Untitled role'}</h3>
+                        <p className="mt-1 text-sm text-zinc-400">
+                          {job?.company || 'Company not listed'} • {job?.location || 'Location not listed'}
+                        </p>
+                      </div>
+                      <span className="rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-300">
+                        {job?.type || 'Full-Time'}
+                      </span>
+                    </div>
+
+                    <div className="mt-4 flex items-center justify-between gap-4 text-sm text-zinc-400">
+                      <span>{formatSalaryRange(job)}</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="relative overflow-hidden rounded-[26px] border border-[#5e4306] bg-[#1a1a1a] px-6 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)]">
+                  <div className="relative flex items-start justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-[21px] font-semibold leading-tight tracking-[-0.03em] text-[#f4f4f5]">
+                        {sampleFeaturedJob.title}
+                      </h3>
+                      <p className="mt-2 text-[15px] leading-snug text-[#9ca3af]">
+                        {sampleFeaturedJob.company} • {sampleFeaturedJob.location}
+                      </p>
+                    </div>
+
+                    <span className="flex-shrink-0 rounded-full border border-[#4a4a4a] bg-[#171717] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.34em] text-[#e5e7eb]">
+                      {sampleFeaturedJob.type}
+                    </span>
+                  </div>
+
+                  <p className="mt-8 max-w-[90%] text-[18px] font-medium uppercase tracking-[-0.01em] text-[#9ca3af] sm:max-w-[80%]">
+                    {sampleFeaturedJob.description}
+                  </p>
+
+                  <div className="mt-8 border-t border-[#2a2a2a] pt-7">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-[18px] font-semibold tracking-[-0.03em] text-[#f7c948] sm:text-[20px]">
+                          {sampleFeaturedJob.salary.split(' / ')[0]}
+                        </p>
+                        <p className="mt-1 text-[18px] font-semibold uppercase tracking-[-0.03em] text-[#f7c948] sm:text-[20px]">
+                          / {sampleFeaturedJob.salary.split(' / ')[1]}
+                        </p>
+                      </div>
+
+                      <p className="max-w-[155px] text-right text-[11px] font-semibold uppercase tracking-[0.45em] text-[#7f8792] sm:max-w-none sm:text-[12px]">
+                        Posted {sampleFeaturedJob.postedAt}
+                      </p>
+                    </div>
+
+                    <div className="mt-8 flex flex-wrap gap-3">
+                      {sampleFeaturedJob.skills.map((skill) => (
+                        <span
+                          key={skill}
+                          className="rounded-full border border-[#222] bg-black px-4 py-2 text-[11px] font-bold uppercase tracking-[0.34em] text-[#f4f4f5] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="mt-10 flex items-end justify-end">
+                      <Link
+                        to="/jobs"
+                        className="inline-flex items-center gap-3 text-[16px] font-semibold text-[#e5e7eb] transition-colors hover:text-amber-400"
+                      >
+                        Open jobs
+                        <ArrowRight size={18} />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
             </motion.div>
           </div>
         </div>

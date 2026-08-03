@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react'
-import { MapPin, Briefcase, Users, Flag } from 'lucide-react'
+import { Users, Flag } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 import { authService } from '../services/authService'
 import StatusBadge from './StatusBadge'
@@ -9,12 +9,11 @@ import ApplyJobModal from './ApplyJobModal'
 import ReportJobModal from './ReportJobModal'
 import { motion } from 'framer-motion'
 
-export default function JobCard({ job, userRole: propUserRole, onApply, isApplied = false, status }) {
+export default function JobCard({ job, userRole: propUserRole, onApply, isApplied = false, status, showActions = true }) {
   const user = authService.getCurrentUser()
   const activeUserRole = propUserRole || user?.role
   const [applyOpen, setApplyOpen] = useState(false)
   const [reportOpen, setReportOpen] = useState(false)
-  const [expandSkills, setExpandSkills] = useState(false)
 
   const formatSalary = (value) => {
     if (value === null || value === undefined || value === '') return null
@@ -26,25 +25,15 @@ export default function JobCard({ job, userRole: propUserRole, onApply, isApplie
   const salaryMin = formatSalary(job.salaryMin)
   const salaryMax = formatSalary(job.salaryMax)
   const salaryPeriodLabel = job.salaryPeriod === 'Yearly' ? 'yr' : job.salaryPeriod === 'Monthly' ? 'mo' : job.salaryPeriod
-  const isDemo = Boolean(job.isDemo)
-
-  const initials = (job.company || 'Unknown')
-    .split(' ')
-    .map(word => word[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
+  const jobTypeLabel = job.type || 'Full-Time'
 
   const formatDate = (dateString) => {
     const date = new Date(dateString)
-    const today = new Date()
-    const diffDays = Math.ceil(Math.abs(today - date) / (1000 * 60 * 60 * 24))
-    if (diffDays === 0) return 'Today'
-    if (diffDays === 1) return 'Yesterday'
-    if (diffDays < 7) return `${diffDays}d ago`
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    if (Number.isNaN(date.getTime())) return ''
+    return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
   }
+
+  const postedDate = formatDate(job.createdAt)
 
   const handleApplyClick = (e) => {
     e.preventDefault()
@@ -63,7 +52,6 @@ export default function JobCard({ job, userRole: propUserRole, onApply, isApplie
     setReportOpen(true)
   }
 
-  // Called by ApplyJobModal on successful apply
   const handleApplySuccess = () => {
     onApply?.(job.id)
   }
@@ -72,151 +60,95 @@ export default function JobCard({ job, userRole: propUserRole, onApply, isApplie
     <>
       <motion.div
         whileHover={{ y: -5, borderColor: 'rgba(245, 158, 11, 0.5)' }}
-        className="glass p-6 transition-all duration-200 group flex flex-col rounded-2xl h-full border border-white/10"
+        className="relative overflow-hidden rounded-[26px] border border-[#262626] bg-[#121212] px-6 py-5 shadow-[0_20px_60px_rgba(0,0,0,0.18)] transition-all duration-300 hover:border-[#3a3a3a]"
       >
-        {/* Header */}
-        <div className="flex items-start justify-between mb-6">
-          <div className="flex items-center gap-4 flex-1">
-            <div className="w-12 h-12 border border-white/10 flex items-center justify-center text-primary font-bold text-lg group-hover:border-primary/60 group-hover:shadow-glow-sm transition-all flex-shrink-0 rounded-xl bg-white/5">
-              {initials}
+        <div className="absolute inset-0 rounded-[26px] border border-[#1e1e1e]" />
+
+        <div className="relative flex items-start justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <h3 className="text-[20px] font-semibold leading-tight tracking-[-0.03em] text-zinc-100 line-clamp-2 sm:text-[21px]">
+              {job.title}
+            </h3>
+            <p className="mt-2 text-[15px] leading-snug text-[#9ca3af]">
+              {job.company || 'Company not listed'} • {job.location || 'Location not listed'}
+            </p>
+          </div>
+
+          <span className="flex-shrink-0 rounded-full border border-[#3c3c3c] bg-[#161616] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.34em] text-[#e5e7eb]">
+            {jobTypeLabel}
+          </span>
+        </div>
+
+        <div className="relative mt-8 border-t border-[#262626] pt-7">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-[18px] font-semibold tracking-[-0.03em] text-[#f5c84c] sm:text-[20px]">
+                {salaryMin && salaryMax
+                  ? `₹${salaryMin} - ₹${salaryMax}`
+                  : job.salary || 'Salary not disclosed'}
+              </p>
+              {(salaryPeriodLabel || job.salaryPeriod) && (
+                <p className="mt-1 text-[18px] font-semibold uppercase tracking-[-0.03em] text-[#f5c84c] sm:text-[20px]">
+                  / {salaryPeriodLabel || job.salaryPeriod}
+                </p>
+              )}
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-white font-bold text-lg line-clamp-2 tracking-tight group-hover:text-primary transition-colors">{job.title}</h3>
-                {isDemo && (
-                  <span className="rounded border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-400">
-                    Demo Role
-                  </span>
+
+            <p className="max-w-[155px] text-right text-[11px] font-semibold uppercase tracking-[0.45em] text-[#7f8792] sm:max-w-none sm:text-[12px]">
+              Posted {postedDate}
+            </p>
+          </div>
+
+          {showActions && (
+            <div className="mt-6 flex items-center justify-between gap-4 pt-1">
+              <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-zinc-500 min-h-[32px]">
+                {activeUserRole === 'recruiter' && (
+                  <>
+                    <Users size={14} className="text-amber-400" />
+                    {job.applicants || 0} applicants
+                  </>
+                )}
+
+                {activeUserRole === 'candidate' && isApplied && job.createdBy?.email && (
+                  <a
+                    href={`mailto:${job.createdBy.email}`}
+                    className="rounded-md border border-amber-500/50 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.24em] text-amber-300 transition hover:bg-amber-500 hover:text-zinc-950"
+                  >
+                    Contact Recruiter
+                  </a>
                 )}
               </div>
-              <p className="text-slate-500 text-sm font-medium">{job.company}</p>
-            </div>
-          </div>
-          {job.verified && (
-            <div className="px-2 py-0.5 border border-primary/30 text-primary text-[10px] uppercase tracking-widest font-bold bg-primary/5 flex-shrink-0 ml-2 rounded-md">
-              Verified
-            </div>
-          )}
-        </div>
 
-        {/* Details */}
-        <div className="grid grid-cols-2 gap-y-3 mb-6">
-          <div className="flex items-center gap-2 text-slate-500 text-xs uppercase tracking-tight font-medium">
-            <MapPin size={14} className="text-primary flex-shrink-0" />
-            <span className="truncate">{job.location}</span>
-          </div>
-          <div className="flex items-center gap-2 text-slate-500 text-xs uppercase tracking-tight font-medium">
-            <Briefcase size={14} className="text-primary flex-shrink-0" />
-            {job.type}
-          </div>
-          <div className="col-span-2 flex items-center gap-1.5">
-            {salaryMin && salaryMax ? (
-              <span className="text-primary font-bold text-lg tracking-tight">₹{salaryMin} - ₹{salaryMax}</span>
-            ) : job.salary ? (
-              <span className="text-primary font-bold text-lg tracking-tight">{job.salary}</span>
-            ) : (
-              <span className="text-slate-500 text-xs uppercase font-bold tracking-widest">Salary not disclosed</span>
-            )}
-            {salaryPeriodLabel && (
-              <span className="text-slate-500 text-[10px] uppercase font-bold tracking-widest border border-white/10 bg-white/5 px-2 py-0.5 rounded-md ml-1">/ {salaryPeriodLabel || job.salaryPeriod}</span>
-            )}
-          </div>
-        </div>
-
-        {/* Description */}
-        <p className="text-slate-400 text-sm line-clamp-2 mb-6 leading-relaxed flex-1">
-          {job.description
-            ?.replace(/Ananlysis/g, 'Analysis')
-            ?.replace(/ ,/g, ',')}
-        </p>
-
-        {/* Requirement tags */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {(expandSkills ? (job.requirements || []) : (job.requirements || []).slice(0, 3)).map((req, idx) => (
-            <span
-              key={idx}
-              className="px-3 py-1 border border-white/5 bg-white/5 text-slate-400 text-[10px] uppercase font-bold tracking-widest rounded-md"
-            >
-              {req}
-            </span>
-          ))}
-          {job.requirements?.length > 3 && (
-            <button
-              onClick={() => setExpandSkills(!expandSkills)}
-              className="px-3 py-1 text-primary hover:text-white transition-colors text-[10px] uppercase font-bold tracking-widest border border-white/5 bg-white/5 hover:bg-primary/10 rounded-md"
-            >
-              {expandSkills ? 'Show Less' : `+${job.requirements.length - 3} more`}
-            </button>
-          )}
-        </div>
-
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-5 border-t border-white/5">
-          <div className="flex items-center gap-2 text-slate-500 text-[10px] uppercase font-bold tracking-widest min-h-[32px]">
-            {/* Show applicants ONLY for recruiters */}
-            {activeUserRole === 'recruiter' && (
-              <>
-                <Users size={14} className="text-primary" />
-                {job.applicants || 0} applicants
-              </>
-            )}
-
-            {/* If applied candidate, show Contact Recruiter on the left */}
-            {activeUserRole === 'candidate' && isApplied && job.createdBy?.email && (
-              <a
-                href={`mailto:${job.createdBy.email}`}
-                className="text-[10px] border border-primary/50 px-3 py-1.5 uppercase font-bold tracking-widest text-primary hover:bg-primary hover:text-black transition flex-shrink-0 rounded-md"
-              >
-                Contact Recruiter
-              </a>
-            )}
-          </div>
-
-          <div className="flex items-center gap-2">
-            {/* Candidates: Apply + Report */}
-            {(!activeUserRole || activeUserRole === 'candidate') && (
-              <>
-                {isApplied ? (
-                  <StatusBadge status={status || 'pending'} />
-                ) : (
-                  isDemo ? (
+              <div className="flex items-center gap-2">
+                {(!activeUserRole || activeUserRole === 'candidate') && (
+                  <>
+                    {isApplied ? (
+                      <StatusBadge status={status || 'pending'} />
+                    ) : (
+                      <button
+                        onClick={handleApplyClick}
+                        className="rounded-md border border-amber-500 bg-amber-500 px-5 py-2 text-xs font-bold uppercase tracking-widest text-black transition-all hover:bg-amber-400"
+                        aria-label={`Apply for ${job.title} at ${job.company}`}
+                      >
+                        Apply Now
+                      </button>
+                    )}
                     <button
-                      type="button"
-                      title="This is a demo listing. Sign up to apply for live positions!"
-                      className="px-5 py-2 border border-neutral-700 bg-neutral-800 text-neutral-500 cursor-not-allowed transition-all text-xs font-bold uppercase tracking-widest rounded-md"
-                      disabled
+                      onClick={handleReportClick}
+                      title="Report this job"
+                      aria-label={`Report ${job.title} job at ${job.company}`}
+                      className="rounded-md border border-transparent p-2 text-zinc-500 transition-colors hover:border-red-900/40 hover:text-red-400"
                     >
-                      Demo Role
+                      <Flag size={15} />
                     </button>
-                  ) : (
-                    <button
-                      onClick={handleApplyClick}
-                      className="px-5 py-2 border border-amber-500 bg-amber-500 text-black transition-all text-xs font-bold uppercase tracking-widest rounded-md hover:bg-amber-400"
-                      aria-label={`Apply for ${job.title} at ${job.company}`}
-                    >
-                      Apply Now
-                    </button>
-                  )
+                  </>
                 )}
-                <button
-                  onClick={handleReportClick}
-                  title="Report this job"
-                  aria-label={`Report ${job.title} job at ${job.company}`}
-                  className="p-2 text-slate-600 hover:text-red-400 transition-colors border border-transparent hover:border-red-900/40"
-                >
-                  <Flag size={15} />
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-
-        <div className="text-slate-700 text-[10px] mt-3 uppercase font-bold tracking-widest">
-          Posted {formatDate(job.createdAt)}
+              </div>
+            </div>
+          )}
         </div>
       </motion.div>
 
-      {/* Apply Modal */}
       <ApplyJobModal
         isOpen={applyOpen}
         onClose={() => setApplyOpen(false)}
@@ -225,7 +157,6 @@ export default function JobCard({ job, userRole: propUserRole, onApply, isApplie
         onApplySuccess={handleApplySuccess}
       />
 
-      {/* Report Modal */}
       <ReportJobModal
         isOpen={reportOpen}
         onClose={() => setReportOpen(false)}
