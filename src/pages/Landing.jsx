@@ -8,12 +8,12 @@ import { useAuth } from '../context/AuthContext'
 import { jobsService } from '../services/jobsService'
 
 const sampleFeaturedJob = {
-  title: 'Team Manager',
+  title: 'MERN Stack Developer',
   company: 'Aksh Naik',
   location: 'Mumbai,India',
-  description: 'KUCH BHI KARLO',
+  description: 'We are seeking a skilled MERN Stack Developer to join our team. ',
   salary: '₹45,000 - ₹50,000 / mo',
-  skills: ['KARO', 'MAN', 'KARO'],
+  skills: ['MongoDB', 'Express.js', 'React', 'Node.js'],
   type: 'Full-Time',
   postedAt: '29 JUL 2026',
 }
