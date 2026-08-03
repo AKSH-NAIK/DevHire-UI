@@ -103,26 +103,21 @@ export default function Landing() {
     <div className="min-h-screen overflow-x-hidden bg-zinc-950 text-zinc-100">
       <section className="relative overflow-hidden border-b border-zinc-800/70">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.14),transparent_32%),radial-gradient(circle_at_top_right,rgba(39,39,42,0.85),transparent_28%)]" />
-        <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-16 sm:px-6 lg:px-8 lg:pb-28 lg:pt-24">
-          <div className="grid items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-6 sm:px-6 lg:px-8 lg:pb-24 lg:pt-8">
+          <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="space-y-8"
+              className="space-y-4 lg:space-y-5"
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-zinc-900/80 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.32em] text-amber-300 shadow-[0_0_0_1px_rgba(245,158,11,0.05)]">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                Live opportunities
-              </div>
-
               <h1 className="max-w-4xl text-5xl font-bold leading-[0.94] tracking-[-0.04em] text-zinc-100 md:text-7xl lg:text-8xl">
                 Where Developers and Great Teams
                 <br />
                 <span className="text-amber-400">Connect Directly.</span>
               </h1>
 
-              <p className="max-w-2xl text-base leading-8 text-zinc-400 md:text-lg">
+              <p className="max-w-2xl text-base leading-7 text-zinc-400 md:text-lg">
                Browse live roles with upfront salary ranges and zero middleman clutter.
               </p>
 
@@ -154,7 +149,7 @@ export default function Landing() {
                 </div>
               </form>
 
-              <div className="flex flex-col gap-4 sm:flex-row">
+              <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
                 <Link
                   to={user ? '/jobs' : '/register'}
                   className="inline-flex items-center justify-center rounded-xl bg-amber-500 px-6 py-4 text-sm font-semibold text-zinc-950 transition-all duration-300 hover:bg-amber-400 hover:shadow-[0_10px_30px_rgba(245,158,11,0.25)]"
@@ -169,7 +164,7 @@ export default function Landing() {
                 </Link>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-3">
+              <div className="grid gap-3 sm:grid-cols-3 lg:gap-4">
                 {[
                   {
                     icon: ShieldCheck,
@@ -205,7 +200,7 @@ export default function Landing() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="flex flex-col gap-3"
+              className="flex flex-col items-center gap-3 self-start lg:pt-36"
             >
               {loading ? (
                 Array.from({ length: 3 }).map((_, index) => (
@@ -239,64 +234,64 @@ export default function Landing() {
                   </div>
                 ))
               ) : (
-                <div className="relative overflow-hidden rounded-[26px] border border-[#5e4306] bg-[#1a1a1a] px-6 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)] lg:-mt-10 xl:-mt-14">
-                  <div className="relative flex items-start justify-between gap-4">
+                <>
+                <div className="relative w-full overflow-hidden rounded-[22px] border border-[#5e4306] bg-[#1a1a1a] px-4 py-4 shadow-[0_20px_60px_rgba(0,0,0,0.18)] lg:-mt-1 xl:-mt-2">
+                  <div className="relative flex items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-[21px] font-semibold leading-tight tracking-[-0.03em] text-[#f4f4f5]">
+                      <h3 className="text-[18px] font-semibold leading-tight tracking-[-0.03em] text-[#f4f4f5]">
                         {sampleFeaturedJob.title}
                       </h3>
-                      <p className="mt-2 text-[15px] leading-snug text-[#9ca3af]">
+                      <p className="mt-1 text-[13px] leading-snug text-[#9ca3af]">
                         {sampleFeaturedJob.company} • {sampleFeaturedJob.location}
                       </p>
                     </div>
 
-                    <span className="flex-shrink-0 rounded-full border border-[#4a4a4a] bg-[#171717] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.34em] text-[#e5e7eb]">
+                    <span className="flex-shrink-0 rounded-full border border-[#4a4a4a] bg-[#171717] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.3em] text-[#e5e7eb]">
                       {sampleFeaturedJob.type}
                     </span>
                   </div>
 
-                  <p className="mt-8 max-w-[90%] text-[18px] font-medium uppercase tracking-[-0.01em] text-[#9ca3af] sm:max-w-[80%]">
+                  <p className="mt-5 max-w-[90%] text-[14px] font-medium uppercase tracking-[-0.01em] text-[#9ca3af] sm:max-w-[80%]">
                     {sampleFeaturedJob.description}
                   </p>
 
-                  <div className="mt-8 border-t border-[#2a2a2a] pt-7">
-                    <div className="flex items-start justify-between gap-4">
+                  <div className="mt-5 border-t border-[#2a2a2a] pt-4">
+                    <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-[18px] font-semibold tracking-[-0.03em] text-[#f7c948] sm:text-[20px]">
-                          {sampleFeaturedJob.salary.split(' / ')[0]}
-                        </p>
-                        <p className="mt-1 text-[18px] font-semibold uppercase tracking-[-0.03em] text-[#f7c948] sm:text-[20px]">
-                          / {sampleFeaturedJob.salary.split(' / ')[1]}
+                        <p className="text-[16px] font-semibold tracking-[-0.03em] text-[#f7c948] sm:text-[18px]">
+                          {sampleFeaturedJob.salary.split(' / ')[0]} / {sampleFeaturedJob.salary.split(' / ')[1]}
                         </p>
                       </div>
 
-                      <p className="max-w-[155px] text-right text-[11px] font-semibold uppercase tracking-[0.45em] text-[#7f8792] sm:max-w-none sm:text-[12px]">
+                      <p className="max-w-[155px] text-right text-[10px] font-semibold uppercase tracking-[0.35em] text-[#7f8792] sm:max-w-none sm:text-[11px]">
                         Posted {sampleFeaturedJob.postedAt}
                       </p>
                     </div>
 
-                    <div className="mt-8 flex flex-wrap gap-3">
+                    <div className="mt-4 flex flex-wrap gap-2">
                       {sampleFeaturedJob.skills.map((skill) => (
                         <span
                           key={skill}
-                          className="rounded-full border border-[#222] bg-black px-4 py-2 text-[11px] font-bold uppercase tracking-[0.34em] text-[#f4f4f5] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
+                          className="rounded-full border border-[#222] bg-black px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.28em] text-[#f4f4f5] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
                         >
                           {skill}
                         </span>
                       ))}
                     </div>
 
-                    <div className="mt-10 flex items-end justify-end">
-                      <Link
-                        to="/jobs"
-                        className="inline-flex items-center gap-3 text-[16px] font-semibold text-[#e5e7eb] transition-colors hover:text-amber-400"
-                      >
-                        Open jobs
-                        <ArrowRight size={18} />
-                      </Link>
-                    </div>
                   </div>
                 </div>
+
+                <div className="flex w-full justify-center pt-2">
+                  <Link
+                    to="/jobs"
+                    className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#e5e7eb] transition-colors hover:text-amber-400"
+                  >
+                    Open jobs
+                    <ArrowRight size={16} />
+                  </Link>
+                </div>
+                </>
               )}
             </motion.div>
           </div>
