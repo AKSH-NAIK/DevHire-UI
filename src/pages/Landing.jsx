@@ -9,7 +9,7 @@ import { jobsService } from '../services/jobsService'
 
 const sampleFeaturedJob = {
   title: 'MERN Stack Developer',
-  company: 'Aksh Naik',
+  company: 'Tech Solutions Pvt. Ltd.',
   location: 'Mumbai,India',
   description: 'We are seeking a skilled MERN Stack Developer to join our team. ',
   salary: '₹45,000 - ₹50,000 / mo',
@@ -205,7 +205,7 @@ export default function Landing() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="space-y-3"
+              className="flex flex-col gap-3"
             >
               {loading ? (
                 Array.from({ length: 3 }).map((_, index) => (
@@ -239,7 +239,7 @@ export default function Landing() {
                   </div>
                 ))
               ) : (
-                <div className="relative overflow-hidden rounded-[26px] border border-[#5e4306] bg-[#1a1a1a] px-6 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)]">
+                <div className="relative overflow-hidden rounded-[26px] border border-[#5e4306] bg-[#1a1a1a] px-6 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)] lg:-mt-10 xl:-mt-14">
                   <div className="relative flex items-start justify-between gap-4">
                     <div className="min-w-0 flex-1">
                       <h3 className="text-[21px] font-semibold leading-tight tracking-[-0.03em] text-[#f4f4f5]">
