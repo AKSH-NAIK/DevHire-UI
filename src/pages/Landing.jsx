@@ -18,6 +18,10 @@ const sampleFeaturedJob = {
   postedAt: '29 JUL 2026',
 }
 
+const LANDING_JOBS_CACHE_KEY = 'landing_preview_jobs_v1'
+const LANDING_JOBS_CACHE_TTL_MS = 5 * 60 * 1000
+const LANDING_FALLBACK_DELAY_MS = 1200
+
 const formatSalaryRange = (job) => {
   const salaryMin = Number(job?.salaryMin)
   const salaryMax = Number(job?.salaryMax)
@@ -52,20 +56,72 @@ export default function Landing() {
   useEffect(() => {
     let active = true
 
+    const readCachedJobs = () => {
+      try {
+        const raw = sessionStorage.getItem(LANDING_JOBS_CACHE_KEY)
+        if (!raw) return null
+
+        const parsed = JSON.parse(raw)
+        const isFresh = Date.now() - Number(parsed?.updatedAt || 0) < LANDING_JOBS_CACHE_TTL_MS
+        const cachedJobs = Array.isArray(parsed?.jobs) ? parsed.jobs : []
+
+        if (isFresh && cachedJobs.length > 0) {
+          return cachedJobs
+        }
+      } catch (error) {
+        console.warn('Failed to read landing jobs cache:', error)
+      }
+
+      return null
+    }
+
+    const writeCachedJobs = (nextJobs) => {
+      try {
+        sessionStorage.setItem(
+          LANDING_JOBS_CACHE_KEY,
+          JSON.stringify({
+            jobs: nextJobs,
+            updatedAt: Date.now(),
+          })
+        )
+      } catch (error) {
+        console.warn('Failed to write landing jobs cache:', error)
+      }
+    }
+
+    const cachedJobs = readCachedJobs()
+    if (cachedJobs && active) {
+      setJobs(cachedJobs)
+      setLoading(false)
+    }
+
+    // Keep first paint responsive even when backend is waking up.
+    const fallbackTimer = window.setTimeout(() => {
+      if (active) {
+        setLoading(false)
+      }
+    }, LANDING_FALLBACK_DELAY_MS)
+
     const fetchJobs = async () => {
       try {
-        const response = await jobsService.getAllJobs()
+        const response = await jobsService.getAllJobs({
+          limit: 3,
+          sortBy: 'createdAt',
+          order: 'desc',
+        })
         const allJobs = Array.isArray(response) ? response : response?.jobs || []
 
         if (active) {
           setJobs(allJobs)
+          writeCachedJobs(allJobs)
         }
       } catch (error) {
         console.error('Failed to fetch jobs:', error)
-        if (active) {
+        if (active && !cachedJobs) {
           setJobs([])
         }
       } finally {
+        window.clearTimeout(fallbackTimer)
         if (active) {
           setLoading(false)
         }
@@ -76,6 +132,7 @@ export default function Landing() {
 
     return () => {
       active = false
+      window.clearTimeout(fallbackTimer)
     }
   }, [])
 
@@ -202,15 +259,7 @@ export default function Landing() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="flex flex-col items-center gap-3 self-start lg:pt-36"
             >
-              {loading ? (
-                Array.from({ length: 3 }).map((_, index) => (
-                  <div key={index} className="rounded-2xl border border-zinc-800 bg-zinc-950/80 p-4">
-                    <div className="h-4 w-28 rounded-full bg-zinc-800" />
-                    <div className="mt-4 h-6 w-3/4 rounded-full bg-zinc-800" />
-                    <div className="mt-5 h-4 w-40 rounded-full bg-zinc-800" />
-                  </div>
-                ))
-              ) : sortedJobs.slice(0, 3).length > 0 ? (
+              {sortedJobs.slice(0, 3).length > 0 ? (
                 sortedJobs.slice(0, 3).map((job) => (
                   <div
                     key={job._id || job.id}

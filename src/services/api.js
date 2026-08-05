@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-//  Backend URL — toggle between local and deployed:
-const BACKEND_URL =
-    'http://localhost:5000/api';          // ← Local development
-'https://devhire-backend-1.onrender.com/api'; // 
+
+const BACKEND_URL = 'https://devhire-backend-1.onrender.com/api';
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || BACKEND_URL,
@@ -31,7 +29,7 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response && error.response.status === 401) {
-            // Only act if we actually had a token 
+
             
             const hadToken = !!localStorage.getItem('token');
             if (hadToken) {
