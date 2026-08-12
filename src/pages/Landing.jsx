@@ -160,33 +160,33 @@ export default function Landing() {
     <div className="min-h-screen overflow-x-hidden bg-zinc-950 text-zinc-100">
       <section className="relative overflow-hidden border-b border-zinc-800/70">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.14),transparent_32%),radial-gradient(circle_at_top_right,rgba(39,39,42,0.85),transparent_28%)]" />
-        <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-6 sm:px-6 lg:px-8 lg:pb-24 lg:pt-8">
-          <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
+        <div className="relative mx-auto max-w-7xl px-4 pb-14 pt-5 sm:px-6 lg:px-8 lg:pb-24 lg:pt-8">
+          <div className="grid items-start gap-6 sm:gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               className="space-y-4 lg:space-y-5"
             >
-              <h1 className="max-w-4xl text-5xl font-bold leading-[0.94] tracking-[-0.04em] text-zinc-100 md:text-7xl lg:text-8xl">
+              <h1 className="max-w-4xl text-4xl font-bold leading-[0.94] tracking-[-0.058em] text-zinc-100 sm:text-5xl md:text-6xl lg:text-8xl">
                 Where Developers and Great Teams
                 <br />
                 <span className="text-amber-400">Connect Directly.</span>
               </h1>
 
-              <p className="max-w-2xl text-base leading-7 text-zinc-400 md:text-lg">
+              <p className="max-w-2xl text-sm leading-6 text-zinc-400 sm:text-base md:text-lg">
                Browse live roles with upfront salary ranges and zero middleman clutter.
               </p>
 
               <form
                 onSubmit={handleSearchSubmit}
-                className="max-w-2xl rounded-2xl border border-zinc-800 bg-zinc-900/70 p-3 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl"
+                className="max-w-2xl rounded-2xl border border-zinc-800 bg-zinc-900/70 p-2.5 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl sm:p-3"
               >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:gap-3">
                   <label className="sr-only" htmlFor="quick-job-search">
                     Search active jobs
                   </label>
-                  <div className="flex flex-1 items-center gap-3 rounded-xl border border-zinc-800 bg-zinc-950/80 px-4 py-3 transition-colors focus-within:border-amber-500/40">
+                  <div className="flex flex-1 items-center gap-3 rounded-xl border border-zinc-800 bg-zinc-950/80 px-3 py-2.5 transition-colors focus-within:border-amber-500/40 sm:px-4 sm:py-3">
                     <Search className="shrink-0 text-zinc-500" size={18} />
                     <input
                       id="quick-job-search"
@@ -199,7 +199,7 @@ export default function Landing() {
                   </div>
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-zinc-950 transition-all duration-300 hover:bg-amber-400 hover:shadow-[0_10px_30px_rgba(245,158,11,0.25)]"
+                    className="inline-flex w-full items-center justify-center rounded-xl bg-amber-500 px-4 py-3 text-sm font-semibold text-zinc-950 transition-all duration-300 hover:bg-amber-400 hover:shadow-[0_10px_30px_rgba(245,158,11,0.25)] sm:w-auto sm:px-5"
                   >
                     Search jobs
                   </button>
@@ -209,19 +209,19 @@ export default function Landing() {
               <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
                 <Link
                   to={user ? '/jobs' : '/register'}
-                  className="inline-flex items-center justify-center rounded-xl bg-amber-500 px-6 py-4 text-sm font-semibold text-zinc-950 transition-all duration-300 hover:bg-amber-400 hover:shadow-[0_10px_30px_rgba(245,158,11,0.25)]"
+                  className="inline-flex items-center justify-center rounded-xl bg-amber-500 px-5 py-3.5 text-sm font-semibold text-zinc-950 transition-all duration-300 hover:bg-amber-400 hover:shadow-[0_10px_30px_rgba(245,158,11,0.25)] sm:px-6 sm:py-4"
                 >
                   Explore live jobs
                 </Link>
                 <Link
                   to={user ? (user.role === 'recruiter' ? '/post-job' : '/candidate-dashboard') : '/register'}
-                  className="inline-flex items-center justify-center rounded-xl border border-zinc-700 bg-zinc-900 px-6 py-4 text-sm font-semibold text-zinc-200 transition-all duration-300 hover:border-zinc-500 hover:bg-zinc-800"
+                  className="inline-flex items-center justify-center rounded-xl border border-zinc-700 bg-zinc-900 px-5 py-3.5 text-sm font-semibold text-zinc-200 transition-all duration-300 hover:border-zinc-500 hover:bg-zinc-800 sm:px-6 sm:py-4"
                 >
                   {user ? 'Open dashboard' : 'Join DevHire'}
                 </Link>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-3 lg:gap-4">
+              <div className="grid gap-2.5 sm:grid-cols-3 sm:gap-3 lg:gap-4">
                 {[
                   {
                     icon: ShieldCheck,
@@ -241,13 +241,13 @@ export default function Landing() {
                 ].map((item) => (
                   <div
                     key={item.title}
-                    className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm transition-all hover:border-amber-500/30"
+                    className="rounded-xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm transition-all hover:border-amber-500/30 sm:p-4"
                   >
                     <div className="inline-flex rounded-lg bg-amber-500/10 p-2 text-amber-500">
-                      <item.icon size={18} />
+                      <item.icon size={16} className="sm:h-[18px] sm:w-[18px]" />
                     </div>
-                    <h3 className="mt-3 text-sm font-semibold text-white">{item.title}</h3>
-                    <p className="mt-1 text-xs text-zinc-400">{item.text}</p>
+                    <h3 className="mt-3 text-[0.72rem] font-semibold text-white sm:text-sm">{item.title}</h3>
+                    <p className="mt-1 text-[0.65rem] leading-4 text-zinc-400 sm:text-xs sm:leading-5">{item.text}</p>
                   </div>
                 ))}
               </div>
@@ -366,17 +366,17 @@ export default function Landing() {
               <div className="mt-8 space-y-4">
                 {[
                   {
-                    step: '01',
+                    step: '1',
                     title: 'Discover Live Roles',
                     description: 'Search active openings with salary ranges disclosed upfront in INR.',
                   },
                   {
-                    step: '02',
+                    step: '2',
                     title: 'Apply Directly',
                     description: 'Send your application straight to the company\'s internal dashboard.',
                   },
                   {
-                    step: '03',
+                    step: '3',
                     title: 'Track & Connect',
                     description: 'Track application status in real-time without middleman recruiters.',
                   },
@@ -403,17 +403,17 @@ export default function Landing() {
               <div className="mt-8 space-y-4">
                 {[
                   {
-                    step: '01',
+                    step: '1',
                     title: 'Post Openings',
                     description: 'Create rich job listings with transparent pay bands and skill requirements.',
                   },
                   {
-                    step: '02',
+                    step: '2',
                     title: 'Review Applicants',
                     description: 'Access candidate profiles directly from your unified recruiter dashboard.',
                   },
                   {
-                    step: '03',
+                    step: '3',
                     title: 'Hire Efficiently',
                     description: 'Manage candidate pipeline stages with fast response times.',
                   },

@@ -65,26 +65,26 @@ export default function CandidateDashboard() {
 
   return (
     <div className="min-h-screen bg-[#1F1F1F]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
 
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-5xl font-bold text-white mb-3 tracking-tighter uppercase">
+        <div className="mb-8 sm:mb-12">
+          <h1 className="text-4xl font-bold text-white mb-2 tracking-tighter uppercase sm:text-5xl">
             Dashboard
           </h1>
-          <p className="text-slate-500 font-medium uppercase tracking-widest text-xs">
+          <p className="text-slate-500 font-medium uppercase tracking-widest text-[10px] sm:text-xs">
             Welcome back, {user?.name}
           </p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 gap-4 mb-8 sm:mb-12 md:grid-cols-3 md:gap-6">
           {statItems.map((stat, idx) => {
             const Icon = stat.icon
             return (
               <div
                 key={idx}
-                className="bg-[#1F1F1F] border border-white/10 p-8 transition-all hover:border-primary/30 group"
+                className="bg-[#1F1F1F] border border-white/10 p-5 transition-all hover:border-primary/30 group sm:p-8"
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -106,8 +106,8 @@ export default function CandidateDashboard() {
         </div>
 
         {/* Applications Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-white mb-6 uppercase tracking-tight">
+        <div className="mb-8 sm:mb-12">
+          <h2 className="text-xl font-bold text-white mb-4 uppercase tracking-tight sm:text-2xl sm:mb-6">
             My Applications
           </h2>
 
@@ -185,17 +185,17 @@ export default function CandidateDashboard() {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-white/5 border border-white/5 p-12 text-center">
-          <h3 className="text-3xl font-bold text-white mb-4 tracking-tight uppercase">
+        <div className="bg-white/5 border border-white/5 p-6 text-center sm:p-12">
+          <h3 className="text-2xl font-bold text-white mb-3 tracking-tight uppercase sm:text-3xl sm:mb-4">
             Explore More Roles
           </h3>
-          <p className="text-slate-400 mb-8 max-w-lg mx-auto leading-relaxed">
+          <p className="text-slate-400 mb-6 max-w-lg mx-auto text-sm leading-relaxed sm:mb-8">
             Discover opportunities tailored to your skills and preferences.
           </p>
 
           <button
             onClick={() => navigate('/jobs')}
-            className="inline-flex items-center gap-2 px-12 py-4 border border-primary text-primary hover:bg-primary hover:text-black transition-all text-xs font-bold uppercase tracking-widest"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-black transition-all text-[10px] font-bold uppercase tracking-widest sm:px-12 sm:py-4 sm:text-xs"
           >
             <Search size={16} />
             Browse All Jobs

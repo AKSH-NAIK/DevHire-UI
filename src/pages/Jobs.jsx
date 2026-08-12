@@ -107,14 +107,14 @@ export default function Jobs() {
 
   return (
     <div className="min-h-screen mesh-gradient">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
 
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-5xl font-bold text-white mb-3 tracking-tighter uppercase">
+        <div className="mb-8 sm:mb-12">
+          <h1 className="text-4xl font-bold text-white mb-2 tracking-tighter uppercase sm:text-5xl">
             Browse Roles
           </h1>
-          <p className="text-slate-500 font-medium uppercase tracking-widest text-xs">
+          <p className="text-slate-500 font-medium uppercase tracking-widest text-[10px] sm:text-xs">
             {loading
               ? 'Loading...'
               : `${applications.length + otherFilteredJobs.length} matching position${(applications.length + otherFilteredJobs.length) !== 1 ? 's' : ''} found`}
@@ -132,10 +132,10 @@ export default function Jobs() {
         )}
 
         {/* Search & Filters */}
-        <div className="grid lg:grid-cols-4 gap-4 mb-12">
+        <div className="grid gap-3 mb-8 sm:mb-12 md:grid-cols-2 xl:grid-cols-4">
 
           {/* Search */}
-          <div className="lg:col-span-2 relative group">
+          <div className="md:col-span-2 relative group">
             <Search
               className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors pointer-events-none"
               size={18}
@@ -212,18 +212,18 @@ export default function Jobs() {
             }
           />
         ) : (
-          <div className="space-y-16">
+          <div className="space-y-10 sm:space-y-14">
             {/* Applied Jobs Section */}
             {applications.length > 0 && (
               <div>
-                <div className="flex items-center gap-4 mb-8">
-                  <h2 className="text-2xl font-bold text-white uppercase tracking-tighter">Applied Jobs</h2>
+                <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-8">
+                  <h2 className="text-xl font-bold text-white uppercase tracking-tighter sm:text-2xl">Applied Jobs</h2>
                   <div className="h-px flex-1 bg-white/10"></div>
                   <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/5 px-3 py-1 border border-white/10">
                     {applications.length} ROLE{applications.length !== 1 ? 'S' : ''}
                   </span>
                 </div>
-                <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6">
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                   {applications.filter(app => app.job).map(app => (
                     <JobCard
                       key={app._id}
@@ -241,14 +241,14 @@ export default function Jobs() {
             {/* Other Jobs Section */}
             {otherFilteredJobs.length > 0 && (
               <div>
-                <div className="flex items-center gap-4 mb-8">
-                  <h2 className="text-2xl font-bold text-white uppercase tracking-tighter">Recommended Roles</h2>
+                <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-8">
+                  <h2 className="text-xl font-bold text-white uppercase tracking-tighter sm:text-2xl">Recommended Roles</h2>
                   <div className="h-px flex-1 bg-white/10"></div>
                   <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/5 px-3 py-1 border border-white/10">
                     {otherFilteredJobs.length} NEW OPPORTUNIT{otherFilteredJobs.length !== 1 ? 'IES' : 'Y'}
                   </span>
                 </div>
-                <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6">
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                   {otherFilteredJobs.map(job => (
                     <JobCard
                       key={job._id}
