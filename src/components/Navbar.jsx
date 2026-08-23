@@ -30,7 +30,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group" aria-label="DevHire Home">
             <div className="flex h-8 w-8 items-center justify-center border border-amber-500/40 bg-amber-500/10 transition-all group-hover:border-amber-400/70 group-hover:bg-amber-500/20">
-              <span className="font-bold text-amber-300">D</span>
+              <img src="/favicon.svg" alt="DevHire logo" className="h-full w-full object-contain" />
             </div>
             <span className="hidden text-xl font-bold tracking-tight text-zinc-100 sm:block">DevHire</span>
           </Link>
