@@ -26,8 +26,8 @@ export default function Footer() {
           {/* Brand */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center gap-2 group" aria-label="DevHire Home">
-              <div className="w-8 h-8 border border-primary flex items-center justify-center transition-all group-hover:shadow-glow">
-                <span className="text-primary font-bold text-sm">D</span>
+              <div className="w-8 h-8 flex items-center justify-center transition-all group-hover:shadow-glow">
+                <img src="/favicon.svg" alt="DevHire Logo" className="w-full h-full object-contain" />
               </div>
               <span className="font-bold text-white text-xl tracking-tighter">DevHire</span>
             </Link>

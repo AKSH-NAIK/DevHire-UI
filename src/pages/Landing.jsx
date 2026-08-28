@@ -175,7 +175,7 @@ export default function Landing() {
               </h1>
 
               <p className="max-w-2xl text-sm leading-6 text-zinc-400 sm:text-base md:text-lg">
-               Browse live roles with upfront salary ranges and zero middleman clutter.
+                Browse live roles with upfront salary ranges and zero middleman clutter.
               </p>
 
               <form
@@ -284,62 +284,62 @@ export default function Landing() {
                 ))
               ) : (
                 <>
-                <div className="relative w-full overflow-hidden rounded-[22px] border border-[#5e4306] bg-[#1a1a1a] px-4 py-4 shadow-[0_20px_60px_rgba(0,0,0,0.18)] lg:-mt-1 xl:-mt-2">
-                  <div className="relative flex items-start justify-between gap-3">
-                    <div className="min-w-0 flex-1">
-                      <h3 className="text-[18px] font-semibold leading-tight tracking-[-0.03em] text-[#f4f4f5]">
-                        {sampleFeaturedJob.title}
-                      </h3>
-                      <p className="mt-1 text-[13px] leading-snug text-[#9ca3af]">
-                        {sampleFeaturedJob.company} • {sampleFeaturedJob.location}
-                      </p>
-                    </div>
-
-                    <span className="flex-shrink-0 rounded-full border border-[#4a4a4a] bg-[#171717] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.3em] text-[#e5e7eb]">
-                      {sampleFeaturedJob.type}
-                    </span>
-                  </div>
-
-                  <p className="mt-5 max-w-[90%] text-[14px] font-medium uppercase tracking-[-0.01em] text-[#9ca3af] sm:max-w-[80%]">
-                    {sampleFeaturedJob.description}
-                  </p>
-
-                  <div className="mt-5 border-t border-[#2a2a2a] pt-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="text-[16px] font-semibold tracking-[-0.03em] text-[#f7c948] sm:text-[18px]">
-                          {sampleFeaturedJob.salary.split(' / ')[0]} / {sampleFeaturedJob.salary.split(' / ')[1]}
+                  <div className="relative w-full overflow-hidden rounded-[22px] border border-[#5e4306] bg-[#1a1a1a] px-4 py-4 shadow-[0_20px_60px_rgba(0,0,0,0.18)] lg:-mt-1 xl:-mt-2">
+                    <div className="relative flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-[18px] font-semibold leading-tight tracking-[-0.03em] text-[#f4f4f5]">
+                          {sampleFeaturedJob.title}
+                        </h3>
+                        <p className="mt-1 text-[13px] leading-snug text-[#9ca3af]">
+                          {sampleFeaturedJob.company} • {sampleFeaturedJob.location}
                         </p>
                       </div>
 
-                      <p className="max-w-[155px] text-right text-[10px] font-semibold uppercase tracking-[0.35em] text-[#7f8792] sm:max-w-none sm:text-[11px]">
-                        Posted {sampleFeaturedJob.postedAt}
-                      </p>
+                      <span className="flex-shrink-0 rounded-full border border-[#4a4a4a] bg-[#171717] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.3em] text-[#e5e7eb]">
+                        {sampleFeaturedJob.type}
+                      </span>
                     </div>
 
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {sampleFeaturedJob.skills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="rounded-full border border-[#222] bg-black px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.28em] text-[#f4f4f5] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
+                    <p className="mt-5 max-w-[90%] text-[14px] font-medium uppercase tracking-[-0.01em] text-[#9ca3af] sm:max-w-[80%]">
+                      {sampleFeaturedJob.description}
+                    </p>
 
+                    <div className="mt-5 border-t border-[#2a2a2a] pt-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-[16px] font-semibold tracking-[-0.03em] text-[#f7c948] sm:text-[18px]">
+                            {sampleFeaturedJob.salary.split(' / ')[0]} / {sampleFeaturedJob.salary.split(' / ')[1]}
+                          </p>
+                        </div>
+
+                        <p className="max-w-[155px] text-right text-[10px] font-semibold uppercase tracking-[0.35em] text-[#7f8792] sm:max-w-none sm:text-[11px]">
+                          Posted {sampleFeaturedJob.postedAt}
+                        </p>
+                      </div>
+
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {sampleFeaturedJob.skills.map((skill) => (
+                          <span
+                            key={skill}
+                            className="rounded-full border border-[#222] bg-black px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.28em] text-[#f4f4f5] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex w-full justify-center pt-2">
-                  <Link
-                    to="/jobs"
-                    className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#e5e7eb] transition-colors hover:text-amber-400"
-                  >
-                    Open jobs
-                    <ArrowRight size={16} />
-                  </Link>
-                </div>
+                  <div className="flex w-full justify-center pt-2">
+                    <Link
+                      to="/jobs"
+                      className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#e5e7eb] transition-colors hover:text-amber-400"
+                    >
+                      Open jobs
+                      <ArrowRight size={16} />
+                    </Link>
+                  </div>
                 </>
               )}
             </motion.div>
